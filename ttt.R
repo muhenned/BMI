@@ -14,13 +14,14 @@
 library(mgcv)
 library(Matrix)
 library(lpSolve)
+library(here)
 
 #setwd("C:/Users/Muhannad/Desktop/multvariat/Time_series/mdp/Net-transition-probabilities-master")
 # Read data
 #
 
 
-bmi.data=r1<- read.csv("C:/Users/Muhannad/Desktop/multvariat/R_codes/prediabetes/pre_sub/Data/ldl2.csv",header=TRUE, sep=",")
+bmi.data=r1<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 # Remove duplicated rows based on Sepal.Length
 #bmi.data %>% distinct(SEQN, .keep_all = TRUE)
 df=bmi.data
