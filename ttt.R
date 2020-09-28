@@ -30,7 +30,7 @@ df=df[!duplicated(df[ , c("SEQN")]),]
 
 df=df[df$RIDAGEYR>10& df$RIDAGEYR<80,]
 # RIDRETH1 (race, 1=mexican, 2=otherHispanic, 3= Non-Hispanic White,4=Non-Hispanic Black ,5=Other Race - Including Multi-Racial
-df=df[df$RIDRETH1==3,]
+# df=df[df$RIDRETH1==3,]
 #5:gender, 6:age,9:race ,28:BMI 
 df=df[,c(5,6,9,28)]
 # Show first records of bmi.data
@@ -76,15 +76,23 @@ head(data_male)
 #
 # Choose k large enough to allow enough flexibility, the penalty does the rest
 # Because of the REML smoothness selection instead of BIC, the result is somewhat different from the fit in the paper
-mod <- gam(
-    formula = list(temp ~ s(age, bs = "ps", k = 15), ~ s(age, bs = "ps", k = 15)),
+
+if (file.exists(here::here("results", "fit.RData"))) {
+  load(here::here("results", "fit.RData"))
+} else {
+  ## long running process
+  mod <- gam(
+    formula = list(temp ~ s(age, bs = "ps", k = 15, by = factor(RIDRETH1)), ~ s(age, bs = "ps", k = 15, by = factor(RIDRETH1))),
     family = multinom(K = K - 1),
     data = df,
     method = "REML")
-
+  
+  save(mod, file = here::here("results", "fit.RData"))
+}
 # Show summary of model fit
 summary(mod)
 
+plot(mod)
 #
 # Predict multinomial P-splines
 #
@@ -92,11 +100,15 @@ summary(mod)
 # Settings
 age.pred <- 10:70
 n.pred <- length(age.pred)
+dat_pred <- data.frame(
+  age = age.pred,
+  RIDRETH1 = factor(rep(1:5, each = n.pred))
+)
 
 # Make prediction
 # Returns a list of length two (fit and se.fit) containing an n.pred x K matrix
 pred <- predict(mod,
-                newdata = data.frame(age = age.pred),
+                newdata = dat_pred,
                 type = "response",
                 se.fit = TRUE)
 
