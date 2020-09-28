@@ -22,14 +22,14 @@ library(lpSolve)
 
 bmi.data=r1<- read.csv("C:/Users/Muhannad/Desktop/multvariat/R_codes/prediabetes/pre_sub/Data/ldl2.csv",header=TRUE, sep=",")
 # Remove duplicated rows based on Sepal.Length
-bmi.data %>% distinct(SEQN, .keep_all = TRUE)
+#bmi.data %>% distinct(SEQN, .keep_all = TRUE)
 df=bmi.data
 df=df[!duplicated(df[ , c("SEQN")]),]
 #age
 
-df=df[df$RIDAGEYR>30& df$RIDAGEYR<80,]
+df=df[df$RIDAGEYR>10& df$RIDAGEYR<80,]
 # RIDRETH1 (race, 1=mexican, 2=otherHispanic, 3= Non-Hispanic White,4=Non-Hispanic Black ,5=Other Race - Including Multi-Racial
-r1_IFG=r1_IFG[r1_IFG$RIDRETH1==3,]
+df=df[df$RIDRETH1==3,]
 #5:gender, 6:age,9:race ,28:BMI 
 df=df[,c(5,6,9,28)]
 # Show first records of bmi.data
@@ -48,7 +48,7 @@ K <- 3
 # 0 = normal, 1 = overweight, 2 = obese
 
 ###
-temp <- cut(df$BMXBMI, breaks = c(-Inf,25 ,30,Inf),
+temp <- cut(df$BMXBMI, breaks = c(-Inf,25 ,30,40),
             labels = c(0,1,2),
             right = FALSE)
 
@@ -89,7 +89,7 @@ summary(mod)
 #
 
 # Settings
-age.pred <- 30:80
+age.pred <- 10:70
 n.pred <- length(age.pred)
 
 # Make prediction
@@ -171,8 +171,6 @@ transport.simplex <- function(supply, demand, cost, add.const.mat = NULL, add.co
     return(trans)
 }
 
-# Cost matrix
-cost <- toeplitz(diffinv(1:(K-1)))
 
 # Are simulations available?
 exists.sim <- with(pred, exists("pi.sim"))
@@ -187,7 +185,17 @@ if (exists.sim) {
     trans.prob$trans.prob.sim <- array(NA, dim = c(K, K, n.pred - 1, n.sim))
 }
 
+colc= list(E.trans.prob = array(NA, dim = c(3, 3, 9)))
+  #  array(NA, dim = c(3, 3, 10))
+#for(z in 1:10){
+    # Cost matrix
+    cost <- toeplitz(diffinv(1:(K-1)))
+    x=runif(1,0,2)
+    y=runif(1,2,4)
+    cost=matrix(c(0,x,y,x,0,x,y,x,0),nrow = 3,ncol = 3) 
+    print(cost)
 # Estimate transitions and transition probabilities
+#estimated prob saved in trans.prob$E.trans.prob 
 for (i in 1:(n.pred - 1)) {
     # Calculate net transitions and transition probabilities
     trans$E.trans[, , i] <- transport.simplex(
@@ -208,6 +216,8 @@ for (i in 1:(n.pred - 1)) {
     }
 }
 
+#colc$E.trans.prob[,,z]=trans.prob$E.trans.prob[,,1]
+#}
 # Calculate summary statistics, only if simulations are available
 if (exists.sim) {
     trans <- within(trans, {
@@ -367,3 +377,37 @@ for (j in 1:K) {
     }
 }
 
+
+ 
+###################3
+ 
+# Plot transition probabilities in K x K matrix
+#
+
+# Set graphical parameters
+k=3
+par(
+    mar = c(3, 3, 1.5, 0.1),
+    mfrow = c(K, K),
+    mgp = c(1.8, 0.7, 0))
+
+# Make the plot
+for (j in 1:K) {
+    for (i in 1:K) {
+        plot.new()
+        with(colc, {
+            # If simulations are not available
+             
+                # Only plot the expected values
+                plot.window(
+                    xlim = range(age.pred),
+                    ylim = range(1)
+                        #range(E.trans.prob[i, j, ]
+                    )
+                lines(x = age.pred[-1], y = E.trans.prob[i, j, ], lty = 1, col = 1)
+
+            })
+        }
+    }
+  
+ 
