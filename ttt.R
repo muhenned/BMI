@@ -21,7 +21,7 @@ library(here)
 #
 
 
-bmi.data=r1<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
+bmi.data<- read.csv(here::here("BMI/data", "ldl2.csv"),header=TRUE, sep=",")
 # Remove duplicated rows based on Sepal.Length
 #bmi.data %>% distinct(SEQN, .keep_all = TRUE)
 df=bmi.data
@@ -423,4 +423,54 @@ for (j in 1:K) {
         }
     }
   
- 
+#######################
+######################################
+
+## Data clean ready to use
+
+data_male=bmi.data
+#data_male <- data_male[(data_male$LBXGLU>99.9 & data_male$LBXGLU<500.9 ),]
+Type <- seq(1,length = nrow(data_male))
+temp <- lapply(Type , function(x) ifelse(data_male$LBXGLU[x]<=125.9, "Pre","Diab") )
+temp <- do.call(rbind,temp)
+Type <- as.factor(temp)
+rm(temp)
+data_male <- cbind(data_male,Type)
+
+### Creating factor for age
+Age <-seq(1,length = nrow(data_male))
+f<- function(x) { (x%/%10) }
+temp <- lapply(Age , function(x) f(data_male$RIDAGEYR[x]) )
+temp <- do.call(rbind, temp)
+Age <- as.factor(temp)
+
+data_male <- cbind(data_male,Age)
+
+
+#####
+
+
+###
+
+###  Classifying Cholesterol Level.
+Lip_Rati=data_male[,3]/data_male[,4]
+data_male=cbind(data_male,Lip_Rati)
+Chol=seq(1,length=nrow(data_male))
+temp=lapply(Chol, function(x) ifelse(data_male$BMXBMI[x]<=25,"normal",ifelse(data_male$BMXBMI[x]<=30,"obes","ovrwieght")))
+temp=do.call(rbind,temp)
+Chol=as.factor(temp)
+type=as.factor(temp)
+data_male=cbind(data_male,Chol)
+
+############  Graphing 
+
+library(ggplot2)
+
+fig <- ggplot(data_male , aes(x  = Age)) + geom_bar(aes( fill = type  ) , position ="dodge" )
+fig
+
+fig <- ggplot(data_male[data_male$Type=="normal",] , aes(x  = Age)) + geom_bar(aes( fill = Chol  ) , position ="dodge" )
+print(fig + ggtitle("Diabetecs"))
+fig
+
+
