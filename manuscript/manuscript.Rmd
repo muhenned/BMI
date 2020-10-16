@@ -1,0 +1,23 @@
+---
+title: "BMI-manuscript"
+output: 
+    bookdown::pdf_document2:  
+        keep_tex: true
+bibliography: cite.bib
+link_citations: true
+---
+\section{introduction}
+Body Mass Idex (BMI) playes an important rule in predicting heart disease risk. BMI     
+ .
+[@van2012estimating]
+\section{methode}
+From the figure we see ...
+
+```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "exploratory.png"))) {
+    source(here::here("exploratory-data-analysis.R"))
+}
+knitr::include_graphics(here::here("images", "exploratory.png"))
+```
+# References
