@@ -1,10 +1,7 @@
-# R-code of the paper
-#   van de Kassteele J, Hoogenveen RT, Engelfriet PM, van Baal PHM, Boshuizen HC (2012).
+#
+# This code is adopted from van de Kassteele J, Hoogenveen RT, Engelfriet PM, van Baal PHM, Boshuizen HC (2012).
 #   Estimating net transition probabilities from cross-sectional data with application to risk factors in chronic disease modeling.
 #   Statistics in Medicine, 31(6), 533-543.
-#
-# Author: Jan van de Kassteele, RIVM
-#
 
 # 
 #
