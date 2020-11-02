@@ -152,8 +152,44 @@ dat_pred %>%
 ##
 ## looks like we need a smooth term with age
 ##
-
-
 contrasts(dat$x4)
 
- 
+ggplot(dat, aes(x=x, y=y, shape=x4, color=x4, size=x4)) +
+    geom_point()
+chisq <- chisq.test(dat)
+chisq
+chisq.test(dat$y, dat$x4, correct=FALSE) 
+
+data_frame <- read.csv("https://goo.gl/j6lRXD")  #Reading CSV
+table(data_frame$treatment, data_frame$improvement)
+chisq.test(data_frame$treatment, data_frame$improvement, correct=FALSE)
+##################################
+######multinomial logistic regression
+set.seed(123)
+library(nnet)
+bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
+
+#remove duplicated rows
+bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
+
+## Data clean ready to use
+
+data_male= na.omit(bmi.data[,c(5,6,9,28,43)])
+Chol=seq(1,length=nrow(data_male))
+temp=lapply(Chol, function(x) ifelse(data_male$BMXBMI[x]<=25,"normal",ifelse(data_male$BMXBMI[x]<=30,"obes","ovrwieght")))
+temp=do.call(rbind,temp)
+Chol=as.factor(temp)
+type=as.factor(temp)
+data_male=cbind(data_male,Chol)
+dat=data_male
+ind=sample(2,nrow(dat),replace=TRUE,prob=c(60,40))
+training=dat[ind==1,]
+testing=dat[ind==2,]
+training$Chol=relevel(training$Chol,ref="normal")
+mymodel=multinom(Chol~.-RIAGENDR,data=training)
+## extract the coefficients from the model and exponentiate
+exp(coef(mymodel))
+predict(mymodel, newdata = testing, "probs")
+ #plot
+#ggplot(lpp, aes(x = write, y = probability, colour = ses)) + geom_line() +
+#    facet_grid(variable ~., scales = "free")

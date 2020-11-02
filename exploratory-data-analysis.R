@@ -103,15 +103,20 @@ ggplot(dat, aes(x,y)) +
     geom_point() + 
     geom_quantile(quantiles = 0.9)
 library(quantreg)
-qr1 <- rq(  y ~ x+x2+x3+x4 , data=dat, tau = 0.9)
+qr1 <- rq(  y ~x+x2+x3+x4 , data=dat, tau = c(0.25,0.5,0.9))
 summary(qr1) #lower bd and upper bd values are confidence intervals calculated using the "rank" method 
 
+plot(summary(qr1))
 #Using the coef() function in combination with the geom_abline() function we can recreate
 #what we got with geom_quantile() and ensure our results match:
 
 ggplot(dat, aes(x,y)) + geom_point() + 
-    geom_abline(intercept=coef(qr1)[1], slope=coef(qr1)[2])
-
+    geom_abline(intercept=coef(qr1)[1], slope=coef(qr1)[2])+ geom_abline(intercept=coef(qr1)[9], slope=coef(qr1)[10])+ geom_abline(intercept=coef(qr1)[17], slope=coef(qr1)[18])
+# to find the categirical coding
 contrasts(dat$x4)
+ # to study if the two quant regerission are parrelall
+r1 <- rq(  y ~x+x2+x3+x4 , data=dat, tau = c(0.5))
+r2<- rq(  y ~x+x2+x3+x4 , data=dat, tau = c(0.9))
+anova(r1,r2)
 
  
