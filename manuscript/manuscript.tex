@@ -80,15 +80,33 @@
 }
 \section{introduction}
 
-Body Mass Idex (BMI) playes an important rule in predicting heart
-disease risk.\\
-. (Van de Kassteele et al. 2012) \section{methode} We used Bayesian
-hierarchical logistic regression (12) with random intercepts by calendar
-year to estimate diabetes prevalence and incidence as a function of age
-(18 -- 84 years in 1-year intervals), race/ethnicity (non-Hispanic
-white, non-Hispanic black, Hispanic, or other), sex, and BMI
-(underweight, 18.5 kg/m2; normal weight, 18.5 to 25 kg/m2; overweight,
-25 to 30 kg/ m2; obese, 30 to 35 kg/m2; and very From the figure we see
+Body Mass Index (BMI) plays an important rule in predicting heart
+disease risk(Katzmarzyk et al. 2012). Our goal is to compare 90th
+quatile regrission for BMI in Diabtese and prediabtes population.
+
+(Van de Kassteele et al. 2012)
+
+\section{methods}
+
+prevalence and incidence as a function of age (18 -- 84 years in 1-year
+intervals), race/ethnicity (non-Hispanic white, non-Hispanic black,
+Hispanic, or other), sex, and BMI (underweight, 18.5 kg/m2; normal
+weight, 18.5 to 25 kg/m2; overweight, 25 to 30 kg/ m2; obese, 30 to 35
+kg/m2; and very From the figure we see
+
+\section{Quantile regression}
+
+Quantile regression is an important tool used to regress the dependent
+variable with high variance over the independent variables.
+
+For a random variable \(X\), the comulative distrubution function (CDF)
+is \[F(X)=P(X\leq x)\], and the \(\tau\)th quantile of \(X\) is defined
+by \[ F^{-1}(\tau)=\text{inf}\{x: F(x)\ge \tau\} \] where \(0<\tau<1\)
+
+\section{Data}\label{data}
+
+The data used in this study is National Health and Nutrition Examination
+Survey data (NHANES)(Disease Control and (CDC) 2018)
 
 \begin{figure}
 
@@ -103,6 +121,17 @@ white, non-Hispanic black, Hispanic, or other), sex, and BMI
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
+\hypertarget{ref-NHANES}{}
+Disease Control, Centers for, and Prevention (CDC). 2018. ``National
+Health and Nutrition Examination Survey Data (Nhanes.''
+
+\hypertarget{ref-katbody}{}
+Katzmarzyk, Peter T, Bruce A Reeder, Susan Elliott, Michel R Joffres,
+Punam Pahwa, Kim D Raine, Susan A Kirkland, and Gilles Paradis. 2012.
+``Body Mass Index and Risk of Cardiovascular Disease, Cancer and
+All-Cause Mortality.'' \emph{Canadian Journal of Public Health} 103 (2).
+Springer: 147--51.
+
 \hypertarget{ref-van2012estimating}{}
 Van de Kassteele, Jan, RT Hoogenveen, PM Engelfriet, PHM Van Baal, and
 HC Boshuizen. 2012. ``Estimating Net Transition Probabilities from

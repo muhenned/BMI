@@ -1,0 +1,90 @@
+PMID- 22530540
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20120510
+LR  - 20200205
+IS  - 0008-4263 (Print)
+IS  - 1920-7476 (Electronic)
+IS  - 0008-4263 (Linking)
+VI  - 103
+IP  - 2
+DP  - 2012 Mar-Apr
+TI  - Body mass index and risk of cardiovascular disease, cancer and all-cause mortality.
+PG  - 147-51
+AB  - OBJECTIVES: To determine the dose-response relationship between body mass index 
+      (BMI) and cause-specific mortality among Canadian adults. METHODS: The sample 
+      includes 10,522 adults 18-74 years of age who participated in the Canadian Heart 
+      Health Surveys (1986-1995). Participants were divided into 5 BMI categories (< 18.5, 
+      18.5-24.9, 25-29.9, 30-34.9, and > or = 35 kg/m2). Multivariate-adjusted (age, sex, 
+      exam year, smoking status, alcohol consumption and education) hazard ratios for 
+      all-cause, cardiovascular disease (CVD) and cancer mortality were estimated using 
+      Cox proportional hazards regression. RESULTS: There were 1,149 deaths (402 CVD; 412 
+      cancer) over an average of 13.9 years (range 0.5 to 19.1 years), and the analyses 
+      are based on 145,865 person-years. The hazard ratios (95% CI) across successive BMI 
+      categories for all-cause mortality were 1.25 (0.83-1.90), 1.00 (reference), 1.06 
+      (0.92-1.22), 1.27 (1.07-1.51) and 1.65 (1.29-2.10). The corresponding hazard ratios 
+      for CVD mortality were 1.30 (0.60-2.83), 1.00 (reference), 1.57 (1.22-2.01), 1.72 
+      (1.27-2.33) and 2.09 (1.35-3.22); and for cancer, the hazard ratios were 1.02 
+      (0.48-2.21), 1.00 (reference), 1.14 (0.90-1.44), 1.34 (1.01-1.78) and 1.82 
+      (1.22-2.71). There were significant linear trends across BMI categories for 
+      all-cause (p = 0.0001), CVD (p < 0.0001) and cancer mortality (p = 0.003). 
+      CONCLUSIONS: The results demonstrate significant relationships between BMI and 
+      mortality from all causes, CVD and cancer. The increased risk of all-cause, CVD and 
+      cancer mortality associated with an elevated BMI was significant at levels above 30 
+      kg/m2; however, overweight individuals (BMI 25-29.9 kg/m2) also had an approximately 
+      60% higher risk of CVD mortality.
+FAU - Katzmarzyk, Peter T
+AU  - Katzmarzyk PT
+AD  - Pennington Biomedical Research Center, Baton Rouge, LA 70808-4124, USA. 
+      Peter.Katzmarzyk@pbrc.edu
+FAU - Reeder, Bruce A
+AU  - Reeder BA
+FAU - Elliott, Susan
+AU  - Elliott S
+FAU - Joffres, Michel R
+AU  - Joffres MR
+FAU - Pahwa, Punam
+AU  - Pahwa P
+FAU - Raine, Kim D
+AU  - Raine KD
+FAU - Kirkland, Susan A
+AU  - Kirkland SA
+FAU - Paradis, Gilles
+AU  - Paradis G
+LA  - eng
+GR  - Canadian Institutes of Health Research/Canada
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+TA  - Can J Public Health
+JT  - Canadian journal of public health = Revue canadienne de sante publique
+JID - 0372714
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - Aged
+MH  - *Body Mass Index
+MH  - Canada/epidemiology
+MH  - Cardiovascular Diseases/*mortality
+MH  - *Cause of Death
+MH  - Female
+MH  - Health Surveys
+MH  - Humans
+MH  - Male
+MH  - Middle Aged
+MH  - Neoplasms/*mortality
+MH  - Obesity/*mortality
+MH  - Proportional Hazards Models
+MH  - Risk Factors
+PMC - PMC6974265
+OAB - Publisher: Abstract available from the publisher.
+OABL- fre
+EDAT- 2012/04/26 06:00
+MHDA- 2012/05/11 06:00
+CRDT- 2012/04/26 06:00
+PHST- 2012/04/26 06:00 [entrez]
+PHST- 2012/04/26 06:00 [pubmed]
+PHST- 2012/05/11 06:00 [medline]
+AID - BF03404221 [pii]
+AID - 10.1007/BF03404221 [doi]
+PST - ppublish
+SO  - Can J Public Health. 2012 Mar-Apr;103(2):147-51. doi: 10.1007/BF03404221.

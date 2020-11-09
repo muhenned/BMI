@@ -3,71 +3,67 @@
 # (Install lpSolve package first)
 library(mgcv)
 library(Matrix)
-library(lpSolve)
 library(here)
-
-#setwd("C:/Users/Muhannad/Desktop/multvariat/Time_series/mdp/Net-transition-probabilities-master")
-# Read data
-#
+library(dplyr)
+library(tidyverse)
+library(quantreg)
+library(splines)
 
 
 bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 
-#remove duplicated rows
+#remove duplicated rows and remove na data.
 bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
 
-## Data clean ready to use
+bmi.data= na.omit(bmi.data[,c(5,6,9,28,43,32)]) 
 
-data_male= na.omit(bmi.data[,c(5,6,9,28,43)])
-#data_male <- data_male[(data_male$LBXGLU>99.9 & data_male$LBXGLU<500.9 ),]
-Type <- seq(1,length = nrow(data_male))
-temp <- lapply(Type , function(x) ifelse(data_male$LBXGLU[x]<=125.9, "Pre","Diab") )
+colnames(bmi.data) <- c("Gender","Age","Race","BMI","Statin_status","Glu")
+
+# Classifying population to diabetes and non diabetes
+
+
+Type <- seq(1,length = nrow(bmi.data))
+temp <- lapply(Type , function(x) ifelse(bmi.data$Glu[x]<=125.9, "Pre","Diab") )
 temp <- do.call(rbind,temp)
-Type <- as.factor(temp)
-rm(temp)
-## error here
-data_male <- cbind(data_male,Type)
+Type_glu <- as.factor(temp)
+bmi.data <- cbind(bmi.data,Type_glu)
+
 
 ### Creating factor for age
-Age <-seq(1,length = nrow(data_male))
+Age_10 <-seq(1,length = nrow(bmi.data))
 f<- function(x) { (x%/%10) }
-temp <- lapply(Age , function(x) f(data_male$RIDAGEYR[x]) )
+temp <- lapply(Age_10 , function(x) f(bmi.data$Age[x]) )
 temp <- do.call(rbind, temp)
-Age <- as.factor(temp)
+Age_10 <- as.factor(temp)
 
-data_male <- cbind(data_male,Age)
+bmi.data <- cbind(bmi.data,Age_10)
 
+ 
 
-#####
-
-
-###
-
-###  Classifying Cholesterol Level.
-Lip_Rati=data_male[,3]/data_male[,4]
-data_male=cbind(data_male,Lip_Rati)
-Chol=seq(1,length=nrow(data_male))
-temp=lapply(Chol, function(x) ifelse(data_male$BMXBMI[x]<=25,"normal",ifelse(data_male$BMXBMI[x]<=30,"obes","ovrwieght")))
+###  Classifying BMI Level.
+ 
+BMI_bin=seq(1,length=nrow(bmi.data))
+temp=lapply(BMI_bin, function(x) ifelse(bmi.data$BMI[x]<=25,"normal",ifelse(bmi.data$BMI[x]<=30,"obes","ovrwieght")))
 temp=do.call(rbind,temp)
-Chol=as.factor(temp)
-type=as.factor(temp)
-data_male=cbind(data_male,Chol)
+BMI__class=as.factor(temp)
+#type=as.factor(temp)
+bmi.data=cbind(bmi.data,BMI__class)
 
 ############  Graphing 
 
 library(ggplot2)
 #facet on race(RIDRETH1 )
-fig <- ggplot(data_male , aes(x  = Age)) +
-    geom_bar(aes( fill = type  ) , position ="fill") +
+fig <- ggplot(bmi.data , aes(x  = Age_10)) +
+    geom_bar(aes( fill = BMI__class  ) , position ="fill") +
     scale_fill_viridis_d(end = 1.0) +
-    facet_wrap(~ RIDRETH1)
+    facet_wrap(~ Race)
 
 fig
 # Facet on statin use(TCrx)
-fig <- ggplot(data_male , aes(x  = Age)) +
-    geom_bar(aes( fill = type  ) , position ="fill") +
+fig <- ggplot(bmi.data , aes(x  = Age_10)) +
+    geom_bar(aes( fill = BMI__class  ) , position ="fill") +
     scale_fill_viridis_d(end = 1.0) +
-    facet_wrap(~TCRx )
+    facet_wrap(~Statin_status )
 
 fig
 
@@ -78,48 +74,39 @@ png(file = here::here("images", "exploratory.png"),
 print(fig)
 dev.off()
 
-fig <- ggplot(data_male[data_male$Type=="Diab",] , aes(x  = Age)) + geom_bar(aes( fill = Chol  ) , position ="dodge" )
-# print(fig + ggtitle("Diabetecs"))
-# fig
 
-
-library(tidyverse)
-print(data_male %>%
-          ggplot(aes(y = BMXBMI, x = type)) +
+print(bmi.data %>%
+          ggplot(aes(y = BMI, x = BMI__class)) +
           geom_violin())
 
 
 ########################################################
-bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
-# generate data with non-constant variance
-bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
-dat=data.frame(bmi.data$RIDAGEYR,as.factor(bmi.data$RIDRETH1),as.factor(bmi.data$RIAGENDR),as.factor(bmi.data$TCRx),bmi.data$BMXBMI)
-dat=na.omit(dat)
 
-##
-## use informative names!!!
-##
-
-colnames(dat) <- c("x","x2","x3","x4","y")
-library(ggplot2)
-ggplot(dat, aes(x,y)) + geom_point()
-ggplot(dat, aes(x,y)) + geom_point() + geom_smooth(method="lm")
+dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Statin_status),bmi.data$BMI,bmi.data$Type_glu)
+colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI","Type_glu")
+ggplot(dat, aes(y=BMI  ,x=Age)) + geom_point()
+ggplot(dat, aes(Age ,BMI )) + geom_point() + geom_smooth(method="lm")
 # quantile regression 
-ggplot(dat, aes(x,y)) + 
+ggplot(dat, aes(Age ,BMI)) + 
     geom_point() + 
     geom_quantile(quantiles = 0.9)
-library(quantreg)
+#Prediabetes population
+dat_pre=dat %>% filter(dat$Type_glu=="Pre")
+X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_pre)
+qr1 <- rq(  dat_pre$BMI ~ X - 1, data=dat_pre, tau = 0.9)
 
-library(splines)
-X <- model.matrix(y ~ (bs(x, df = 4) + x2 + x3) * x4, data = dat)
-qr1 <- rq(  y ~ X - 1, data=dat, tau = 0.9)
 # qr1 <- rq(  y ~ x+x2+x3+x4 , data=dat, tau = 0.5)
 summary(qr1) #lower bd and upper bd values are confidence intervals calculated using the "rank" method 
-
+#
+# Diabtes population
+dat_Diab=dat %>% filter(dat$Type_glu=="Diab")
+X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_Diab)
+qr1 <- rq(  dat_Diab$BMI ~ X - 1, data=dat_Diab, tau = 0.9)
+summary(qr1)
 #Using the coef() function in combination with the geom_abline() function we can recreate
 #what we got with geom_quantile() and ensure our results match:
 
-ggplot(dat, aes(x,y)) + geom_point() + 
+ggplot(dat, aes(Age,BMI)) + geom_point() + 
     geom_abline(intercept=coef(qr1)[1], slope=coef(qr1)[2], color = "red")
 
 
@@ -131,9 +118,9 @@ x2_pred <- factor(1:5)
 x3_pred <- factor(1:2)
 x4_pred <- factor(0:1)
 dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred))
-names(dat_pred) <- c("x", "x2", "x3", "x4")
-
-X_pred <- model.matrix(~ (bs(x, df = 4) + x2 + x3) * x4, data = dat_pred)
+names(dat_pred) <- c("Age", "Race", "Gender", "Statin_status")
+#colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI")
+X_pred <- model.matrix(~ (bs(x, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
 
 dat_prediction <- list(X = X_pred)
 preds <- predict(qr1, newdata = dat_prediction, interval = "confidence")
@@ -141,55 +128,15 @@ dat_pred$preds  <- preds[, 1]
 dat_pred$lower  <- preds[, 2]
 dat_pred$higher <- preds[, 3]
 dat_pred %>%
-    ggplot(aes(x = x, y = preds, color = x4)) +
+    ggplot(aes(x = Age, y = preds, color = Statin_status)) +
     geom_line() +
-    geom_ribbon(aes(x = x, ymin = lower, ymax = higher, fill = x4), alpha = 0.1) +
+    geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
     scale_color_viridis_d(end = 0.7) +
     scale_fill_viridis_d(end = 0.7) +
-    geom_point(data = dat, aes(x = x, y = y), alpha = 0.05) +
-    facet_grid(x2 ~ x3)
+    geom_point(data = dat, aes(x = Age, y = BMI), alpha = 0.05) +
+    facet_grid(Race ~ Gender)
 
 ##
 ## looks like we need a smooth term with age
 ##
-contrasts(dat$x4)
-
-ggplot(dat, aes(x=x, y=y, shape=x4, color=x4, size=x4)) +
-    geom_point()
-chisq <- chisq.test(dat)
-chisq
-chisq.test(dat$y, dat$x4, correct=FALSE) 
-
-data_frame <- read.csv("https://goo.gl/j6lRXD")  #Reading CSV
-table(data_frame$treatment, data_frame$improvement)
-chisq.test(data_frame$treatment, data_frame$improvement, correct=FALSE)
-##################################
-######multinomial logistic regression
-set.seed(123)
-library(nnet)
-bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
-
-#remove duplicated rows
-bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
-
-## Data clean ready to use
-
-data_male= na.omit(bmi.data[,c(5,6,9,28,43)])
-Chol=seq(1,length=nrow(data_male))
-temp=lapply(Chol, function(x) ifelse(data_male$BMXBMI[x]<=25,"normal",ifelse(data_male$BMXBMI[x]<=30,"obes","ovrwieght")))
-temp=do.call(rbind,temp)
-Chol=as.factor(temp)
-type=as.factor(temp)
-data_male=cbind(data_male,Chol)
-dat=data_male
-ind=sample(2,nrow(dat),replace=TRUE,prob=c(60,40))
-training=dat[ind==1,]
-testing=dat[ind==2,]
-training$Chol=relevel(training$Chol,ref="normal")
-mymodel=multinom(Chol~.-RIAGENDR,data=training)
-## extract the coefficients from the model and exponentiate
-exp(coef(mymodel))
-predict(mymodel, newdata = testing, "probs")
- #plot
-#ggplot(lpp, aes(x = write, y = probability, colour = ses)) + geom_line() +
-#    facet_grid(variable ~., scales = "free")
+ 

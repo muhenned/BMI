@@ -8,11 +8,24 @@ link_citations: true
 ---
 \section{introduction}
 
-Body Mass Idex (BMI) playes an important rule in predicting heart disease risk.      
- .
-[@van2012estimating]
-\section{methode}
-We used Bayesian hierarchical logistic regression (12) with random intercepts by calendar year to estimate diabetes
+Body Mass Index (BMI) plays an important rule in predicting heart disease risk[@katbody]. Our goal is to compare 90th quatile regrission for BMI in Diabtese and prediabtes population.        
+
+\section{Quantile regression}
+Quantile regression is an important tool used to regress the dependent variable with high variance over the independent variables.The independent variabeles are Gender, Age, race, and statin use.   
+
+For a random variable $X$, the comulative distrubution function (CDF) is $$F(X)=P(X\leq x)$$, and the $\tau$th quantile of $X$ is defined by $$ F^{-1}(\tau)=\text{inf}\{x: F(x)\ge \tau\} $$ where $0<\tau<1$.
+Let the loss function is defined by $$\rho_{\tau}(u)= u(\tau-I(u<0))$$  
+[@koenker2005]. The expected loss function is defined by
+\begin{equation}
+E\rho_{\tau}(X-\hat{x})=
+\end{equation}
+
+Least square method solve $$ \underset{\mu}{\text{min}}\sum_{i=1}^n(y_i-\mu)^2$$
+ 
+
+
+\section{methods}
+ 
 prevalence and incidence as a function
 of age (18 – 84 years in 1-year
 intervals), race/ethnicity (non-Hispanic
@@ -22,6 +35,11 @@ other), sex, and BMI (underweight,
  25 kg/m2; overweight, 25 to 30 kg/
 m2; obese, 30 to 35 kg/m2; and very
 From the figure we see  
+
+ 
+
+#Data
+ The data used in this study is National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The data has  
 
 ```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
 # Created by file exploratory-data-analysis.R
