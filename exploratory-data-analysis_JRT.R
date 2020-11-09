@@ -84,30 +84,55 @@ print(bmi.data %>%
 
 dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Statin_status),bmi.data$BMI,bmi.data$Type_glu)
 colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI","Type_glu")
-ggplot(dat, aes(y=BMI  ,x=Age)) + geom_point()
-ggplot(dat, aes(Age ,BMI )) + geom_point() + geom_smooth(method="lm")
-# quantile regression 
-ggplot(dat, aes(Age ,BMI)) + 
+ggplot(dat, aes(y=BMI  ,x=Age)) +
+    geom_point()
+ggplot(dat, aes(Age ,BMI )) +
     geom_point() + 
-    geom_quantile(quantiles = 0.9)
-#Prediabetes population
-dat_pre=dat %>% filter(dat$Type_glu=="Pre")
-X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_pre)
-qr1 <- rq(  dat_pre$BMI ~ X - 1, data=dat_pre, tau = 0.9)
+    geom_smooth(method="lm")
+# quantile regression 
+ggplot(dat, aes(Age ,BMI, group = Statin_status)) + 
+    geom_point() + 
+    geom_quantile(aes(color = Statin_status), quantiles = 0.8) +
+    geom_quantile(aes(color = Statin_status), quantiles = 0.9) +
+    geom_quantile(aes(color = Statin_status), quantiles = 0.99) +
+    facet_grid(Gender ~ Type_glu)
+
+dat %>%
+    group_by(Race, Gender, Statin_status) %>%
+    summarize(count = n())
+
+
+##
+## Fit model to prediabetes sample
+##
+
+dat_pre <- dat %>% 
+    filter(dat$Type_glu=="Pre")
+
+X      <- model.matrix( BMI ~ (bs(Age, df = 4) + Race + Gender ) * Statin_status, data = dat_pre)
+qr_fit_pre_diabetes <- rq( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data=dat_pre, tau = 0.9)
 
 # qr1 <- rq(  y ~ x+x2+x3+x4 , data=dat, tau = 0.5)
-summary(qr1) #lower bd and upper bd values are confidence intervals calculated using the "rank" method 
-#
-# Diabtes population
+summary(qr_fit_pre_diabetes) #lower bd and upper bd values are confidence intervals calculated using the "rank" method 
+
+
+
+##
+## Fit model to diabetes sample
+##
+
 dat_Diab=dat %>% filter(dat$Type_glu=="Diab")
-X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_Diab)
-qr1 <- rq(  dat_Diab$BMI ~ X - 1, data=dat_Diab, tau = 0.9)
-summary(qr1)
+# X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_Diab)
+# X <- model.matrix( BMI ~ bs(Age, df = 4) * (Race + Gender + Statin_status), data = dat_Diab)
+X <- model.matrix( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat_Diab)
+qr_fit_diabetes <- rq(  dat_Diab$BMI ~ X - 1, data=dat_Diab, tau = 0.9)
+summary(qr_fit_diabetes)
 #Using the coef() function in combination with the geom_abline() function we can recreate
 #what we got with geom_quantile() and ensure our results match:
 
-ggplot(dat, aes(Age,BMI)) + geom_point() + 
-    geom_abline(intercept=coef(qr1)[1], slope=coef(qr1)[2], color = "red")
+ggplot(dat, aes(Age,BMI)) + 
+    geom_point() +
+    geom_abline(intercept=coef(qr_fit_diabetes)[1], slope=coef(qr_fit_diabetes)[2], color = "red")
 
 
 ##
@@ -120,10 +145,11 @@ x4_pred <- factor(0:1)
 dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred))
 names(dat_pred) <- c("Age", "Race", "Gender", "Statin_status")
 #colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI")
-X_pred <- model.matrix(~ (bs(x, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
+# X_pred <- model.matrix(~ (bs(x, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
+X_pred <- model.matrix(  ~ (bs(Age, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
 
 dat_prediction <- list(X = X_pred)
-preds <- predict(qr1, newdata = dat_prediction, interval = "confidence")
+preds <- predict(qr_fit_pre_diabetes, newdata = dat_pred, interval = "confidence")
 dat_pred$preds  <- preds[, 1]
 dat_pred$lower  <- preds[, 2]
 dat_pred$higher <- preds[, 3]
