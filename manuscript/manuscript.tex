@@ -24,7 +24,7 @@
 \PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
-            pdftitle={BMI-manuscript},
+            pdftitle={Body Mass index effects on statin prescribtions},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -67,7 +67,7 @@
 \makeatother
 
 
-\title{BMI-manuscript}
+\title{Body Mass index effects on statin prescribtions}
 \author{}
 \date{\vspace{-2.5em}}
 
@@ -81,10 +81,46 @@
 \section{introduction}
 
 Body Mass Index (BMI) plays an important rule in predicting heart
-disease risk(Katzmarzyk et al. 2012). Our goal is to compare 90th
-quatile regrission for BMI in Diabtese and prediabtes population.
+disease risk(Katzmarzyk et al. 2012). Our goal is to compare 90Th
+quantile regression for BMI in Diabetes and prediabetes population.
+Quantile regression has many succesfyl application in ecology where
+different factores interect in a complicated way that produce different
+variation of one factor for different levels of another variabels(Cade
+and Noon 2003).
 
-(Van de Kassteele et al. 2012)
+\section{Quantile Regression}
+
+Quantile regression is an important tool used to regress the dependent
+variable with high variance over the independent variables. QR is
+developed to study the relationships between variables that have week or
+no-relationshipes between their means. Quantile regression is more
+robust for an outlier than ordinaty least squares regression(OLS).
+Moreover, QR is . The independent variables are Gender, Age, race,
+diabetes status, and statin use.
+
+For a random variable \(X\), the cumulative distrubution function (CDF)
+is \[F(X)=P(X\leq x)\], and the \(\tau\)th quantile of \(X\) is defined
+by \[ F^{-1}(\tau)=\text{inf}\{x: F(x)\ge \tau\} \] where \(0<\tau<1\).
+Let the loss function is defined by
+\[\rho_{\tau}(u)= u(\tau-I_{(u<0)})\] where \(I\) is the indicator
+function (Koenker 2005). The quantile estimator is the value that
+manimizes the expected loss function
+
+\(E\rho_{\tau}(X-\hat{x})=(\tau-1)\int_{-\infty}^{\hat{x}} (x-\hat{x})dF(x)+\tau\int_{\hat{x}}^{-\infty} (x-\hat{x})dF(x).\)
+Differentiating with respect to \(\hat{x}\), we get
+\[ 0  =(\tau-1)\int_{-\infty}^{\hat{x}} dF(x)+\tau\int_{\hat{x}}^{-\infty} dF(x)
+=F(\hat{x})-\tau.\] Due to monotnicity of the cumulative distribution
+function, any solution that satisfies \(\{x:F(x)=\tau \}\) is a
+minimzing for the expected loss function.
+
+Least square method expresses conditional mean of y given x as
+\(\mu(x)=x^T\beta\) and it solves
+\[ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.\]
+Quantile regression expresses conditional quantile function
+\(Q_y(\tau|x)=x^T \beta ({\tau)}\) and solve
+\[ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.\]This
+minimization problem can be reformalated to a linear programming problem
+\[ \underset{\beta\in \mathcal{R}^p}{\text{min}} \]
 
 \section{methods}
 
@@ -94,19 +130,10 @@ Hispanic, or other), sex, and BMI (underweight, 18.5 kg/m2; normal
 weight, 18.5 to 25 kg/m2; overweight, 25 to 30 kg/ m2; obese, 30 to 35
 kg/m2; and very From the figure we see
 
-\section{Quantile regression}
-
-Quantile regression is an important tool used to regress the dependent
-variable with high variance over the independent variables.
-
-For a random variable \(X\), the comulative distrubution function (CDF)
-is \[F(X)=P(X\leq x)\], and the \(\tau\)th quantile of \(X\) is defined
-by \[ F^{-1}(\tau)=\text{inf}\{x: F(x)\ge \tau\} \] where \(0<\tau<1\)
-
 \section{Data}\label{data}
 
 The data used in this study is National Health and Nutrition Examination
-Survey data (NHANES)(Disease Control and (CDC) 2018)
+Survey data (NHANES)(Disease Control and (CDC) 2018). The data has
 
 \begin{figure}
 
@@ -117,10 +144,37 @@ Survey data (NHANES)(Disease Control and (CDC) 2018)
 \caption{A better figure caption}\label{fig:unnamed-chunk-1}
 \end{figure}
 
+However,.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{C:/Users/Muhannad/Desktop/multvariat/R_codes/tonton/BMI/images/exploratory2} 
+
+}
+
+\caption{A better figure caption}\label{fig:unnamed-chunk-2}
+\end{figure}
+
+So,
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{C:/Users/Muhannad/Desktop/multvariat/R_codes/tonton/BMI/images/quant90} 
+
+}
+
+\caption{A better figure caption}\label{fig:unnamed-chunk-3}
+\end{figure}
+
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
+\hypertarget{ref-cade2003}{}
+Cade, Brian S, and Barry R Noon. 2003. ``A Gentle Introduction to
+Quantile Regression for Ecologists.'' \emph{Frontiers in Ecology and the
+Environment} 1 (8). Wiley Online Library: 412--20.
+
 \hypertarget{ref-NHANES}{}
 Disease Control, Centers for, and Prevention (CDC). 2018. ``National
 Health and Nutrition Examination Survey Data (Nhanes.''
@@ -132,11 +186,8 @@ Punam Pahwa, Kim D Raine, Susan A Kirkland, and Gilles Paradis. 2012.
 All-Cause Mortality.'' \emph{Canadian Journal of Public Health} 103 (2).
 Springer: 147--51.
 
-\hypertarget{ref-van2012estimating}{}
-Van de Kassteele, Jan, RT Hoogenveen, PM Engelfriet, PHM Van Baal, and
-HC Boshuizen. 2012. ``Estimating Net Transition Probabilities from
-Cross-Sectional Data with Application to Risk Factors in Chronic Disease
-Modeling.'' \emph{Statistics in Medicine} 31 (6). Wiley Online Library:
-533--43.
+\hypertarget{ref-koenker2005}{}
+Koenker, Roger. 2005. ``Quantile Regression, Volume 38 of.''
+\emph{Econometric Society Monographs}.
 
 \end{document}

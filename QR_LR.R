@@ -14,10 +14,11 @@ bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 
 #remove duplicated rows and remove na data.
 bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
+bmi.data$LR=bmi.data$LBXTC/bmi.data$LBDHDD
+bmi.data= na.omit(bmi.data[,c(5,6,9,28,43,32,48)]) 
 
-bmi.data= na.omit(bmi.data[,c(5,6,9,28,43,32)]) 
-
-colnames(bmi.data) <- c("Gender","Age","Race","BMI","Statin_status","Glu")
+colnames(bmi.data) <- c("Gender","Age","Race","BMI","Statin_status","Glu","LR") 
+bmi.data= bmi.data[,c(1,2,3,5,6,7)]
 
 bmi.data$Gender=recode(bmi.data$Gender, "1" = "Male", "2" = "Femal" )
 # RIDRETH1 (race, 1=mexican, 2=otherHispanic, 3= Non-Hispanic White,4=Non-Hispanic Black ,5=Other Race - Including Multi-Racial
@@ -42,10 +43,10 @@ Age_10 <- as.factor(temp)
 
 bmi.data <- cbind(bmi.data,Age_10)
 
- 
+
 
 ###  Classifying BMI Level.
- 
+
 BMI_bin=seq(1,length=nrow(bmi.data))
 temp=lapply(BMI_bin, function(x) ifelse(bmi.data$BMI[x]<=25,"normal",ifelse(bmi.data$BMI[x]<=30,"obes","ovrwieght")))
 temp=do.call(rbind,temp)
@@ -86,30 +87,30 @@ print(bmi.data %>%
 
 ########################################################
 
-dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Statin_status),bmi.data$BMI,bmi.data$Type_glu)
-colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI","Type_glu")
-ggplot(dat, aes(y=BMI  ,x=Age)) +
+dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Statin_status),bmi.data$LR,bmi.data$Type_glu)
+colnames(dat) <- c("Age","Race","Gender","Statin_status","LR","Type_glu")
+ggplot(dat, aes(y=LR  ,x=Age)) +
     geom_point()
-ggplot(dat, aes(Age ,BMI )) +
+ggplot(dat, aes(Age ,LR )) +
     geom_point() + 
     geom_smooth(method="lm")
 ##
 #### quantile regression 
 ## 
-fig3=ggplot(dat, aes(Age ,BMI, group = Statin_status)) + 
+fig3=ggplot(dat, aes(Age ,LR, group = Statin_status)) + 
     #geom_point() + 
     #geom_quantile(aes(color = Statin_status), quantiles = 0.8) +
     geom_quantile(aes(color = Statin_status), quantiles = 0.9) +
     #geom_quantile(aes(color = Statin_status),quantiles = 0.99) +
     facet_grid(Gender ~ Type_glu)+
     theme_bw()+
-    ggtitle("90% Quatile")
-png(file = here::here("images", "quant90.png"),
+    ggtitle("90% LR Quatile")
+png(file = here::here("images", "quant90_LR.png"),
     res = 400, height = 9, width = 16, units = "in")
 print(fig3)
 dev.off()
 
- 
+
 
 dat %>%
     group_by(Race, Gender, Statin_status) %>%
@@ -123,8 +124,8 @@ dat %>%
 dat_pre <- dat %>% 
     filter(dat$Type_glu=="Pre")
 
-X      <- model.matrix( BMI ~ (bs(Age, df = 4) + Race + Gender ) * Statin_status, data = dat_pre)
-qr_fit_pre_diabetes <- rq( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data=dat_pre, tau = 0.9)
+X      <- model.matrix( LR ~ (bs(Age, df = 4) + Race + Gender ) * Statin_status, data = dat_pre)
+qr_fit_pre_diabetes <- rq( LR ~ bs(Age, df = 4) + Race + Gender + Statin_status, data=dat_pre, tau = 0.9)
 
 # qr1 <- rq(  y ~ x+x2+x3+x4 , data=dat, tau = 0.5)
 summary(qr_fit_pre_diabetes) #lower bd and upper bd values are confidence intervals calculated using the "rank" method 
@@ -138,13 +139,13 @@ summary(qr_fit_pre_diabetes) #lower bd and upper bd values are confidence interv
 dat_Diab=dat %>% filter(dat$Type_glu=="Diab")
 # X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_Diab)
 # X <- model.matrix( BMI ~ bs(Age, df = 4) * (Race + Gender + Statin_status), data = dat_Diab)
-X <- model.matrix( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat_Diab)
-qr_fit_diabetes <- rq(  dat_Diab$BMI ~ X - 1, data=dat_Diab, tau = 0.9)
+X <- model.matrix( LR ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat_Diab)
+qr_fit_diabetes <- rq(  dat_Diab$LR ~ X - 1, data=dat_Diab, tau = 0.9)
 summary(qr_fit_diabetes)
 #Using the coef() function in combination with the geom_abline() function we can recreate
 #what we got with geom_quantile() and ensure our results match:
 
-ggplot(dat, aes(Age,BMI)) + 
+ggplot(dat, aes(Age,LR)) + 
     geom_point() +
     geom_abline(intercept=coef(qr_fit_diabetes)[1], slope=coef(qr_fit_diabetes)[2], color = "red")
 
@@ -186,8 +187,9 @@ fig2=dat_pred %>%
     geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
     scale_color_viridis_d(end = 0.7) +
     scale_fill_viridis_d(end = 0.7) +
-    geom_point(data = dat, aes(x = Age, y = BMI), alpha = 0.05) +
-    facet_grid(Race ~ Gender)
+    #geom_point(data = dat, aes(x = Age, y = LR), alpha = 0.05) +
+    facet_grid(Race ~ Gender)+
+    ylim(1, 7)
 print(fig2)
 dev.off()
 
@@ -195,5 +197,4 @@ dev.off()
 ## looks like we need a smooth term with age
 ##
 
- 
- 
+

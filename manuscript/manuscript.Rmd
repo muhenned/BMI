@@ -1,5 +1,5 @@
 ---
-title: "BMI-manuscript"
+title: "Body Mass index effects on statin prescribtions"
 output: 
     bookdown::pdf_document2:  
         keep_tex: true
@@ -8,19 +8,26 @@ link_citations: true
 ---
 \section{introduction}
 
-Body Mass Index (BMI) plays an important rule in predicting heart disease risk[@katbody]. Our goal is to compare 90th quatile regrission for BMI in Diabtese and prediabtes population.        
+Body Mass Index (BMI) plays an important rule in predicting heart disease risk[@katbody]. Our goal is to compare 90Th quantile regression for BMI in Diabetes and prediabetes population. Quantile regression has many succesfyl application in ecology where different factores interect in a complicated way that produce different variation of one factor for different levels of another variabels[@cade2003].
 
-\section{Quantile regression}
-Quantile regression is an important tool used to regress the dependent variable with high variance over the independent variables.The independent variabeles are Gender, Age, race, and statin use.   
 
-For a random variable $X$, the comulative distrubution function (CDF) is $$F(X)=P(X\leq x)$$, and the $\tau$th quantile of $X$ is defined by $$ F^{-1}(\tau)=\text{inf}\{x: F(x)\ge \tau\} $$ where $0<\tau<1$.
-Let the loss function is defined by $$\rho_{\tau}(u)= u(\tau-I(u<0))$$  
-[@koenker2005]. The expected loss function is defined by
-\begin{equation}
-E\rho_{\tau}(X-\hat{x})=
-\end{equation}
 
-Least square method solve $$ \underset{\mu}{\text{min}}\sum_{i=1}^n(y_i-\mu)^2$$
+\section{Quantile Regression}
+Quantile regression is an important tool used to regress the dependent variable with high variance over the independent variables. QR is developed to study the relationships between variables that have week or no-relationshipes between their means. Quantile regression is more robust for an  outlier than ordinaty least squares regression(OLS). Moreover, QR is  . The independent variables are Gender, Age, race, diabetes status, and statin use.  
+
+ 
+
+For a random variable $X$, the cumulative distrubution function (CDF) is $$F(X)=P(X\leq x)$$, and the $\tau$th quantile of $X$ is defined by $$ F^{-1}(\tau)=\text{inf}\{x: F(x)\ge \tau\} $$ where $0<\tau<1$.
+Let the loss function is defined by $$\rho_{\tau}(u)= u(\tau-I_{(u<0)})$$ where $I$ is the indicator function  [@koenker2005]. The quantile estimator is the value that manimizes the expected loss function
+ 
+$E\rho_{\tau}(X-\hat{x})=(\tau-1)\int_{-\infty}^{\hat{x}} (x-\hat{x})dF(x)+\tau\int_{\hat{x}}^{-\infty} (x-\hat{x})dF(x).$
+Differentiating with respect to $\hat{x}$, we get
+$$ 0  =(\tau-1)\int_{-\infty}^{\hat{x}} dF(x)+\tau\int_{\hat{x}}^{-\infty} dF(x)
+=F(\hat{x})-\tau.$$ 
+Due to monotnicity of the cumulative distribution function, any solution that satisfies $\{x:F(x)=\tau \}$ is a minimzing for the expected loss function.
+
+ 
+Least square method expresses conditional mean of y given x as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ Quantile regression expresses conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solve $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$This minimization problem can be reformalated to a linear programming problem $$ \underset{\beta\in \mathcal{R}^p}{\text{min}} $$
  
 
 
@@ -47,5 +54,25 @@ if (!file.exists(here::here("images", "exploratory.png"))) {
     source(here::here("exploratory-data-analysis.R"))
 }
 knitr::include_graphics(here::here("images", "exploratory.png"))
+```
+
+However,.
+
+```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "exploratory2.png"))) {
+    source(here::here("exploratory-data-analysis_JRT.R"))
+}
+knitr::include_graphics(here::here("images", "exploratory2.png"))
+```
+
+So,
+
+```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "quant90.png"))) {
+    source(here::here("exploratory-data-analysis_JRT.R"))
+}
+knitr::include_graphics(here::here("images", "quant90.png"))
 ```
 # References
