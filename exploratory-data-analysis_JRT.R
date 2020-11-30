@@ -43,6 +43,9 @@ Age_10 <- as.factor(temp)
 bmi.data <- cbind(bmi.data,Age_10)
 
  
+# Saving on object in RData format
+save(bmi.data, file = "data.RData")
+
 
 ###  Classifying BMI Level.
  
@@ -109,6 +112,66 @@ png(file = here::here("images", "quant90.png"),
 print(fig3)
 dev.off()
 
+
+##
+######
+##
+## Use predict to generate predicted lines
+X <- model.matrix( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat)
+qr_fit_dat <- rq(  dat$BMI ~ X - 1, data=dat, tau = 0.9)
+
+##
+age_pred <- seq(16, 80, by = 1)
+x2_pred <- factor(1:5)
+x3_pred <- factor(1:2)
+x4_pred <- factor(0:1)
+dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred))
+names(dat_pred) <- c("Age", "Race", "Gender", "Statin_status")
+
+dat_pred$Gender=recode(dat_pred$Gender, "1" = "Male", "2" = "Femal" )
+# RIDRETH1 (race, 1=mexican, 2=otherHispanic, 3= Non-Hispanic White,4=Non-Hispanic Black ,5=Other Race - Including Multi-Racial
+
+dat_pred$Race=recode(dat_pred$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"="White","4"="Black","5"="Other" )
+# Classifying population to diabetes and non diabetes
+
+
+#colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI")
+# X_pred <- model.matrix(~ (bs(x, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
+X_pred <- model.matrix(  ~ bs(Age, df = 4) + Race + Gender+ Statin_status, data = dat_pred)
+
+
+
+dat_prediction <- list(X = X_pred)
+preds <- predict(qr_fit_dat, newdata = dat_prediction, interval = "confidence")
+dat_pred$preds  <- preds[, 1]
+dat_pred$lower  <- preds[, 2]
+dat_pred$higher <- preds[, 3]
+
+png(file = here::here("images", "exploratory2.png"),
+    res = 400, height = 9, width = 16, units = "in")
+fig2=dat_pred %>%
+    ggplot(aes(x = Age, y = preds, color = Statin_status)) +
+    geom_line() +
+    geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
+    scale_color_viridis_d(end = 0.7) +
+    scale_fill_viridis_d(end = 0.7) +
+    geom_point(data = dat, aes(x = Age, y = BMI), alpha = 0.05) +
+    facet_grid(Type_glu ~ Gender)
+print(fig2)
+dev.off()
+
+
+
+
+
+
+
+
+
+
+##
+##############
+###
  
 
 dat %>%
@@ -194,6 +257,25 @@ dev.off()
 ##
 ## looks like we need a smooth term with age
 ##
+# Box plot 
+Age_10 <-seq(1,length = nrow(dat))
+f<- function(x) { (x%/%10) }
+temp <- lapply(Age_10 , function(x) f(bmi.data$Age[x]) )
+temp <- do.call(rbind, temp)
+Age_10 <- as.factor(temp)
+
+dat <- cbind(dat,Age_10)
+p<-ggplot(dat, aes(x=Age_10, y=Type_glu, color=Statin_status)) +
+    geom_boxplot(notch = FALSE, fill = "lightgray" )+
+    stat_summary(fun = mean, geom = "point",
+    shape = 18, size = 2.5, color = "#FC4E07") 
+    #facet_grid(Gender,Type_glu)
+p+labs(title ="  BMI for statin and non-statin users",subtitle =" ", caption = " NHANES data set")
+show(p)
+ #############################################################################
+
+plot(summary(rq(BMI~Statin_status+Type_glu+Race+Age,tau = 1:49/50,data=dat)))
 
  
+
  
