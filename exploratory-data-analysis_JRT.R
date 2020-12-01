@@ -264,8 +264,9 @@ temp <- lapply(Age_10 , function(x) f(bmi.data$Age[x]) )
 temp <- do.call(rbind, temp)
 Age_10 <- as.factor(temp)
 
-dat <- cbind(dat,Age_10)
-p<-ggplot(dat, aes(x=Age_10, y=Type_glu, color=Statin_status)) +
+#dat <- cbind(dat,Age_10)
+bmi.data$
+p<-ggplot(dat, aes(x=Age_10, y=bmi.data$Glu, color=Statin_status)) +
     geom_boxplot(notch = FALSE, fill = "lightgray" )+
     stat_summary(fun = mean, geom = "point",
     shape = 18, size = 2.5, color = "#FC4E07") 
@@ -274,8 +275,8 @@ p+labs(title ="  BMI for statin and non-statin users",subtitle =" ", caption = "
 show(p)
  #############################################################################
 
-plot(summary(rq(BMI~Statin_status+Type_glu+Race+Age,tau = 1:49/50,data=dat)))
+plot(summary(rq(BMI~Statin_status+Type_glu+Race+Age+Gender,tau = 1:49/50,data=dat)))
 
- 
+plot(summary(rq(Glu~Statin_status+Race+Age+Gender,tau = 1:49/50,data=bmi.data ))) 
 
  
