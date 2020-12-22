@@ -28,7 +28,7 @@ bmi.data$Race=recode(bmi.data$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"=
 
 
 Type <- seq(1,length = nrow(bmi.data))
-temp <- lapply(Type , function(x) ifelse(bmi.data$Glu[x]<=125.9, "Pre","Diab") )
+temp <- lapply(Type , function(x) ifelse(bmi.data$Glu[x]<=100,"Normal", ifelse(bmi.data$Glu[x]<=125.9,"Pre","Diab")))
 temp <- do.call(rbind,temp)
 Type_glu <- as.factor(temp)
 bmi.data <- cbind(bmi.data,Type_glu)
@@ -197,4 +197,7 @@ dev.off()
 ## looks like we need a smooth term with age
 ##
 
+
+ggplot(bmi.data, aes(x=Type_glu)) +
+    geom_bar()
 
