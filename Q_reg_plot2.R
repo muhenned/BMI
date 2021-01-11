@@ -2,6 +2,7 @@
 require(quantreg)
 library(tidyverse)
 library(splines)
+
 bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 
 #remove duplicated rows and remove na data.
@@ -23,7 +24,7 @@ bmi.data$Race=recode(bmi.data$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"=
 
  
 #formula <- Glu ~Gender+Age+Race+BMI+Statin_status+Age2+BMI2+Total_chol+Total_col2+Waist_cir 
-formula <- Glu ~Gender+Race+BMI+Statin_status+bs(Age,intercept=FALSE,df=5)+bs(Total_chol,intercept=FALSE,df=5)+Waist_cir      
+formula <- Glu ~Gender+Race+BMI+Statin_status+bs(Age,intercept=FALSE,df=5)+bs(Total_chol,intercept=FALSE,df=5)+bs(Waist_cir,intercept=FALSE,df=5)      
 fit3.ols <- summary(lm(formula,data =bmi.data))$coefficients
 #attach(bmi.data)
 p <- nrow(fit3.ols)
@@ -75,11 +76,11 @@ png(file = here::here("images", "newfig.png"),
     res = 400, height = 9, width = 16, units = "in")
 p <- dim(fit3)[1]
 #blab <- c("Intercept","Male ","Age","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", "BMI", " Statin_status","Age Suqared","BMI^2","Total cholesterol","Total cholestrol^2","Waist Circumference")
-blab <- c("Intercept","Male ","Age","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", "BMI", " Statin_status","Age1","BMI^2","Total cholesterol","Total cholestrol^2","Waist Circumference",
-          "Age1","Age2","Age3","Age4","Age5","TC1","TC2","TC3","TC4","TC5","Wasist")
+blab <- c("Intercept","Male ","Age","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", "BMI", " Statin_status","Age1","BMI2","Total cholesterol","Total cholestrol2","Waist Circumference",
+          "Age1","Age2","Age3","Age4","Age5","TC1","TC2","TC3","TC4","TC5","Wasist1","Wasist2","Wasist3","Wasist4","Wasist5")
 
-par(mfrow=c(5,4))
-for(i in c(1:19)){
+par(mfrow=c(6,4))
+for(i in c(1:24)){
     #if(i==1){#adjust intercept to be centercept
      #   Age.bar <- mean(bmi.data$Age)
       #  BMI.bar <- mean(bmi.data$BMI)
@@ -131,11 +132,20 @@ dev.off()
 #pdf("newfig3.pdf",width=7.0,height=7.0)
 png(file = here::here("images", "newfig3.png"),
     res = 400, height = 9, width = 16, units = "in")
+# construct the b-spline expansion on the generated ages
 
 par(mfrow=c(2,2))
+# extract the splines from the model fit
+age_bs <- bs(bmi.data$Age,intercept=FALSE,df=5)
+
 ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
+
+ages_bs <- bs(ages, degree = attr(age_bs, "degree"), knots = attr(age_bs, "knots"),
+              Boundary.knots = attr(age_bs, "Boundary.knots"), intercept = FALSE)
+
 for(i in c(6,9,15,22)){
-    effect <- fit3[9,1,i]*ages+fit3[10,1,i]*ages^2+fit3[11,1,i]*ages^3+fit3[12,1,i]*ages^4+fit3[13,1,i]*ages^5 
+    effect <- fit3[9,1,i]*ages_bs[, 1] + fit3[10,1,i] * ages_bs[, 2] + fit3[11,1,i] * ages_bs[, 3] +
+        fit3[12,1,i] * ages_bs[, 4] + fit3[13,1,i] * ages_bs[, 5]
     plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
     lines(ages,effect)
      title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
@@ -148,9 +158,17 @@ png(file = here::here("images", "newfig4.png"),
     res = 400, height = 9, width = 16, units = "in")
 
 par(mfrow=c(2,2))
+# extract the splines from the model fit
+Total_Chol_bs <- bs(bmi.data$Total_chol,intercept=FALSE,df=5)
 Total_chol <- seq(min(bmi.data$Total_chol),300,by=1)
+
+Total_Chol_bs <- bs(Total_chol, degree = attr(Total_Chol_bs , "degree"), knots = attr(Total_Chol_bs, "knots"), 
+                  Boundary.knots = attr(Total_Chol_bs, "Boundary.knots"), intercept = FALSE)
+
+
 for(i in c(6,9,15,22)){
-    effect <- fit3[12,1,i]*Total_chol +fit3[13,1,i]*Total_chol^2
+    effect <- fit3[14,1,i]*Total_Chol_bs[, 1] + fit3[15,1,i] *Total_Chol_bs[, 2] + fit3[16,1,i] * Total_Chol_bs[, 3] + fit3[17,1,i] * Total_Chol_bs[, 4] +
+        fit3[18,1,i] * Total_Chol_bs[, 5]  
     plot(Total_chol,effect,type="n",xlab="Total cholestrol",ylab="Total cholestrol effect")
     lines( Total_chol,effect)
     title(paste("Total cholestrol effects on glucose", format(round(taus[i],2)),"Quantile"))
@@ -204,6 +222,98 @@ fit2=lm( BMI ~ X - 1, data=bmi.data, tau = 0.9)
  
 ggpredict(fit1, terms = "Age")
 
- 
+#############################################
+################################################################
+##############################################
 
+# extract the splines from the model fit
+age_bs <- bs(bmi.data$Age,intercept=FALSE,df=5)
+# generate a sequence of ages
+ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
+# construct the b-spline expansion on the generated ages
+ages_bs <- bs(ages, degree = attr(age_bs, "degree"), knots = attr(age_bs, "knots"), Boundary.knots = attr(age_bs, "Boundary.knots"), intercept = FALSE)
+
+for(i in c(6,9,15,22)){
+    # evaluate the spline basis times the coefficients
+    effect <- fit3[9,1,i]*ages_bs[, 1] + fit3[10,1,i] * ages_bs[, 2] + fit3[11,1,i] * ages_bs[, 3] + fit3[12,1,i] * ages_bs[, 4] + fit3[13,1,i] * ages_bs[, 5]
+    plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
+    lines(ages,effect)
+    title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
+}
+
+# Another form for effect calculation
+#effect <- ages_bs %*% fit3[9:13, 1, i]
+
+########################################################
+##################################################################################
+########################################################
+
+ library(splines)
+
+ plot(bmi.data$Age,bmi.data$Total_chol,xlab = "milliseconds", ylab = "acceleration",type="n")
+ points(bmi.data$Age,bmi.data$Total_chol,cex = .75)
+ X <- model.matrix(bmi.data$Glu ~ bs(bmi.data$Age, df=15)+bs(bmi.data$Total_chol,df=15)+bmi.data$Gender)
+ for(tau in 1:3/4){
+     fit <- rq(Glu ~ bs(Age, df=15)+bs(Total_chol,df=15)+Gender , tau=tau, data=bmi.data)
+     accel.fit <- X %*% fit$coef
+     plot(bmi.data$Age,accel.fit)
+     }
+
+ ###########
+ plot(times,accel,xlab = "milliseconds", ylab = "acceleration",type="n")
+ points(times,accel,cex = .75)
+ age_bs <- bs(times,intercept=FALSE,df=15)
+ # generate a sequence of ages
+ ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
+ # construct the b-spline expansion on the generated ages
+ ages_bs <- bs(ages, degree = attr(age_bs, "degree"), knots = attr(age_bs, "knots"), Boundary.knots = attr(age_bs, "Boundary.knots"), intercept = FALSE)
  
+ for(i in c(6,9,15,22)){
+     # evaluate the spline basis times the coefficients
+     effect <- fit3[9,1,i]*ages_bs[, 1] + fit3[10,1,i] * ages_bs[, 2] + fit3[11,1,i] * ages_bs[, 3] + fit3[12,1,i] * ages_bs[, 4] + fit3[13,1,i] * ages_bs[, 5]
+     plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
+     lines(ages,effect)
+     title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
+ }
+ 
+ 
+ 
+  
+ library(splines)
+  library(MASS)
+  data(mcycle)
+  attach(mcycle)
+  plot(bmi.data$Total_chol,bmi.data$Glu,xlab = "milliseconds", ylab = "acceleration",type="n")
+  points(bmi.data$Total_chol,bmi.data$Glu,cex = .75)
+  X <-model.matrix(bmi.data$Glu ~ bs(bmi.data$Total_chol, df=3))
+  for(tau in 1:1/4){
+      fit <- rq(Glu ~ bs(Total_chol, df=3), tau=tau, data=bmi.data)
+      accel.fit <- X %*% fit$coef
+      #accel.fit<- predict(fit,newdata =X,interval = "confidence")
+      lines(bmi.data$Total_chol,accel.fit[,1])
+  }
+  
+  attach(mcycle)
+  plot(bmi.data$Waist_cir,bmi.data$Glu,xlab = "milliseconds", ylab = "acceleration",type="n")
+  points(bmi.data$Waist_cir,bmi.data$Glu,cex = .75)
+  X <-model.matrix(bmi.data$Glu ~ bs(bmi.data$Total_chol, df=3))
+  for(tau in 1:3/4){
+      fit <- rq(Glu ~ bs(Waist_cir, df=3), tau=tau, data=bmi.data)
+      accel.fit <- X %*% fit$coef
+      #accel.fit<- predict(fit,newdata =X,interval = "confidence")
+      lines(bmi.data$Total_chol,accel.fit[,1])
+  }
+###########
+  #############
+  ##############
+  png(file = here::here("images", "newfig.png"),
+      res = 400, height = 9, width = 16, units = "in")
+  par(mfrow=c(7,4))
+  quantreg.all <- rq(formula, tau = seq(0.05, 0.95, by = 0.05), data=bmi.data)
+  
+  quantreg.plot <- summary(quantreg.all)
+  
+  plot(quantreg.plot)
+  dev.off()
+ 
+  

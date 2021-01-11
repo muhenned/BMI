@@ -15,12 +15,12 @@ header-includes:
 ---
 \section{introduction}
 
----
-# here's a comment
-# ```{r}
-# Body Mass Index (BMI) plays an important rule in predicting heart disease #risk[@katbody]. Our goal is to compare 90Th quantile regression for BMI in Diabetes and #prediabetes population. Quantile regression has many succesfyl application in ecology #where different factores interect in a complicated way that produce different variation #of one factor for different levels of another variabels[@cade2003].
-# ```
----
+
+<!-- # here's a comment -->
+<!-- # ```{r} -->
+<!-- # Body Mass Index (BMI) plays an important rule in predicting heart disease #risk[@katbody]. Our goal is to compare 90Th quantile regression for BMI in Diabetes and #prediabetes population. Quantile regression has many succesfyl application in ecology #where different factores interect in a complicated way that produce different variation #of one factor for different levels of another variabels[@cade2003]. -->
+<!-- # ``` -->
+
 Approximately, 18 million deaths annually per year are caused by cardiovascular diseases(CVD) and similar to this number of nonfatal cardiovascular events [@hay2017gbd].
 For 2011, annual costs for CVD and stroke were $\$320.1$ billion, which is more than cancer cost. This cost include \$195.6  billion in direct costs (healthcare costs), and cost of future productivity loss is  \$124.5 [@mozaffarian2015executive].
 Abnormal lipid ratio  is a risk  factor for CVD [@yusuf2004effect]. Lowering low-density lipoprotein (LDL) using statin reduces risk of cardiovascular diseases even with population with no CVD  [@yusuf2016]. 
@@ -30,6 +30,7 @@ Statin use associated with high risk of a new onset diabetes in normoglcemic (HR
 95 % CI, 0.66 to 0.80) and IFG patients (HR
 0.77, 95 % CI, 0.64 to 0.91) with statin use [@castro2016]. For population with one or more risk factor for diabetes, statin use associate with 39% reduction in the primary end points (the hazard ratio (HR) 0.61), and a 28% (HR 1.28)increase in diabetes[@ridker2012].Pandya at el.[pandya2015] suggested the dis-utility associated with taking a pill daily, statin price, and the risk of statin-induced diabetes negatively impacted the cost effectiveness of statin use recommendation.   
 
+Several studies esimated the association of different factors like waist circumference, Cholestrol with the conditional mean of glucose using OLS or logistic regression model. The drawback in these study is not considering the dispersion of the association of covariates with conditional distribution of the dependent variables, glucose levele. 
   
 
 \section{Quantile Regression}
@@ -47,16 +48,17 @@ Due to monotnicity of the cumulative distribution function, any solution that sa
  
 Least square method expresses conditional mean of y given x as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ Quantile regression expresses conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solve $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$This minimization problem can be reformulated to a linear programming problem $$ \underset{\beta\in \mathcal{R}^p}{\text{min}} $$
  
+\subsection{Quantile Regression } 
 
 
 \section{Methods}
-A multivariate quantile regression model is used to assess the characteristics of the   association variability in different quantiles of the conditional distribution of the glucose levels.
-Moreover, the independent variables are Gender, Age, race, diabetes status, and statin use.  
-
+A multivariate quantile regression model is used to assess the characteristics of the   association variability in different quantiles of the conditional distribution of the glucose levels. 
+ 
+ The dependent variables in our model are gender, race, age, BMI, total cholesterol, Choesterol drug uses (yes or no), and waist circumference. All type of cholesterol drug are included including  statins. The included races are non-Hispanic white, non-Hispanic black, Hispanic, or other. 
   
-
-#Data
- The data used in this study is National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The survey examines a nationally representative sample of U.S. population.It focuses on  variety of health and nutrition measurements. In this study, we cumulated 6 cycles of NHANES data (2007–2018). There are 12,406 records. The dependent variables in our model are gender, race, age, BMI, total cholesterol, and statin use (yes or no). All type of statin are included. The included races are non-Hispanic white, non-Hispanic black, Hispanic, or other. BMI are classified into different categories according to underweight, 18.5 kg/m2; normal weight, 18.5 to 25 kg/m2; overweight, 25 to 30 kg/m2; obese, 30 to 35 kg/m2; and very obese more than 35 kg/m2.   
+\section{Numerical Example}
+\subsection{Data}
+ The data used in this study is National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The survey examines a nationally representative sample of U.S. population.It focuses on  variety of health and nutrition measurements. In this study, we cumulated 6 cycles of NHANES data (2007–2018). There are  around 12,000 records. We selected  population age between 20 and 80. BMI are classified into different categories according to underweight, 18.5 kg/m2; normal weight, 18.5 to 25 kg/m2; overweight, 25 to 30 kg/m2; obese, 30 to 35 kg/m2; and very obese more than 35 kg/m2.   
 
 | Syntax      | Male  | Femal     |
 | :---        |    :----:   |          ---: |
@@ -120,6 +122,14 @@ if (!file.exists(here::here("images", "newfig.png"))) {
 knitr::include_graphics(here::here("images", "newfig.png"))
 ```
  So,
+
+```{r resu12, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "newfig11.png"))) {
+    source(here::here("exploratory-data-analysis_JRT.R"))
+}
+knitr::include_graphics(here::here("images", "newfig11.png"))
+```
  therefore
 ```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
 # Created by file exploratory-data-analysis.R
@@ -129,6 +139,13 @@ if (!file.exists(here::here("images", "newfig2.png"))) {
 knitr::include_graphics(here::here("images", "newfig2.png"))
 ``` 
 So,
+```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "newfig22.png"))) {
+    source(here::here("exploratory-data-analysis_JRT.R"))
+}
+knitr::include_graphics(here::here("images", "newfig22.png"))
+``` 
  Age effect modeled as a quadratic factor. The age effect  is linear in general, see Figure \@ref(fig:resu3). The slope for the  left quantile is lower than the slope of the right quantile. This can be interpreted as age effect tends to increase over the entire range of conditional distribution of glucose in faster rate for the higher quantile than in the left quantile.In other word, diabetes population have higher rate of change with respect to age if compared to non diabetes population. It was found that there is  a significantly correlation between glucose and age[@tsaousis2014].
 
 The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups. However, we found that  
@@ -141,6 +158,17 @@ if (!file.exists(here::here("images", "newfig3.png"))) {
 }
 knitr::include_graphics(here::here("images", "newfig3.png"))
 ```
+
+So,
+
+```{r resu33, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic age effect on glucose leveles for four different quantiles of the conditional glucose distribution.  The ", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "newfig33.png"))) {
+    source(here::here("exploratory-data-analysis_JRT.R"))
+}
+knitr::include_graphics(here::here("images", "newfig33.png"))
+```
+
 Quadratic effect of total cholesterol on the conditional distribution of glucose is convex.  At the lower tail, decreasing glucose level by somewhat around 1.4 up to around 180 Cholesterol level. Then, started to increase glucose levels after TC beyond 180. At higher quantile, the reverse in the cholesterol effects is shifted to higher cholesterol levels which around 200, Figure \@ref(fig:resu4). The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average.    
 
 ```{r resu4, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic cholestrol effect on glucose leveles for four different quantiles of the conditional glucose distribution.  The ", echo = FALSE}
@@ -151,11 +179,20 @@ if (!file.exists(here::here("images", "newfig4.png"))) {
 knitr::include_graphics(here::here("images", "newfig4.png"))
 ```
 
+So,
+```{r resu44, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic cholestrol effect on glucose leveles for four different quantiles of the conditional glucose distribution.  The ", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "newfig44.png"))) {
+    source(here::here("exploratory-data-analysis_JRT.R"))
+}
+knitr::include_graphics(here::here("images", "newfig44.png"))
+```
 <!-- ```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE} -->
 <!-- library(knitr) -->
 <!--  kable(dat[,2:3],caption="A nit table") -->
 <!-- ``` -->
 
+So,
 
 \section{Conclusion}
  Multivariate quantile regression is used to study effects of different variables on fasting glucose level. Our study showed that people who have TC levels around 190 mg/dL have lowest fasting glucose levels for the lowest quantile, for the second quantile optimal cholesterol level is around 220mg/dL, and for the upper quantile the optimal cholesterol level is around 200 mg/dL. Moreover, Statin effects on glucose at lower quantile is very small if compared to upper quantile.
