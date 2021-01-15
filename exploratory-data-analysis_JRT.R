@@ -265,12 +265,11 @@ temp <- do.call(rbind, temp)
 Age_10 <- as.factor(temp)
 
 #dat <- cbind(dat,Age_10)
-bmi.data$
-p<-ggplot(dat, aes(x=Age_10, y=bmi.data$Glu, color=Statin_status)) +
+p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Statin_status)) +
     geom_boxplot(notch = FALSE, fill = "lightgray" )+
     stat_summary(fun = mean, geom = "point",
-    shape = 18, size = 2.5, color = "#FC4E07") 
-    #facet_grid(Gender,Type_glu)
+    shape = 18, size = 2.5, color = "#FC4E07")+ 
+    #facet_grid(Gender~Type_glu)
 p+labs(title ="  BMI for statin and non-statin users",subtitle =" ", caption = " NHANES data set")
 show(p)
  #############################################################################
@@ -279,4 +278,9 @@ plot(summary(rq(BMI~Statin_status+Type_glu+Race+Age+Gender,tau = 1:49/50,data=da
 
 plot(summary(rq(Glu~Statin_status+Race+Age+Gender,tau = 1:49/50,data=bmi.data ))) 
 
+#############
+##################
+###########
+
+l=bmi.data %>% subset(TCRx == 1) %>% count(RXDDRUG) %>% arrange(desc(n))
  

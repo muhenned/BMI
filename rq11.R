@@ -17,7 +17,6 @@ for(i in 1:length(taus)){
 
 #########################################################################################
 
-
 #Plot results from newfit.R:
 #Formula:
 #weight ~ black + married + boy + tri2 + tri3 + novisit + ed.hs + ed.smcol +

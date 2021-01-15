@@ -1,13 +1,11 @@
 # Plot of quantile regression for glucose reressed on Gender, Age,Race,BMI,Statin_status,BMI
 require(quantreg)
 library(tidyverse)
+library(splines)
 bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 
 #remove duplicated rows and remove na data.
 bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
-#both DID070 and DIQ 070 represent an answer for question Are you useing medication for glucose
-#yes 1 no 2
-bmi.data$diab_drug=coalesce(bmi.data$DIQ070,bmi.data$DID070)
  
 bmi.data=data.frame(bmi.data$RIAGENDR,bmi.data$RIDAGEYR, bmi.data$RIDRETH1,bmi.data$BMXBMI,
                     bmi.data$LBXTC,bmi.data$TCRx,bmi.data$LBXGLU,bmi.data$BMXWAIST)
@@ -27,31 +25,36 @@ bmi.data <- cbind(bmi.data, Age2 = bmi.data$Age^2)
 bmi.data <- cbind(bmi.data, BMI2 = bmi.data$BMI^2)
 bmi.data <- cbind(bmi.data, Total_col2 = bmi.data$Total_chol^2)
 formula <- Glu ~Gender+Age+Race+BMI+Statin_status+Age2+BMI2+Total_chol+Total_col2+Waist_cir 
-     
+#formula <- Glu ~Gender+Race+BMI+Statin_status+Age+Total_chol+Waist_cir      
 fit3.ols <- summary(lm(formula,data =bmi.data))$coefficients
 #attach(bmi.data)
 p <- nrow(fit3.ols)
 taus <- c(1:4/100, 1:19/20)
 fit3 <- array(fit3.ols,c(p,4,length(taus)))
+rownames(fit3)=rownames(fit3.ols)
+colnames(fit3)=colnames(fit3.ols)
+dimnames(fit3)[[3]]=taus
+fit3["Age2","Estimate",'0.05']
 for(i in 1:length(taus)){
     print(taus[i])
     f <- rq(formula, taus[i], data = bmi.data, method="fn")
     fit3[,,i] <- summary(f)$coefficients
 }
 ##
-Value   Std. Error     t value     Pr(>|t|)
-(Intercept)         66.876965374 22.109483682  3.02480901 0.0024927857
-GenderMale           9.388121062  2.726566710  3.44320241 0.0005766896
-Age                  1.063354442  0.390725987  2.72148379 0.0065076556
-RaceMexican          5.873750677  7.489126545  0.78430384 0.4328762137
-RaceOther           -7.667518830  5.547297354 -1.38220801 0.1669317118
-RaceOther_Hispanic   3.958837918  8.889960955  0.44531556 0.6560991799
-RaceWhite          -13.641734789  5.143504805 -2.65222554 0.0080060692
-BMI                 -0.103898456  1.565017907 -0.06638803 0.9470699260
-Statin_status       52.415760906  6.008551226  8.72352734 0.0000000000
-Age2                -0.001569404  0.004050069 -0.38750057 0.6983920391
-BMI2                 0.035566924  0.026797265  1.32725949 0.1844462891
-Total_Chol           0.033962593  0.041216181  0.82401115 0.4099484171
+(Intercept)        194.238571676 64.666035998  3.0037185 2.672537e-03
+GenderMale           3.647848794  3.155954251  1.1558624 2.477605e-01
+Age                  1.326574494  0.465484350  2.8498799 4.381047e-03
+RaceMexican          9.228608538  8.558627551  1.0782814 2.809300e-01
+RaceOther           -4.151100984  6.144220397 -0.6756107 4.993009e-01
+RaceOther_Hispanic   1.275710479  8.781682930  0.1452695 8.845006e-01
+RaceWhite          -14.390799248  5.627954833 -2.5570211 1.056951e-02
+BMI                 -4.380820563  1.552191187 -2.8223460 4.775236e-03
+Statin_status       44.861806366  6.279534638  7.1441291 9.583445e-13
+Age2                -0.007880983  0.004873444 -1.6171281 1.058770e-01
+BMI2                 0.055172291  0.021618604  2.5520747 1.072067e-02
+Total_chol          -1.710974019  0.658651748 -2.5976915 9.396776e-03
+Total_col2           0.004551597  0.001757476  2.5898493 9.613434e-03
+Waist_cir            1.488463085  0.287258378  5.1816177 2.235505e-07
 ##
 ##########################################################
 ########################################################################
@@ -69,8 +72,8 @@ png(file = here::here("images", "newfig.png"),
 p <- dim(fit3)[1]
 blab <- c("Intercept","Male ","Age","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", "BMI", " Statin_status","Age Suqared","BMI^2","Total cholesterol","Total cholestrol^2","Waist Circumference")
  
-par(mfrow=c(4,4))
-for(i in c(1:14)){
+par(mfrow=c(4,3))
+for(i in c(1:11)){
     if(i==1){#adjust intercept to be centercept
         Age.bar <- mean(bmi.data$Age)
         BMI.bar <- mean(bmi.data$BMI)

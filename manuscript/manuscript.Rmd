@@ -48,7 +48,7 @@ Due to monotnicity of the cumulative distribution function, any solution that sa
  
 Least square method expresses conditional mean of y given x as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ Quantile regression expresses conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solve $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$This minimization problem can be reformulated to a linear programming problem $$ \underset{\beta\in \mathcal{R}^p}{\text{min}} $$
  
-\subsection{Quantile Regression } 
+\subsection{Quantile Regression Technique } 
 
 
 \section{Methods}
