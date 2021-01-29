@@ -1,3 +1,9 @@
 \contentsline {section}{\numberline {1}introduction}{1}{section.1}
-\contentsline {section}{\numberline {2}methode}{1}{section.2}
-\contentsline {section}{References}{1}{section*.2}
+\contentsline {section}{\numberline {2}Quantile Regression}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Quantile Regression Technique }{4}{subsection.2.1}
+\contentsline {section}{\numberline {3}Methods}{4}{section.3}
+\contentsline {section}{\numberline {4}Numerical Example}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Data}{4}{subsection.4.1}
+\contentsline {section}{\numberline {5}Results}{5}{section.5}
+\contentsline {section}{\numberline {6}Conclusion}{12}{section.6}
+\contentsline {section}{\numberline {7}References}{13}{section.7}
