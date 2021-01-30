@@ -124,7 +124,7 @@ qr_fit_dat <- rq(  dat$BMI ~ X - 1, data=dat, tau = 0.9)
 age_pred <- seq(16, 80, by = 1)
 x2_pred <- factor(1:5)
 x3_pred <- factor(1:2)
-x4_pred <- factor(0:1)
+x4_pred <- factor(1:2)
 dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred))
 names(dat_pred) <- c("Age", "Race", "Gender", "Statin_status")
 
@@ -137,12 +137,12 @@ dat_pred$Race=recode(dat_pred$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"=
 
 #colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI")
 # X_pred <- model.matrix(~ (bs(x, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
-X_pred <- model.matrix(  ~ bs(Age, df = 4) + Race + Gender+ Statin_status, data = dat_pred)
+X_pred <- model.matrix( ~ bs(Age, df = 4) + Race + Gender+ Statin_status, data = dat_pred)
 
 
 
 dat_prediction <- list(X = X_pred)
-preds <- predict(qr_fit_dat, newdata = dat_prediction, interval = "confidence")
+preds <- predict(qr_fit_dat, newdata =dat_prediction, interval = "confidence")
 dat_pred$preds  <- preds[, 1]
 dat_pred$lower  <- preds[, 2]
 dat_pred$higher <- preds[, 3]
@@ -201,7 +201,7 @@ summary(qr_fit_pre_diabetes) #lower bd and upper bd values are confidence interv
 dat_Diab=dat %>% filter(dat$Type_glu=="Diab")
 # X <- model.matrix( BMI ~ (bs(Age, df = 4) + Race +Gender ) * Statin_status, data = dat_Diab)
 # X <- model.matrix( BMI ~ bs(Age, df = 4) * (Race + Gender + Statin_status), data = dat_Diab)
-X <- model.matrix( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat_Diab)
+#X <- model.matrix( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat_Diab)
 qr_fit_diabetes <- rq(  dat_Diab$BMI ~ X - 1, data=dat_Diab, tau = 0.9)
 summary(qr_fit_diabetes)
 #Using the coef() function in combination with the geom_abline() function we can recreate
