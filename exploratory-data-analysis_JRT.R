@@ -15,8 +15,8 @@ bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 #remove duplicated rows and remove na data.
 bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
 
-bmi.data= na.omit(bmi.data[,c(5,6,9,28,43,32)]) 
-
+ 
+bmi.data= na.omit(data.frame(bmi.data$RIAGENDR,bmi.data$RIDAGEYR,bmi.data$RIDRETH1,bmi.data$BMXBMI,bmi.data$TCRx,bmi.data$LBXGLU)) 
 colnames(bmi.data) <- c("Gender","Age","Race","BMI","Statin_status","Glu")
 
 bmi.data$Gender=recode(bmi.data$Gender, "1" = "Male", "2" = "Femal" )
@@ -96,6 +96,43 @@ ggplot(dat, aes(y=BMI  ,x=Age)) +
 ggplot(dat, aes(Age ,BMI )) +
     geom_point() + 
     geom_smooth(method="lm")
+
+################
+
+
+##
+# Box plot 
+
+Age_10 <-seq(1,length = nrow(dat))
+f<- function(x) { (x%/%10) }
+temp <- lapply(Age_10 , function(x) f(bmi.data$Age[x]) )
+temp <- do.call(rbind, temp)
+Age_10 <- as.factor(temp)
+
+dat <- cbind(dat,Age_10)
+dat=na.omit(dat)
+
+png(file = here::here("images", "base_box_plot.png"),
+    res = 400, height = 14, width = 20, units = "in")
+
+p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Statin_status)) +
+    geom_boxplot(notch = FALSE, fill = "lightgray" )+
+    stat_summary(fun = mean, geom = "point",
+                 shape = 18, size = 2.5, color = "#FC4E07")+
+    ylim(c(18,60))+
+    theme_bw(base_size = 30)+
+    facet_grid(Gender~Race)
+p+labs(title ="  BMI for statin and non-statin users",subtitle =" ", caption = " NHANES data set")
+show(p)
+print(p)
+dev.off()
+
+
+
+
+
+
+
 ##
 #### quantile regression 
 ## 
@@ -114,9 +151,13 @@ dev.off()
 
 
 ##
+
 ######
 ##
 ## Use predict to generate predicted lines
+dat=filter(dat,Statin_status!='9')
+#levels(dat$Statin_status) <- c('1','2')
+dat$Statin_status <- factor(dat$Statin_status)
 X <- model.matrix( BMI ~ bs(Age, df = 4) + Race + Gender + Statin_status, data = dat)
 qr_fit_dat <- rq(  dat$BMI ~ X - 1, data=dat, tau = 0.9)
 
@@ -124,7 +165,7 @@ qr_fit_dat <- rq(  dat$BMI ~ X - 1, data=dat, tau = 0.9)
 age_pred <- seq(16, 80, by = 1)
 x2_pred <- factor(1:5)
 x3_pred <- factor(1:2)
-x4_pred <- factor(1:2)
+x4_pred <- factor(0:1)
 dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred))
 names(dat_pred) <- c("Age", "Race", "Gender", "Statin_status")
 
@@ -256,22 +297,9 @@ dev.off()
 
 ##
 ## looks like we need a smooth term with age
-##
-# Box plot 
-Age_10 <-seq(1,length = nrow(dat))
-f<- function(x) { (x%/%10) }
-temp <- lapply(Age_10 , function(x) f(bmi.data$Age[x]) )
-temp <- do.call(rbind, temp)
-Age_10 <- as.factor(temp)
 
-#dat <- cbind(dat,Age_10)
-p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Statin_status)) +
-    geom_boxplot(notch = FALSE, fill = "lightgray" )+
-    stat_summary(fun = mean, geom = "point",
-    shape = 18, size = 2.5, color = "#FC4E07")+ 
-    #facet_grid(Gender~Type_glu)
-p+labs(title ="  BMI for statin and non-statin users",subtitle =" ", caption = " NHANES data set")
-show(p)
+
+
  #############################################################################
 
 plot(summary(rq(BMI~Statin_status+Type_glu+Race+Age+Gender,tau = 1:49/50,data=dat)))

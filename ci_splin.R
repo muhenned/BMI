@@ -2,12 +2,159 @@
 #Plot for the confidence interval of BMI regressed on splines of Age, 
 #race, gender,and cholesterol medications use.
  
+
 library(quantreg)
 library(splines)
 library(tidyverse)
+library(ggeffects)
 
 #memory.limit(size=56000)
 #attach(bmi.data)
+dat=readRDS(file = "bmi.data.rds")
+#dat=dat[dat$BMI<28,]
+dat=filter(dat,Statin_status!='9')
+levels(dat$Statin_status) <- c('1','2')
+dat$Statin_status <- factor(dat$Statin_status)
+
+
+#formula 1
+#formula=BMI ~ bs(Age, df = 5) + Race + Gender + Statin_status+Total_chol
+#formula 2
+#formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Statin_status
+# formula 3 
+#formula=BMI ~ Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Statin_status
+
+
+fit_rq=function(dat,index,tau){
+    if (index==1) {formula=BMI ~ bs(Age, df = 5) + Race + Gender + Statin_status+bs(Total_chol,df=4)}
+    else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Statin_status}
+    else if(index==3){formula=BMI ~ Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Statin_status}
+    X <- model.matrix(formula,data=dat)
+    qr_fit_dat <- rq( BMI ~ X - 1, data=dat, tau = tau)
+    return(qr_fit_dat)
+}
+
+#index= 1 bsplines age and total cholesterol, Index=2 bspline total choles, 
+#and index=3 polynomial age and total choles.
+fit=fit_rq(dat,index=1,tau=0.9)
+ 
+ 
+  
+ 
+  
+#plot
+dat_pred_ready=function(dat,index,tau){
+    age_pred <- seq(16, 80, by = 1)
+    x2_pred <- factor(1:5)
+    x3_pred <- factor(1:2)
+    x4_pred <- factor(0:1)
+    x5_pred <-seq(min(dat$Total_chol),400,by=1)
+    if(index==1){
+        dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred,x5_pred))
+        names(dat_pred) <- c( "Age","Race", "Gender", "Statin_status","Total_chol" )
+    }else if(index==2){
+        dat_pred <- data.frame(expand.grid(x5_pred, x2_pred, x3_pred, x4_pred))
+        names(dat_pred) <- c("Total_chol", "Race", "Gender", "Statin_status" )
+    }else {
+        dat_pred <- data.frame(expand.grid(age_pred,age_pred^2, x2_pred, x3_pred, x4_pred,x5_pred,x5_pred^2))
+        names(dat_pred) <- c( "Age","Age^2","Race", "Gender", "Statin_status","Total_chol","Total_chol" )
+        }
+    
+    
+    dat_pred$Gender=recode(dat_pred$Gender, "1" = "Male", "2" = "Femal" )
+     
+    
+    dat_pred$Race=recode(dat_pred$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"="White","4"="Black","5"="Other" )
+     
+    if(index==1){
+        X_pred <- model.matrix( ~ bs(Age, df = 4) + Race + Gender+ Statin_status+bs(Total_chol) , data = dat_pred)
+        
+    }else if(index==2){
+        X_pred <- model.matrix(~ bs(Total_chol, df=5)+ Race + Gender + Statin_status,data=dat_pred)
+    }else {
+        X_pred <- model.matrix(~Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Statin_status)
+        }
+    
+   
+    fit=fit_rq(dat,index,tau)
+    
+    dat_prediction <- list(X = X_pred)
+    pred <- predict(fit, newdata =dat_prediction, interval = "confidence")
+    dat_pred$pred  <- pred[, 1]
+    dat_pred$lower  <- pred[, 2]
+    dat_pred$higher <- pred[, 3]
+    return(dat_pred)
+}
+
+dat_pred=dat_pred_ready(dat,index = 3,tau =0.9 )
+# Get model-based predictions
+ 
+    
+###############################################################################4
+fig2=dat_pred %>%
+    ggplot(aes(x = Age, y = pred, color = Statin_status)) +
+    geom_line() +
+    #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
+    #geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
+    scale_color_viridis_d(end = 0.7) +
+    scale_fill_viridis_d(end = 0.7)+
+    #ylim(c(20,70))+
+    theme_bw(base_size = 8)+
+    facet_grid(Race~Gender)
+    
+fig2
+
+
+
+
+################################################################################################
+
+fit <- rq(BMI ~ bs(Age,df=4)+Race+Gender+Statin_status+bs(Total_chol,df=4),0.9 ,data = dat)
+#fit <- rq(BMI ~ Age+Race+Gender+Statin_status+Total_chol,0.5 ,data = dat)
+ 
+
+
+library(ggplot2)
+mydf <- ggpredict(fit, terms ="Total_chol[all]")
+mydf=cbind(mydf,dat)
+ggplot(mydf, aes(x, y=predicted)) +
+    geom_line() +
+    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1)+
+    #geom_quantile(formula = y ~bs(Total_chol,df=4) , quantiles = c(0.2))+
+    #geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
+    scale_color_viridis_d(end = 0.7) +
+    scale_fill_viridis_d(end = 0.7)+
+    #ylim(c(20,50))+
+    theme_bw(base_size = 8)#+
+    #facet_grid(Race~Gender)
+
+#######################################################
+
+
+
+fit <- rq(BMI ~ bs(Age,df=4)+Race+Gender+Statin_status+Total_chol,0.1 ,data = dat)
+#fit <- rq(BMI ~ Age+Race+Gender+Statin_status+Total_chol,0.5 ,data = dat)
+
+
+
+library(ggplot2)
+mydf <- ggpredict(fit, terms ="Age[all]")
+plot(mydf)
+
+#####
+mydf=cbind(mydf,dat)
+ggplot(mydf, aes(x, y=predicted)) +
+    geom_line() +
+    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1)+
+    #geom_quantile(formula = y ~bs(Age,df=4) , quantiles = c(0.2))+
+    #geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
+    scale_color_viridis_d(end = 0.7) +
+    scale_fill_viridis_d(end = 0.7)+
+    #ylim(c(20,50))+
+    theme_bw(base_size = 8)#+
+   #facet_grid(Race~Gender)
+
+#############################
 dat=readRDS(file = "bmi.data.rds")
 #dat=dat[dat$BMI<28,]
 dat=filter(dat,Statin_status!='9')
@@ -17,96 +164,25 @@ X <- model.matrix( BMI ~ bs(Total_chol, df = 5) + Race + Gender + Statin_status,
 qr_fit_dat <- rq(  dat$BMI ~ X - 1, data=dat, tau = 0.9)
 
  
-#formula <- Glu ~Gender+Race+BMI+Statin_status+bs(Age,intercept=FALSE,df=5)+bs(Total_chol,intercept=FALSE,df=5)+bs(waist_cir,intercept=FALSE,df=5)
-# formula <- Glu ~ Gender+Race+Statin_status+bs(Age,intercept=FALSE,df=5)#+bs(Total_chol,intercept=FALSE,df=5)+bs(waist_cir,intercept=FALSE,df=5)      
+#x<-1:50
+#y<-c(x[1:48]+rnorm(48,0,5),rnorm(2,150,5))
 
-  
- 
- 
-#model <- rq(Glu ~ bs(Age, knots=c(25,50,75))+BMI+Gender, tau=0.5, data=bmi.data ) 
+#QR <- rq(formula,bmi.data, tau=0.5)
+QR=qr_fit_dat
+summary(QR, se='boot')
 
-# qr_fit_dat <- rq(formula, tau=0.5, data=bmi.data ) 
- 
- 
-#plot
-#age_pred <- seq(16, 80, by = 1)
-x2_pred <- factor(1:5)
-x3_pred <- factor(1:2)
-x4_pred <- factor(1:2)
-x5_pred <-seq(min(dat$Total_chol),400,by=1)
-dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred))
-names(dat_pred) <- c( "Race", "Gender", "Statin_status","Total_chol" )
+LM<-lm(y~x)
 
-dat_pred$Gender=recode(dat_pred$Gender, "1" = "Male", "2" = "Femal" )
-# RIDRETH1 (race, 1=mexican, 2=otherHispanic, 3= Non-Hispanic White,4=Non-Hispanic Black ,5=Other Race - Including Multi-Racial
+QR.b <- boot.rq(cbind(1,X),dat$BMI,tau=0.9, R=1000)
 
-dat_pred$Race=recode(dat_pred$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"="White","4"="Black","5"="Other" )
-# Classifying population to diabetes and non diabetes
+t(apply(QR.b$B, 2, quantile, c(0.025,0.975)))
+confint(LM)
 
 
-#colnames(dat) <- c("Age","Race","Gender","Statin_status","BMI")
-# X_pred <- model.matrix(~ (bs(x, df = 4) + Race + Gender) * Statin_status, data = dat_pred)
-X_pred <- model.matrix( ~ bs(Total_chol, df = 5) + Race + Gender+ Statin_status , data = dat_pred)
+plot(dat$Total_chol,dat$BMI,xlim = c(100,400),ylim=c(20,60))
+abline(coefficients(LM),col="green")
+abline(coefficients(QR),col="blue")
 
-
-
-dat_prediction <- list(X = X_pred)
-pred <- predict(qr_fit_dat, newdata =dat_prediction, interval = "confidence")
-dat_pred$pred  <- pred[, 1]
-dat_pred$lower  <- pred[, 2]
-dat_pred$higher <- pred[, 3]
-
-# Get model-based predictions
- 
-    
-###############################################################################4
-fig2=dat_pred %>%
-    ggplot(aes(x = Total_chol, y = pred, color = Statin_status)) +
-    #geom_line() +
-    geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.9)+
-    geom_ribbon(aes(x = Total_chol, ymin = lower, ymax = higher, fill = Statin_status), alpha = 0.1) +
-    scale_color_viridis_d(end = 0.7) +
-    ylim(25,50)+
-    scale_fill_viridis_d(end = 0.7)#+
-    #facet_grid(Race~Statin_status)
-    
-fig2
-
-
-
-
-
-################################################################################################
-
-#create data    
-x <- seq(0,100,length.out = 100)        
-sig <- 0.1 + 0.05*x 
-b_0 <- 6                                
-b_1 <- 0.1                              
-set.seed(1)                             
-e <- rnorm(100,mean = 0, sd = sig)      
-y <- b_0 + b_1*x + e 
-
-mydata <- data.frame(x,y, age=sample(30:70,100,replace=TRUE), sex=sample(c("Male","Female"),100, replace=TRUE))
-
-#run regression
-library(quantreg)
-library(splines)
-model <- rq(y ~ ns(x, knots=c(25,50,75))+age+sex, tau=0.5, data=mydata ) 
-
-#plot
-#sp <- c(25,50,75)
-#ggplot(mydata, aes(x=x,y=y))+ geom_point()+ geom_quantile(formula=y~ns(x,knots=sp), quantiles=0.5, se=T)
-
-
-# Get model-based predictions
-pred <- as.data.frame(predict(model, data.frame(x = mydata$x, age = mydata$age, sex = mydata$sex), interval = "confidence"));
-pred$x <- mydata$x;
-
-#plot
-sp <- c(25,50,75);
-ggplot(mydata, aes(x=x,y=y)) +
-    geom_point() +
-     #geom_line(data = pred, aes(x = x, y = fit)) +
-    geom_ribbon(data = pred, aes(ymin = lower, ymax = higher, x = x), alpha = 0.4) +
-    geom_quantile(formula = y ~ ns(x, knots = sp), quantiles = 0.8);
+for(i in seq_len(nrow(QR.b$B))) {
+    abline(QR.b$B[i,1], QR.b$B[i,2], col='#0000ff01')
+}
