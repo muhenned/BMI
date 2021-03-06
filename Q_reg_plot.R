@@ -1,4 +1,4 @@
-# Plot of quantile regression for glucose regressed BMI on Gender, Age,Race,Statin_status
+# Plot of quantile regression for BMI regressed  Gender, Age,Race,Statin_status, Total cholestrol
 #Roger Koenker
 require(quantreg)
 library(tidyverse)
@@ -23,10 +23,11 @@ bmi.data$Race=recode(bmi.data$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"=
 # Classifying population to diabetes and non diabetes
 
 bmi.data <- cbind(bmi.data, Age2 = bmi.data$Age^2)
-#bmi.data <- cbind(bmi.data, BMI2 = bmi.data$BMI^2)
+ 
 bmi.data <- cbind(bmi.data, Total_chol2 = bmi.data$Total_chol^2)
+
 formula <- BMI ~Gender+Race+Statin_status+Age+Age2+Total_chol+Total_chol2 
-#formula <- Glu ~Gender+Race+BMI+Statin_status+Age+Total_chol+Waist_cir      
+      
 fit3.ols <- summary(lm(formula,data =bmi.data))$coefficients
 #attach(bmi.data)
 p <- nrow(fit3.ols)
@@ -107,37 +108,26 @@ for(i in c(1:11)){
     abline(h=bhat+qnorm(.95)*bhat.se,col=cols[6])
 }
 dev.off()
-#plot for marginal effect of weight gain for several gains
- 
-png(file = here::here("images", "newfig2.png"),
-    res = 400, height = 9, width = 16, units = "in")
-par(mfrow=c(2,2))
-gains <- quantile(bmi.data$Total_chol,c(.1,.25,.75,.9))
-for(i in 1:length(gains)){
-    effect <- fit3[10,1,]+2*fit3[11,1,]*gains[i]
-    plot(taus,effect,xlab="Quantile",ylab="Weight Gain Effect")
-    lines(taus,effect)
-    title(paste("Total Cholestrol", format(round(gains[i])),"Lbs"))
-}
-dev.off()
-#Now try to plot quadratic effect of mother's age for several taus
+
+#Now try to plot quadratic effect of age on BMI
+
 #pdf("newfig3.pdf",width=7.0,height=7.0)
-png(file = here::here("images", "newfig3.png"),
+png(file = here::here("images", "p_age_effect.png"),
     res = 400, height = 9, width = 16, units = "in")
 
 par(mfrow=c(2,2))
 ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
 for(i in c(6,9,15,22)){
-    effect <- fit3[9,1,i]*ages+fit3[10,1,i]*ages^2
+    effect <- fit3[8,1,i]*ages+fit3[9,1,i]*ages^2
     plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
     lines(ages,effect)
-    title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
+    title(paste("Age effects on BMI", format(round(taus[i],2)),"Quantile"))
 }
 dev.off()
 
 #Total cholestrol effects on glucose.
 
-png(file = here::here("images", "newfig4.png"),
+png(file = here::here("images", "p_TC_effect.png"),
     res = 400, height = 9, width = 16, units = "in")
 
 par(mfrow=c(2,2))
@@ -187,16 +177,71 @@ mean(l$BMI)
 
 
 
-#plot for marginal effect of weight gain for several gains
+#plot for marginal effect of To for several gains
 
-png(file = here::here("images", "effect_TC_22.png"),
+png(file = here::here("images", ".png"),
     res = 400, height = 9, width = 16, units = "in")
 par(mfrow=c(2,2))
 gains <- quantile(bmi.data$Total_chol,c(.1,.25,.75,.9))
 for(i in 1:length(gains)){
-    effect <- fit3[8,1,]+2*fit3[11,1,]*gains[i]
+    effect <- fit3[8,1,]+2*fit3[9,1,]*gains[i]
     plot(taus,effect,xlab="Quantile",ylab="Weight Gain Effect")
     lines(taus,effect)
     title(paste("Weight Gain", format(round(gains[i])),"Lbs"))
 }
 dev.off()
+
+
+########################
+
+
+#plot for marginal effect of Total Cgolestrol  for several values 
+
+png(file = here::here("images", "taus_TC.png"),
+    res = 400, height = 9, width = 16, units = "in")
+par(mfrow=c(2,2))
+gains <- quantile(bmi.data$Total_chol,c(.1,.25,.75,.9))
+for(i in 1:length(gains)){
+    effect <- fit3[10,1,]+2*fit3[11,1,]*gains[i]
+    plot(taus,effect,xlab="Quantile",ylab="Weight Gain Effect")
+    lines(taus,effect)
+    title(paste("Total Cholestrol", format(round(gains[i])),"Lbs"))
+}
+dev.off()
+
+
+###################
+##########################
+
+###############Trash
+
+
+par(mfrow=c(2,2))
+ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
+for(i in c(6,9,15,22)){
+    effect <- fit3[9,1,i]*ages+fit3[10,1,i]*ages^2
+    b=effect
+    b.p <- b + qnorm(.95)*fit3[9,2,]
+    b.m <- b - qnorm(.95)*fit3[9,2,]
+    plot(0:1,range(c(b.m,b.p)),type="n",xlab="",ylab="",cex=.75)
+    #title(paste(blab[i]),cex=.75)
+    #polygon(c(ages,rev(ages)),c(b.p,rev(b.m)), col=cols[4])
+    points(ages,b, col=cols[3])
+    lines(ages,b,col=cols[3])
+    abline(h=0)
+    #plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
+    lines(ages,effect)
+    #title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
+}
+
+for(i in c(1:11)){
+    b <- fit3[i,1,]
+    b.p <- b + qnorm(.95)*fit3[i,2,]
+    b.m <- b - qnorm(.95)*fit3[i,2,]
+    plot(0:1,range(c(b.m,b.p)),type="n",xlab="",ylab="",cex=.75)
+    title(paste(blab[i]),cex=.75)
+    polygon(c(taus,rev(taus)),c(b.p,rev(b.m)), col=cols[4])
+    points(taus,b, col=cols[3])
+    lines(taus,b,col=cols[3])
+    abline(h=0)
+    
