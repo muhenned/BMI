@@ -1,4 +1,5 @@
-# Plot of quantile regression for glucose reressed on Gender, Age,Race,BMI,Statin_status,BMI
+# Plot of quantile regression for BMI regressed  Gender, Age,Race,Statin_status, Total cholestrol
+#Roger Koenker
 require(quantreg)
 library(tidyverse)
 library(splines)
@@ -22,10 +23,11 @@ bmi.data$Race=recode(bmi.data$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"=
 # Classifying population to diabetes and non diabetes
 
 bmi.data <- cbind(bmi.data, Age2 = bmi.data$Age^2)
-bmi.data <- cbind(bmi.data, BMI2 = bmi.data$BMI^2)
-bmi.data <- cbind(bmi.data, Total_col2 = bmi.data$Total_chol^2)
-formula <- Glu ~Gender+Age+Race+BMI+Statin_status+Age2+BMI2+Total_chol+Total_col2+Waist_cir 
-#formula <- Glu ~Gender+Race+BMI+Statin_status+Age+Total_chol+Waist_cir      
+ 
+bmi.data <- cbind(bmi.data, Total_chol2 = bmi.data$Total_chol^2)
+
+formula <- BMI ~Gender+Race+Statin_status+Age+Age2+Total_chol+Total_chol2 
+      
 fit3.ols <- summary(lm(formula,data =bmi.data))$coefficients
 #attach(bmi.data)
 p <- nrow(fit3.ols)
@@ -41,20 +43,18 @@ for(i in 1:length(taus)){
     fit3[,,i] <- summary(f)$coefficients
 }
 ##
-(Intercept)        194.238571676 64.666035998  3.0037185 2.672537e-03
-GenderMale           3.647848794  3.155954251  1.1558624 2.477605e-01
-Age                  1.326574494  0.465484350  2.8498799 4.381047e-03
-RaceMexican          9.228608538  8.558627551  1.0782814 2.809300e-01
-RaceOther           -4.151100984  6.144220397 -0.6756107 4.993009e-01
-RaceOther_Hispanic   1.275710479  8.781682930  0.1452695 8.845006e-01
-RaceWhite          -14.390799248  5.627954833 -2.5570211 1.056951e-02
-BMI                 -4.380820563  1.552191187 -2.8223460 4.775236e-03
-Statin_status       44.861806366  6.279534638  7.1441291 9.583445e-13
-Age2                -0.007880983  0.004873444 -1.6171281 1.058770e-01
-BMI2                 0.055172291  0.021618604  2.5520747 1.072067e-02
-Total_chol          -1.710974019  0.658651748 -2.5976915 9.396776e-03
-Total_col2           0.004551597  0.001757476  2.5898493 9.613434e-03
-Waist_cir            1.488463085  0.287258378  5.1816177 2.235505e-07
+Value   Std. Error      t value     Pr(>|t|)
+(Intercept)         4.032594e+01 2.7295368597  14.77391451 0.000000e+00
+GenderMale         -3.158801e+00 0.3693477977  -8.55237577 0.000000e+00
+RaceMexican        -2.746026e+00 0.7487990714  -3.66724016 2.462451e-04
+RaceOther          -8.159065e+00 0.6077345693 -13.42537585 0.000000e+00
+RaceOther_Hispanic -4.308180e+00 0.5900019175  -7.30197616 3.015366e-13
+RaceWhite          -1.562812e+00 0.5240149186  -2.98238161 2.865916e-03
+Statin_status       1.552109e+00 0.4588676563   3.38247697 7.206547e-04
+Age                 4.241028e-01 0.0619080374   6.85052882 7.718270e-12
+Age2               -4.958502e-03 0.0005839960  -8.49064439 0.000000e+00
+Total_chol         -1.533772e-02 0.0233963352  -0.65556097 5.121192e-01
+Total_col2         -3.066944e-06 0.0000543447  -0.05643501 9.549962e-01
 ##
 ##########################################################
 ########################################################################
@@ -70,16 +70,16 @@ cols <- c("black","red", "blue","LightSkyBlue1", "green", "light pink")
 png(file = here::here("images", "newfig.png"),
     res = 400, height = 9, width = 16, units = "in")
 p <- dim(fit3)[1]
-blab <- c("Intercept","Male ","Age","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", "BMI", " Statin_status","Age Suqared","BMI^2","Total cholesterol","Total cholestrol^2","Waist Circumference")
+blab <- c("Intercept","Male ","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", " Statin_status","Age","Age^2","Total cholesterol","Total cholestrol^2")
  
 par(mfrow=c(4,3))
 for(i in c(1:11)){
     if(i==1){#adjust intercept to be centercept
         Age.bar <- mean(bmi.data$Age)
-        BMI.bar <- mean(bmi.data$BMI)
+        Total_chol.bar <- mean(bmi.data$Total_chol)
         b <- fit3[i,1,]+
-            Age.bar*fit3[3,1,]+(Age.bar^2)*fit3[10,1,]+
-            BMI.bar*fit3[8,1,]+(BMI.bar^2)*fit3[11,1,]
+            Age.bar*fit3[8,1,]+(Age.bar^2)*fit3[9,1,]+
+            Total_chol.bar*fit3[10,1,]+(Total_chol.bar^2)*fit3[11,1,]
     }
     else{
         b <- fit3[i,1,]
@@ -96,8 +96,8 @@ for(i in c(1:11)){
     if(i==1){#now fix ols results
     
     bhat <- fit3.ols[i,1]+
-        Age.bar*fit3.ols[3,1]+(Age.bar^2)*fit3.ols[10,1]+
-        BMI.bar*fit3.ols[8,1]+(BMI.bar^2)*fit3.ols[11,1]
+        Age.bar*fit3.ols[8,1]+(Age.bar^2)*fit3.ols[9,1]+
+        Total_chol.bar*fit3.ols[10,1]+(Total_chol.bar^2)*fit3.ols[11,1]
     }
     else{
         bhat <- fit3.ols[i,1]
@@ -108,46 +108,35 @@ for(i in c(1:11)){
     abline(h=bhat+qnorm(.95)*bhat.se,col=cols[6])
 }
 dev.off()
-#plot for marginal effect of weight gain for several gains
-#pdf("newfig2.pdf",width=7.0,height=7.0)
-png(file = here::here("images", "newfig2.png"),
-    res = 400, height = 9, width = 16, units = "in")
-par(mfrow=c(2,2))
-gains <- quantile(bmi.data$BMI,c(.1,.25,.75,.9))
-for(i in 1:length(gains)){
-    effect <- fit3[8,1,]+2*fit3[11,1,]*gains[i]
-    plot(taus,effect,xlab="Quantile",ylab="Weight Gain Effect")
-    lines(taus,effect)
-    title(paste("Weight Gain", format(round(gains[i])),"Lbs"))
-}
-dev.off()
-#Now try to plot quadratic effect of mother's age for several taus
+
+#Now try to plot quadratic effect of age on BMI
+
 #pdf("newfig3.pdf",width=7.0,height=7.0)
-png(file = here::here("images", "newfig3.png"),
+png(file = here::here("images", "p_age_effect.png"),
     res = 400, height = 9, width = 16, units = "in")
 
 par(mfrow=c(2,2))
 ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
 for(i in c(6,9,15,22)){
-    effect <- fit3[3,1,i]*ages+fit3[10,1,i]*ages^2
+    effect <- fit3[8,1,i]*ages+fit3[9,1,i]*ages^2
     plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
     lines(ages,effect)
-    title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
+    title(paste("Age effects on BMI", format(round(taus[i],2)),"Quantile"))
 }
 dev.off()
 
 #Total cholestrol effects on glucose.
 
-png(file = here::here("images", "newfig4.png"),
+png(file = here::here("images", "p_TC_effect.png"),
     res = 400, height = 9, width = 16, units = "in")
 
 par(mfrow=c(2,2))
 Total_chol <- seq(min(bmi.data$Total_chol),300,by=1)
 for(i in c(6,9,15,22)){
-    effect <- fit3[12,1,i]*Total_chol +fit3[13,1,i]*Total_chol^2
+    effect <- fit3[10,1,i]*Total_chol +fit3[11,1,i]*Total_chol^2
     plot(Total_chol,effect,type="n",xlab="Total cholestrol",ylab="Total cholestrol effect")
     lines( Total_chol,effect)
-    title(paste("Total cholestrol effects on glucose", format(round(taus[i],2)),"Quantile"))
+    title(paste("Total cholestrol effects on BMI", format(round(taus[i],2)),"Quantile"))
 }
 dev.off()
 
@@ -178,6 +167,81 @@ mean(l$Glu)
 # Mean glucose for Female 106.47
 l=bmi.data[bmi.data$Gender=='Female',] 
 mean(l$Glu)
+######Mean BMI Female
+l=bmi.data[bmi.data$Gender=='Female',] 
+mean(l$BMI)
+######Mean BMI Male
+l=bmi.data[bmi.data$Gender=='Male',] 
+mean(l$BMI)
+############################################################
 
 
 
+#plot for marginal effect of To for several gains
+
+png(file = here::here("images", ".png"),
+    res = 400, height = 9, width = 16, units = "in")
+par(mfrow=c(2,2))
+gains <- quantile(bmi.data$Total_chol,c(.1,.25,.75,.9))
+for(i in 1:length(gains)){
+    effect <- fit3[8,1,]+2*fit3[9,1,]*gains[i]
+    plot(taus,effect,xlab="Quantile",ylab="Weight Gain Effect")
+    lines(taus,effect)
+    title(paste("Weight Gain", format(round(gains[i])),"Lbs"))
+}
+dev.off()
+
+
+########################
+
+
+#plot for marginal effect of Total Cgolestrol  for several values 
+
+png(file = here::here("images", "taus_TC.png"),
+    res = 400, height = 9, width = 16, units = "in")
+par(mfrow=c(2,2))
+gains <- quantile(bmi.data$Total_chol,c(.1,.25,.75,.9))
+for(i in 1:length(gains)){
+    effect <- fit3[10,1,]+2*fit3[11,1,]*gains[i]
+    plot(taus,effect,xlab="Quantile",ylab="Weight Gain Effect")
+    lines(taus,effect)
+    title(paste("Total Cholestrol", format(round(gains[i])),"Lbs"))
+}
+dev.off()
+
+
+###################
+##########################
+
+###############Trash
+
+
+par(mfrow=c(2,2))
+ages <- seq(min(bmi.data$Age),max(bmi.data$Age),by=1)
+for(i in c(6,9,15,22)){
+    effect <- fit3[9,1,i]*ages+fit3[10,1,i]*ages^2
+    b=effect
+    b.p <- b + qnorm(.95)*fit3[9,2,]
+    b.m <- b - qnorm(.95)*fit3[9,2,]
+    plot(0:1,range(c(b.m,b.p)),type="n",xlab="",ylab="",cex=.75)
+    #title(paste(blab[i]),cex=.75)
+    #polygon(c(ages,rev(ages)),c(b.p,rev(b.m)), col=cols[4])
+    points(ages,b, col=cols[3])
+    lines(ages,b,col=cols[3])
+    abline(h=0)
+    #plot(ages,effect,type="n",xlab="Age",ylab="Age effect")
+    lines(ages,effect)
+    #title(paste("Age effects on glucose", format(round(taus[i],2)),"Quantile"))
+}
+
+for(i in c(1:11)){
+    b <- fit3[i,1,]
+    b.p <- b + qnorm(.95)*fit3[i,2,]
+    b.m <- b - qnorm(.95)*fit3[i,2,]
+    plot(0:1,range(c(b.m,b.p)),type="n",xlab="",ylab="",cex=.75)
+    title(paste(blab[i]),cex=.75)
+    polygon(c(taus,rev(taus)),c(b.p,rev(b.m)), col=cols[4])
+    points(taus,b, col=cols[3])
+    lines(taus,b,col=cols[3])
+    abline(h=0)
+    
