@@ -15,10 +15,12 @@ bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 #remove duplicated rows and remove na data.
 bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
 
- 
-bmi.data= na.omit(data.frame(bmi.data$RIAGENDR,bmi.data$RIDAGEYR,bmi.data$RIDRETH1,bmi.data$BMXBMI,bmi.data$TCRx,bmi.data$LBXGLU)) 
-colnames(bmi.data) <- c("Gender","Age","Race","BMI","Statin_status","Glu")
 
+bmi.data= na.omit(data.frame(bmi.data$RIAGENDR,bmi.data$RIDAGEYR,bmi.data$RIDRETH1,bmi.data$BMXBMI,bmi.data$TCRx,bmi.data$LBXGLU)) 
+colnames(bmi.data) <- c("Gender","Age","Race","BMI","Cholesterol_Drug_Use","Glu")
+bmi.data=bmi.data[bmi.data$Age>19,]
+#Recoding
+#bmi.data$Cholesterol_Drug_Use=recode(bmi.data$Cholesterol_Drug_Use, "1" = "Yes", "0" = "No" )
 bmi.data$Gender=recode(bmi.data$Gender, "1" = "Male", "2" = "Female" )
 # RIDRETH1 (race, 1=mexican, 2=otherHispanic, 3= Non-Hispanic White,4=Non-Hispanic Black ,5=Other Race - Including Multi-Racial
 
@@ -42,13 +44,13 @@ Age_10 <- as.factor(temp)
 
 bmi.data <- cbind(bmi.data,Age_10)
 
- 
+
 # Saving on object in RData format
-save(bmi.data, file = "data.RData")
+save(bmi.data, file = "data.Rdata")
 
 
 ###  Classifying BMI Level.
- 
+
 BMI_bin=seq(1,length=nrow(bmi.data))
 temp=lapply(BMI_bin, function(x) ifelse(bmi.data$BMI[x]<=25,"normal",ifelse(bmi.data$BMI[x]<=30,"obes","ovrwieght")))
 temp=do.call(rbind,temp)
@@ -70,7 +72,7 @@ fig
 fig <- ggplot(bmi.data , aes(x  = Age_10)) +
     geom_bar(aes( fill = BMI__class  ) , position ="fill") +
     scale_fill_viridis_d(end = 1.0) +
-    facet_wrap(~Statin_status )
+    facet_wrap(~Cholesterol_Drug_Use)
 
 fig
 
@@ -89,7 +91,7 @@ print(bmi.data %>%
 
 ########################################################
 
-dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Statin_status),bmi.data$BMI,bmi.data$Type_glu)
+dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Cholesterol_Drug_Use),bmi.data$BMI,bmi.data$Type_glu)
 colnames(dat) <- c("Age","Race","Gender","Cholesterol_Drug_Use","BMI","Type_glu")
 dat$Cholesterol_Drug_Use=recode(dat$Cholesterol_Drug_Use, "1" = "Yes", "0" = "No" )
 ggplot(dat, aes(y=BMI  ,x=Age)) +
@@ -121,9 +123,11 @@ p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Cholesterol_Drug_Use)) +
     stat_summary(fun = mean, geom = "point",
                  shape = 18, size = 2.5, color = "#FC4E07")+
     ylim(c(18,60))+
+    xlab("Age Group")+
+    ylab("BMI")+
     theme_bw(base_size = 35)+
     facet_grid(Gender~Race)+
-labs(title ="  BMI for Colesterol drug users and who are not",subtitle =" ", caption = " NHANES data set")
+    labs(title ="  BMI for Colesterol drug users and who are not",subtitle =" ", caption = " NHANES data set")
 
 print(p)
 dev.off()
@@ -139,9 +143,9 @@ dev.off()
 ## 
 fig3=ggplot(dat, aes(Age ,BMI, group = Cholesterol_Drug_Use)) + 
     #geom_point() + 
-    #geom_quantile(aes(color = Statin_status), quantiles = 0.8) +
+    #geom_quantile(aes(color = Cholesterol_Drug_Use), quantiles = 0.8) +
     geom_quantile(aes(color =Cholesterol_Drug_Use), quantiles = 0.9) +
-    #geom_quantile(aes(color = Statin_status),quantiles = 0.99) +
+    #geom_quantile(aes(color = Cholesterol_Drug_Use),quantiles = 0.99) +
     facet_grid(Gender ~ Type_glu)+
     theme_bw()+
     ggtitle("90% Quatile")
@@ -214,7 +218,7 @@ dev.off()
 ##
 ##############
 ###
- 
+
 
 dat %>%
     group_by(Race, Gender, Statin_status) %>%
@@ -301,7 +305,7 @@ dev.off()
 
 
 
- #############################################################################
+#############################################################################
 
 plot(summary(rq(BMI~Cholesterol_Drug_Use+Type_glu+Race+Age+Gender,tau = 1:49/50,data=dat)))
 
@@ -312,4 +316,3 @@ plot(summary(rq(Glu~Cholesterol_Drug_Use+Race+Age+Gender,tau = 1:49/50,data=bmi.
 ###########
 
 l=bmi.data %>% subset(TCRx == 1) %>% count(RXDDRUG) %>% arrange(desc(n))
- 

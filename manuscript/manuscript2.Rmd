@@ -134,6 +134,8 @@ if (!file.exists(here::here("images", "quant90.png"))) {
 }
 knitr::include_graphics(here::here("images", "quant90.png"))
 ```
+
+
 \section{Results}
 The resulting estimate of effects on conditional mean of BMI level may not reflect the size and nature of these effects on lower or upper quantile. For example, in Figure \@ref(fig:resu1), the conditional mean effect of gender on BMI level is about -1, that is on average male's BMI is less than a female's BMI by one unit. However, the disparity of the gender effects on lower tails is much larger which is about 1, but the disparity is lower for the upper tail of the distribution somewhat around -3 unit.  
 
@@ -190,6 +192,18 @@ if (!file.exists(here::here("images", "s-age_effect.png")))
 knitr::include_graphics(here::here("images", "s_age_effect.png"))
 ```
 
+Using splines
+
+```{r resu33g, out.width = "80%", fig.align = "center", fig.cap = "Age effect modeled using bsplines, ggplot plot ", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "Age_splin.png"))) {
+    
+}
+knitr::include_graphics(here::here("images", "Age_splin.png"))
+```
+ 
+
+\ref{fig:resu33g}
 Marginal quadratic cholesterol effect
 
 ```{r resu4, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic cholestrol effect on BMI leveles for four different quantiles of the conditional BMI distribution.  The ", echo = FALSE}
@@ -208,6 +222,14 @@ if (!file.exists(here::here("images", "s_TC_effect")))
 knitr::include_graphics(here::here("images", "s_TC_effect.png"))
 ```
 
+
+```{r resu3330, out.width = "80%", fig.align = "center", fig.cap = " Illustration of marginal cholestrol effect modeled as B splines using ggplot.  The ", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "TC_splin")))  
+knitr::include_graphics(here::here("images", "TC_splin.png"))
+```
+
+
 The quadratic effect of total cholesterol on the conditional distribution of BMI is convex.  At the lower tail, the correlation is positive that is as cholesterol increases the BMI increases. decreasing glucose level by somewhat around 1.4 up to around 180 Cholesterol level. However, at higher quantile the association become negative that is as cholesterol level increases the BMI decreases, see  Figure \@ref(fig:resu4). The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average.    
 
 On the other hand, when we use splines to modeled the total cholesterol, there is a huge difference in the shape of the association expect at the higher quantile there is some similarity. At the lower quantile, there is negative correlation between total cholesterol and BMI for total cholesterol in the range less than 160, then the correlation becomes positive for total cholesterol in the range of (170, 250). at the 55th quantile, the correlation is positive for low cholesterol level and then becomes almost flat for the rest cholesterol values. At a higher qunatile, the correlation becomes negative at cholesterol level in the range (160,300), see Figure \@ref(resu330).
@@ -222,6 +244,3 @@ It is recommended to investigate why the effect estimates are varying across dif
 
 \newpage
 \section{References}
----
-nocite: '@*'
-...
