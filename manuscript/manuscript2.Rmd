@@ -7,7 +7,7 @@ output:
 bibliography: cite.bib
 link_citations: true
 header-includes:
-    - \usepackage{setspace} 
+    - \usepackage{setspace}\doublespacing 
     - \usepackage{float}
 abstract: "My abstract"
 keywords: "My keywords"
@@ -17,7 +17,7 @@ fontsize: 12pt
 fig_caption: yes
 indent: true
 ---
-\setstretch{4}
+<!-- \setstretch{4} -->
 \section{introduction}
 
   High BMI has negative impact on public health. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factor for obesity. This can help decision makers to create a new regulation that help to prevent and to stop the dramatic increase in the BMI index. 
@@ -50,12 +50,14 @@ $$ 0  =(\tau-1)\int_{-\infty}^{\hat{x}} dF(x)+\tau\int_{\hat{x}}^{-\infty} dF(x)
 Due to the monotonicity of the cumulative distribution function, any solution that satisfies $\{x:F(x)=\tau \}$ is a minimizing for the expected loss function.
 
  
-Least square method expresses conditional mean of y given x as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ Quantile regression expresses conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solve $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$This minimization problem can be reformulated to a linear programming problem $$ \underset{\beta\in \mathcal{R}^p}{\text{min}} $$
+Least square method expresses conditional mean of y given x as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ Quantile regression expresses conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solve $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$This minimization problem can be reformulated to a linear programming problem 
+
+<!-- $$ \underset{\beta\in \mathcal{R}^p}{\text{min}} $$ -->
  
 \subsection{Quantile Regression Technique }
 
 \subsection{splines}
-   A continuous predictor can be linear, say $X$, or nonlinear, say $X^2$ depends on the relationship with the response variable. Most of the relations between the responses and predictors variables are complicated to the point that linear regressions are not suitable to model these relationships[@bruce2020]. For example, the response to different levels of drug doses is not a linear relationship. Linear regressions can be generalized to deal with nonlinear effects. One approach is through including polynomial terms in the regression equation. This approach is called Polynomial regression. The mathematical model for $n$ degree polynomial regression is shown in the Eq\eqref{non}
+   A continuous predictor can be modeled as linear, say $X$, or nonlinear term, say $X^2$ depends on the relationship with the response variable. Most of the relations between the responses and predictors variables are complicated to the point that linear regressions are not suitable to model these relationships[@bruce2020]. For example, the response to different levels of drug doses is not a linear relationship. Linear regressions can be generalized to deal with nonlinear effects. One approach is through including polynomial terms in the regression equation. This approach is called Polynomial regression. The mathematical model for $n$ degree polynomial regression is shown in the Eq\eqref{non}
  \begin{equation}\label{non}
  y=\beta_0+\beta_1 X+\beta_2 X^2+\cdots+\beta_nX^n.
  \end{equation}  
@@ -106,6 +108,7 @@ knitr::include_graphics(here::here("images", "base_box_plot.png"))
 
  
 Figure \@ref(fig:box) shows the association between age and BMI with respect to cholesterol drug is inconsistent. At the early age, the correlation is positive while at the middle age the correlation is almost flat, and at the old age the correlation is negative. Moreover, at low age cholesterol medications are  described only for a population with high BMI, but at a higher age, the difference in term of the BMI for a population that takes cholesterol medication and without cholesterol medication decreases until it diminishes as in the white population. The  heterogeneity can also be seen in gender ?, for the Hispanic female population, the cholesterol medication is taken by the population with lower BMI if compared to the population that does not take cholesterol medication.
+
 ```{r data, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "exploratory.png"))) {
@@ -116,25 +119,15 @@ knitr::include_graphics(here::here("images", "exploratory.png"))
 
  
  
-```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
-# Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "exploratory2.png"))) {
-    source(here::here("exploratory-data-analysis_JRT.R"))
-}
-knitr::include_graphics(here::here("images", "exploratory2.png"))
-```
-
-So,
 
 
-```{r, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+```{r, out.width = "80%", fig.align = "center", fig.cap = "A 90th quantile of BMI ploted with repect to age. The population grouped with repect gender and fasting blood glucose level: prediabetes nad diabetes", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "quant90.png"))) {
     source(here::here("exploratory-data-analysis_JRT.R"))
 }
 knitr::include_graphics(here::here("images", "quant90.png"))
 ```
-
 
 \section{Results}
 The resulting estimate of effects on conditional mean of BMI level may not reflect the size and nature of these effects on lower or upper quantile. For example, in Figure \@ref(fig:resu1), the conditional mean effect of gender on BMI level is about -1, that is on average male's BMI is less than a female's BMI by one unit. However, the disparity of the gender effects on lower tails is much larger which is about 1, but the disparity is lower for the upper tail of the distribution somewhat around -3 unit.  
@@ -146,7 +139,7 @@ From the OLS it is obvious cholesterol drug users have on average higher BMI lev
 
 
 
-```{r resu1, out.width = "100%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+```{r resu1, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted f for fifferent marginal effects. The predictors modeled using quadratic terms ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "newfig.png"))) {
     source(here::here("exploratory-data-analysis_JRT.R"))
@@ -155,22 +148,15 @@ knitr::include_graphics(here::here("images", "newfig.png"))
 ```
  So,
 
-```{r resu12, out.width = "100%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
+```{r resu12, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted f for fifferent marginal effects. The predictors modeled using splines ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "newfig11.png"))) {
-    source(here::here("Q_reg_plot2.R"))
+    source(here::here("exploratory-data-analysis_JRT.R"))
 }
 knitr::include_graphics(here::here("images", "newfig11.png"))
 ```
 
-
-```{r resu122, out.width = "80%", fig.align = "center", fig.cap = "Using Cubic splines", echo = FALSE}
-# Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "newfig111.png"))) {
-    source(here::here("exploratory-data-analysis_JRT.R"))
-}
-knitr::include_graphics(here::here("images", "newfig111.png"))
-```
+ 
  
 
  Age effect modeled as a quadratic factor. The age effect is concave in general, see Figure \@ref(fig:resu3). At the lower quantile, BMI increases from age 20 to around age 50, and it starts to decrease after that. In the 55th quantile, the concavity is stronger at age 50 if compared to the left or right tail. The quadratic effect of age is reflected in the hyperbolic shape. However, the age effect modeled as b spline behaves in a different way. Age effect on BMI increases from age 20 to around age 36 and then start to decrease up to around age 63 then move up again and then decreases up to age 80, see Fig.\@ref(fig:resu33). The BMI trend in this modeling is close to the trend shown in [@chen2005] by using a complicated polynomial and log transformation for the response.
@@ -180,55 +166,35 @@ knitr::include_graphics(here::here("images", "newfig111.png"))
 
 ```{r resu3, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic age effect on BMI leveles for four different quantiles of the conditional BMI distribution.  The ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "p_age_effect.png"))) {
-    source(here::here("exploratory-data-analysis_JRT.R"))
+if (!file.exists(here::here("images", "Age_poly.png"))) {
+    source(here::here("ci_splin.R"))
 }
-knitr::include_graphics(here::here("images", "p_age_effect.png"))
+knitr::include_graphics(here::here("images", "Age_poly.png"))
 ```
 Using splines
 ```{r resu33, out.width = "80%", fig.align = "center", fig.cap = "Age effect modeled using bsplines ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "s-age_effect.png")))
-knitr::include_graphics(here::here("images", "s_age_effect.png"))
+if (!file.exists(here::here("images", "Age_splin.png")))
+knitr::include_graphics(here::here("images", "Age_splint.png"))
 ```
 
-Using splines
-
-```{r resu33g, out.width = "80%", fig.align = "center", fig.cap = "Age effect modeled using bsplines, ggplot plot ", echo = FALSE}
-# Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "Age_splin.png"))) {
-    
-}
-knitr::include_graphics(here::here("images", "Age_splin.png"))
-```
- 
-
-\ref{fig:resu33g}
 Marginal quadratic cholesterol effect
 
 ```{r resu4, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic cholestrol effect on BMI leveles for four different quantiles of the conditional BMI distribution.  The ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "p_TC_effect.png"))) {
-    source(here::here("exploratory-data-analysis_JRT.R"))
+if (!file.exists(here::here("images", "Total_chol_poly.png"))) {
+    source(here::here("ci_splin.R"))
 }
-knitr::include_graphics(here::here("images", "p_TC_effect.png"))
+knitr::include_graphics(here::here("images", "Total_chol_poly.png"))
 ```
 
 Splines modeling
 
 ```{r resu330, out.width = "80%", fig.align = "center", fig.cap = " Illustration of marginal cholestrol effect modeled as B splines.  The ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "s_TC_effect")))  
-knitr::include_graphics(here::here("images", "s_TC_effect.png"))
-```
-
-
-```{r resu3330, out.width = "80%", fig.align = "center", fig.cap = " Illustration of marginal cholestrol effect modeled as B splines using ggplot.  The ", echo = FALSE}
-# Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "TC_splin")))  
 knitr::include_graphics(here::here("images", "TC_splin.png"))
 ```
-
 
 The quadratic effect of total cholesterol on the conditional distribution of BMI is convex.  At the lower tail, the correlation is positive that is as cholesterol increases the BMI increases. decreasing glucose level by somewhat around 1.4 up to around 180 Cholesterol level. However, at higher quantile the association become negative that is as cholesterol level increases the BMI decreases, see  Figure \@ref(fig:resu4). The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average.    
 
@@ -244,3 +210,6 @@ It is recommended to investigate why the effect estimates are varying across dif
 
 \newpage
 \section{References}
+---
+nocite: '@*'
+...

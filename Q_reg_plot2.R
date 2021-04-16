@@ -36,7 +36,7 @@ cols <- c("black","red", "blue","LightSkyBlue1", "green", "light pink")
 #pdf("newfig.pdf",width=8.5,height=7)
 #pdf("./images/newfig.pdf",width=15,height=13)
 png(file = here::here("images", "newfig11.png"),
-    res = 400, height = 9, width = 16, units = "in")
+    res = 400, height = 16, width = 16, units = "in")
 p <- dim(fit3)[1]
 #blab <- c("Intercept","Male ","Age","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", "BMI", " Cholesterol_Drug_Use","Age Suqared","BMI^2","Total cholesterol","Total cholestrol^2","Waist Circumference")
 blab <- c("Intercept","Male ","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", " Cholesterol_Drug_Use" ,
