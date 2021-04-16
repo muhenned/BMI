@@ -161,8 +161,7 @@ if (!file.exists(here::here("images", "newfig11.png"))) {
 knitr::include_graphics(here::here("images", "newfig11.png"))
 ```
 
-
-
+ 
  
 
  Age effect modeled as a quadratic factor. The age effect is concave in general, see Figure \@ref(fig:resu3). At the lower quantile, BMI increases from age 20 to around age 50, and it starts to decrease after that. In the 55th quantile, the concavity is stronger at age 50 if compared to the left or right tail. The quadratic effect of age is reflected in the hyperbolic shape. However, the age effect modeled as b spline behaves in a different way. Age effect on BMI increases from age 20 to around age 36 and then start to decrease up to around age 63 then move up again and then decreases up to age 80, see Fig.\@ref(fig:resu33). The BMI trend in this modeling is close to the trend shown in [@chen2005] by using a complicated polynomial and log transformation for the response.
