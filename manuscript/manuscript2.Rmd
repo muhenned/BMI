@@ -158,7 +158,7 @@ knitr::include_graphics(here::here("images", "newfig.png"))
 ```{r resu12, out.width = "100%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "newfig11.png"))) {
-    source(here::here("exploratory-data-analysis_JRT.R"))
+    source(here::here("Q_reg_plot2.R"))
 }
 knitr::include_graphics(here::here("images", "newfig11.png"))
 ```

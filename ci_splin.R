@@ -31,7 +31,8 @@ dat$Age=as.numeric(dat$Age)
 fit_rq=function(dat,index,tau){
     if (index==1) {formula=BMI ~ bs(Age, df = 3) + Race + Gender + Cholesterol_Drug_Use}
     else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use}
-    else {formula=BMI ~ Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
+    else if (index==3) {formula=BMI ~ Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
+    else{formula=BMI ~ Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
     message("model.matrix")
     X <- model.matrix(formula,data=dat)
     qr_fit_dat <- rq( BMI ~ X - 1, data=dat, tau = tau)
@@ -59,10 +60,13 @@ dat_pred_ready=function(dat,index,tau){
     }else if(index==2){
         dat_pred <- data.frame(expand.grid(x5_pred, x2_pred, x3_pred, x4_pred))
         names(dat_pred) <- c("Total_chol", "Race", "Gender", "Cholesterol_Drug_Use" )
-    }else { message(" pred")
+    }else if(index==3) { message(" pred")
         dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred,x5_pred))
         names(dat_pred) <- c( "Age","Race", "Gender", "Cholesterol_Drug_Use","Total_chol" )
-    }
+    } else{
+        dat_pred <- data.frame(expand.grid(age_pred, x2_pred, x3_pred, x4_pred,x5_pred))
+        names(dat_pred) <- c( "Age","Race", "Gender", "Cholesterol_Drug_Use","Total_chol" )
+        }
     
     
     dat_pred$Gender=recode(dat_pred$Gender, "1" = "Male", "2" = "Female" )
@@ -75,8 +79,10 @@ dat_pred_ready=function(dat,index,tau){
         
     }else if(index==2){
         X_pred <- model.matrix(~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
-    }else { message("pred.model.matrix")
+    }else if (index==3) { message("pred.model.matrix")
         X_pred <- model.matrix(~Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
+    } else{X_pred <- model.matrix(~Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
+    
     }
     
     
@@ -139,6 +145,12 @@ png(file = here::here("images", "TC_splin.png"),
     res = 400, height = 9, width = 16, units = "in")
 print(fig3) 
 dev.off()
+
+
+
+
+
+
 
 ################################################################################################
 
