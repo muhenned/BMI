@@ -95,7 +95,7 @@ A multivariate quantile regression model is used to assess the characteristics o
 | TC         |        |    |
 | Statin use (ratio) | 0.198       | 0.181   |
 
-base_box_plot
+ 
  
 
 ```{r box, out.width = "100%", fig.align = "center", fig.cap = "Illustration of data distribution using a box plot. The plot compares cholesterol drug users vs non-cholesterol drug users", echo = FALSE}
@@ -146,8 +146,9 @@ if (!file.exists(here::here("images", "newfig.png"))) {
 }
 knitr::include_graphics(here::here("images", "newfig.png"))
 ```
- So,
-
+ 
+ 
+ 
 ```{r resu12, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted f for fifferent marginal effects. The predictors modeled using splines ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "newfig11.png"))) {
@@ -178,9 +179,9 @@ if (!file.exists(here::here("images", "Age_splin.png")))
 knitr::include_graphics(here::here("images", "Age_splint.png"))
 ```
 
-Marginal quadratic cholesterol effect
+ 
 
-```{r resu4, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic cholestrol effect on BMI leveles for four different quantiles of the conditional BMI distribution.  The ", echo = FALSE}
+```{r resu4, out.width = "80%", fig.align = "center", fig.cap = "Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled as  quadratic .", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "Total_chol_poly.png"))) {
     source(here::here("ci_splin.R"))
@@ -188,9 +189,8 @@ if (!file.exists(here::here("images", "Total_chol_poly.png"))) {
 knitr::include_graphics(here::here("images", "Total_chol_poly.png"))
 ```
 
-Splines modeling
-
-```{r resu330, out.width = "80%", fig.align = "center", fig.cap = " Illustration of marginal cholestrol effect modeled as B splines.  The ", echo = FALSE}
+ 
+```{r resu330, out.width = "80%", fig.align = "center", fig.cap = " Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled  as B splines. ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "TC_splin")))  
 knitr::include_graphics(here::here("images", "TC_splin.png"))
@@ -204,7 +204,7 @@ On the other hand, when we use splines to modeled the total cholesterol, there i
 \section{Conclusion}
  Multivariate quantile regression is used to study the effects of different risk factors on the BMI levels. Cholesterol drug effects on BMI is negligible at low quantile but at higher quantile cholesterol medication  effects on BMI is larger. This study showed that the association between BMI and total cholesterol is varying with repect to different quantile. 
  
- tota people who have TC levels around 190 mg/dL have the lowest fasting glucose levels for the lowest quantile, for the second quantile optimal cholesterol level is around 220mg/dL, and for the upper quantile, the optimal cholesterol level is around 200 mg/dL. Moreover, 
+ total people who have TC levels around 190 mg/dL have the lowest fasting glucose levels for the lowest quantile, for the second quantile optimal cholesterol level is around 220mg/dL, and for the upper quantile, the optimal cholesterol level is around 200 mg/dL. Moreover, 
  
 It is recommended to investigate why the effect estimates are varying across different BMI quantiles.
 

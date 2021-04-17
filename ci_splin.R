@@ -31,7 +31,7 @@ dat$Age=as.numeric(dat$Age)
 fit_rq=function(dat,index,tau){
     if (index==1) {formula=BMI ~ bs(Age, df = 3) + Race + Gender + Cholesterol_Drug_Use}
     else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use}
-    else if (index==3) {formula=BMI ~ Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
+    else if (index==3) {formula=BMI ~ Age+Age^2+ Race + Gender + Cholesterol_Drug_Use}
     else{formula=BMI ~ Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
     message("model.matrix")
     X <- model.matrix(formula,data=dat)
@@ -80,7 +80,7 @@ dat_pred_ready=function(dat,index,tau){
     }else if(index==2){
         X_pred <- model.matrix(~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
     }else if (index==3) { message("pred.model.matrix")
-        X_pred <- model.matrix(~Age+Age^2+Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
+        X_pred <- model.matrix(~Age+Age^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
     } else{X_pred <- model.matrix(~Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
     
     }
@@ -155,15 +155,14 @@ dat_pred=dat_pred_ready(dat,index =3 ,tau =0.9 )
 dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", "1" = "Yes" )
 
 # plot for splines on total cholestrol
-fig3=dat_pred %>%filter(Total_chol<375)%>%
+fig3=dat_pred %>% 
     ggplot(aes(x = Age, y = pred, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
-    geom_ribbon(aes(x =Total_chol  , ymin = lower, ymax = higher, fill = Cholesterol_Drug_Use), alpha = 0.1) +
+    geom_ribbon(aes(x =Age  , ymin = lower, ymax = higher, fill = Cholesterol_Drug_Use), alpha = 0.1) +
     scale_color_viridis_d(end = 0.7) +
     scale_fill_viridis_d(end = 0.7)+
     #ylim(c(30,70))+
-    xlim(c(100,375))+
     theme_bw(base_size = 15)+
     #geom_point(data=dat, aes(x=Total_chol,y=BMI),inherit.aes = FALSE,alpha=0.05)+
     facet_grid(Race~Gender)
