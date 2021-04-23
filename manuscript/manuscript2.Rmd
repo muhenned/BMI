@@ -63,23 +63,59 @@ Least square method expresses conditional mean of y given x as $\mu(x)=x^T\beta$
  \end{equation}  
  
  One of the limitations of using polynomial regression is the curvature that can be captured is limited with low order terms. However, including higher-order terms has a negative impact on the model by introducing undesirable "wiggliness" in the regression equation.  Another robust approach to model nonlinear relationships is splines. It is similar to a technique used by draftsmen in plotting curves. The spline is a process of constructing a set of piece-wise continuous
-polynomials that are smoothly connected at a set of points in the range of the predictor variable. The connection points are called knots i.e. splines are used to smoothly interpolate between certain points. Let $a,b$ ,and $c$ are the endpoints of the $x$-axis intervals. A smooth cubic spline function is defined by the following equation.
-\begin{equation}
-f(X)=X\beta=\beta_{0}+\beta_{1}X+\beta_2X^2+\beta_{3}X^{3}+\beta_{4}(X-a)_{+}^3+\beta_{5}(X-b)_{+}^3+\beta_6(X-c)_{+}^3,
-\end{equation}
+<!-- polynomials that are smoothly connected at a set of points in the range of the predictor variable. The connection points are called knots i.e. splines are used to smoothly interpolate between certain points. Let $a,b$ ,and $c$ are the endpoints of the $x-$axis intervals. A transformation for some or all of predictors is needed to capture the nonlinearity in the model. The family of transformation of the predictors that can be fit together to built the model's shape is known as a basis function. the basis functions are $b_1(x),b_2(x), \cdots,\b_k(x),$ and the estimation of $y_i$ is computed as follows: -->
 
-where $$(u)_{+}=  
+<!-- \begin{equation} -->
+<!-- y_i=\beta_0+\beta_1 b_1(x_i)+\beta_2 b_2(x_i)+\cdots+ \beta_k b_k(x_i) -->
+<!-- \end{equation} -->
+<!-- This concept of a family of transformations that can fit together to capture general shapes is called a basis function. In this case, our objects are functions: $ b_1 (X ), b_2 (X ),\cdots , b_K (X ).$ In a more general way to represent a value of $y=f(X)$ using a peacewise cubic polybomials with a singl knote $c.$  -->
+
+\begin{equation}
+y_{i}=  
  \left\{
 \begin{array}{ll}
-u  & \mbox{if } u > 0 \\
-0 & \mbox{if } u \leq 0
+ \beta_{01}+\beta_{11}x_i+\beta_{21}x_i^2+ \beta_{31}x_i^3+	\epsilon_i & \mbox{if } x_i< c \\
+ \beta_{02}+\beta_{12}x_i+\beta_{22}x_i^2+ \beta_{23}x_i^3+	\epsilon_i& \mbox{if } x_i \geq c
 \end{array}
-\right. $$
+\right.
+\end{equation}
+Imposing a continuty condition  and first, and second derivative at $c$ are equal in the two sides, we get a cubic splines. 
+<!-- \begin{equation} -->
+<!-- f(X)=X\beta=\beta_{0}+\beta_{1}X+\beta_2X^2+\beta_{3}X^{3}+\beta_{4}(X-a)_{+}^3+\beta_{5}(X-b)_{+}^3+\beta_6(X-c)_{+}^3, -->
+<!-- \end{equation} -->
+
+<!-- where $$(u)_{+}=   -->
+<!--  \left\{ -->
+<!-- \begin{array}{ll} -->
+<!-- u  & \mbox{if } u > 0 \\ -->
+<!-- 0 & \mbox{if } u \leq 0 -->
+<!-- \end{array} -->
+<!-- \right. $$ -->
 
 \section{Methods}
 A multivariate quantile regression model is used to assess the characteristics of the association variability in different quantiles of the conditional distribution of the body mass index.
  
- The independent variables in our model are gender, race, age, total cholesterol, cholesterol drug use (yes or no). All types of cholesterol drugs are used including statins. The included races are non-Hispanic white, non-Hispanic black, Hispanic, or other.
+ The independent variables in our model are gender, race, age, total cholesterol, cholesterol drug use (yes or no). All types of cholesterol drugs are used including statins. The included races are non-Hispanic white, non-Hispanic black, Hispanic, or other. The following formulas represents the different model that presented in the result.
+ 
+ 
+ \begin{equation}
+ \hat{BMI}= bs(Age, df = 5) + Race + Gender + Cholesterol Drug Use
+ \end{equation}
+ 
+ 
+ \begin{equation}
+ \hat{BMI}= bs(Total chol, df=5)+ Race + Gender + Cholesterol Drug Use
+ \end{equation}
+ 
+ 
+ \begin{equation}
+ \hat{BMI}= Age+Age^2+ Race + Gender + Cholesterol Drug Use 
+ \end{equation}
+ 
+ 
+ \begin{equation}
+ \hat{BMI}= Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use
+ \end{equation}
  
 \section{Numerical Example}
 \subsection{Data}
@@ -108,6 +144,7 @@ knitr::include_graphics(here::here("images", "base_box_plot.png"))
 
  
 Figure \@ref(fig:box) shows the association between age and BMI with respect to cholesterol drug is inconsistent. At the early age, the correlation is positive while at the middle age the correlation is almost flat, and at the old age the correlation is negative. Moreover, at low age cholesterol medications are  described only for a population with high BMI, but at a higher age, the difference in term of the BMI for a population that takes cholesterol medication and without cholesterol medication decreases until it diminishes as in the white population. The  heterogeneity can also be seen in gender ?, for the Hispanic female population, the cholesterol medication is taken by the population with lower BMI if compared to the population that does not take cholesterol medication.
+
 
 ```{r data, out.width = "80%", fig.align = "center", fig.cap = "A better figure caption", echo = FALSE}
 # Created by file exploratory-data-analysis.R
@@ -165,7 +202,7 @@ knitr::include_graphics(here::here("images", "newfig11.png"))
  
  
 
-```{r resu3, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic age effect on BMI leveles for four different quantiles of the conditional BMI distribution.  The ", echo = FALSE}
+```{r resu3, out.width = "80%", fig.align = "center", fig.cap = "Illustration of the quadratic age effect on BMI leveles for four different quantiles of the conditional BMI distribution. ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "Age_poly.png"))) {
     source(here::here("ci_splin.R"))
@@ -175,8 +212,8 @@ knitr::include_graphics(here::here("images", "Age_poly.png"))
 Using splines
 ```{r resu33, out.width = "80%", fig.align = "center", fig.cap = "Age effect modeled using bsplines ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "Age_splin.png")))
-knitr::include_graphics(here::here("images", "Age_splint.png"))
+if (!file.exists(here::here("images", "Age_splin.png"))) {}
+knitr::include_graphics(here::here("images", "Age_splin.png"))
 ```
 
  

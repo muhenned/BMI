@@ -29,7 +29,7 @@ dat$Age=as.numeric(dat$Age)
 
 
 fit_rq=function(dat,index,tau){
-    if (index==1) {formula=BMI ~ bs(Age, df = 3) + Race + Gender + Cholesterol_Drug_Use}
+    if (index==1) {formula=BMI ~ bs(Age, df = 5) + Race + Gender + Cholesterol_Drug_Use}
     else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use}
     else if (index==3) {formula=BMI ~ Age+Age^2+ Race + Gender + Cholesterol_Drug_Use}
     else{formula=BMI ~ Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
