@@ -176,7 +176,7 @@ From the OLS it is obvious cholesterol drug users have on average higher BMI lev
 
 
 
-```{r resu1, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted f for fifferent marginal effects. The predictors modeled using quadratic terms ", echo = FALSE}
+```{r resu1, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted  for different marginal effects. The predictors modeled using quadratic terms ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "newfig.png"))) {
     source(here::here("exploratory-data-analysis_JRT.R"))
@@ -186,7 +186,7 @@ knitr::include_graphics(here::here("images", "newfig.png"))
  
  
  
-```{r resu12, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted f for fifferent marginal effects. The predictors modeled using splines ", echo = FALSE}
+```{r resu12, out.width = "100%", fig.align = "center", fig.cap = "Quantile regression of BMI ploted  for different marginal effects. The predictors modeled using splines ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "newfig11.png"))) {
     source(here::here("exploratory-data-analysis_JRT.R"))
@@ -231,6 +231,19 @@ knitr::include_graphics(here::here("images", "Total_chol_poly.png"))
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "TC_splin")))  
 knitr::include_graphics(here::here("images", "TC_splin.png"))
+```
+
+ 
+```{r resu1000, out.width = "100%", fig.align = "center", fig.cap = " Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled  as B splines. ", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "comp_age")))  
+knitr::include_graphics(here::here("images", "comp_age.png"))
+```
+ 
+```{r resu1010, out.width = "100%", fig.align = "center", fig.cap = " ", echo = FALSE}
+# Created by file exploratory-data-analysis.R
+if (!file.exists(here::here("images", "comp_tc")))  
+knitr::include_graphics(here::here("images", "comp_tc.png"))
 ```
 
 The quadratic effect of total cholesterol on the conditional distribution of BMI is convex.  At the lower tail, the correlation is positive that is as cholesterol increases the BMI increases. decreasing glucose level by somewhat around 1.4 up to around 180 Cholesterol level. However, at higher quantile the association become negative that is as cholesterol level increases the BMI decreases, see  Figure \@ref(fig:resu4). The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average.    

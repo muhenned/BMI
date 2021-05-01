@@ -7,7 +7,7 @@ output:
 bibliography: cite.bib
 link_citations: true
 header-includes:
-    - \usepackage{setspace}\doublespacing 
+    - \usepackage{setspace}
     - \usepackage{float}
 abstract: "My abstract"
 keywords: "My keywords"
@@ -17,7 +17,7 @@ fontsize: 12pt
 fig_caption: yes
 indent: true
 ---
-<!-- \setstretch{4} -->
+\setstretch{4}
 \section{introduction}
 
   High BMI has negative impact on public health. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factor for obesity. This can help decision makers to create a new regulation that help to prevent and to stop the dramatic increase in the BMI index. 

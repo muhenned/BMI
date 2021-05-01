@@ -36,6 +36,7 @@ fit_rq=function(dat,index,tau){
     message("model.matrix")
     X <- model.matrix(formula,data=dat)
     qr_fit_dat <- rq( BMI ~ X - 1, data=dat, tau = tau)
+    #qr_fit_dat <- rq( formula, data=dat, tau = tau)
     return(qr_fit_dat)
 }
 
@@ -312,3 +313,12 @@ dev.off()
 # grid.arrange(fig[1],fig[2],fig[3],fig[4],fig[5], ncol=3, nrow = 2)
 # dev.off()
 # 
+
+
+################
+#ggeffect plot
+
+ggpredict(fit,"Age [all]")
+df=ggpredict(fit,"Age [all]")
+ggplot(df,aes(x,predicted))+geom_line()+geom_ribbon(aes(ymin=conf.low,ymax=conf.high),alpha=0.1)
+
