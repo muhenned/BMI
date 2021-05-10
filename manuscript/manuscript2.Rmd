@@ -23,7 +23,7 @@ indent: true
   High BMI has negative impact on public health. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factor for obesity. This can help decision makers to create a new regulation that help to prevent and to stop the dramatic increase in the BMI index. 
   
   Body Mass Index (BMI) plays an important role in predicting heart disease risk[@katbody]. Approximately, 18 million deaths annually per year are caused by cardiovascular diseases(CVD), and similar to this number of nonfatal cardiovascular events [@hay2017gbd].
-In 2011, annual costs for CVD and stroke were $\$320.1$ billion, which is more than cancer cost. This cost includes \$195.6  billion in direct costs (healthcare costs), and the cost of future productivity loss is  \$124.5 [@mozaffarian2015executive]. Important factors associated with CVD are high body mass index (BMI) and abnormal lipid ratio  [@yusuf2004effect], [@anderson1991]. Lowering low-density lipoprotein (LDL) by using statin or other drugs reduces the risk of cardiovascular diseases even with a population with no CVD  [@yusuf2016]. Ferrieres et al. [@ferrieres2018] studied the effect of BMI on the choice of lipid-lowering treatment. It is been found that statin intensity increases with the high level of BMI($\rho=0.13$).
+In 2011, annual costs for CVD and stroke were $\$320.1$ billion, which is more than cancer cost. This cost includes \$195.6  billion in direct costs (health-care costs), and the cost of future productivity loss is  \$124.5 [@mozaffarian2015executive]. Important factors associated with CVD are high body mass index (BMI) and abnormal lipid ratio  [@yusuf2004effect], [@anderson1991]. Lowering low-density lipoprotein (LDL) by using statin or other drugs reduces the risk of cardiovascular diseases even with a population with no CVD  [@yusuf2016]. Ferrieres et al. [@ferrieres2018] studied the effect of BMI on the choice of lipid-lowering treatment. It is been found that statin intensity increases with the high level of BMI($\rho=0.13$).
 
 Taking cholesterol drug medication  associates with a high risk of elevating BMI level. It is been shown that statin users consume 192 additional calories per day which causes gaining a 6 lb to 11 lb. in a year. Statin users gain 1.3 units in the BMI measure while non-staining users gain 0.4 unit. Moreover, consumption of fat in statin users raised by 14.4%[@sugiyama2014].
 
@@ -79,7 +79,7 @@ y_{i}=
 \end{array}
 \right.
 \end{equation}
-Imposing a continuty condition  and first, and second derivative at $c$ are equal in the two sides, we get a cubic splines. 
+Imposing a continuity condition  and first, and second derivative at $c$ are equal in the two sides, we get a cubic splines. 
 <!-- \begin{equation} -->
 <!-- f(X)=X\beta=\beta_{0}+\beta_{1}X+\beta_2X^2+\beta_{3}X^{3}+\beta_{4}(X-a)_{+}^3+\beta_{5}(X-b)_{+}^3+\beta_6(X-c)_{+}^3, -->
 <!-- \end{equation} -->
@@ -114,12 +114,12 @@ A multivariate quantile regression model is used to assess the characteristics o
  
  
  \begin{equation}
- \hat{BMI}= Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use
+ \hat{BMI}= Total chol+ Total chol^2+ Race + Gender + Cholesterol Drug_Use
  \end{equation}
  
 \section{Numerical Example}
 \subsection{Data}
- The data used in this study is National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The survey examines a nationally representative sample of the U.S. population. It focuses on a variety of health and nutrition measurements. The survey data are released every two years cycle.  In this study, we accumulated 6 cycles of NHANES data (2007–2018). We used two data files: One contains demographic variables, such as age, sex, race, income, etc., and the other contains data that are related to body measurements, such as BMI, head circumference, etc. These files are merged by using the respondent sequence number (SEQN)
+ The data used in this study is the National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The survey examines a nationally representative sample of the U.S. population. It focuses on a variety of health and nutrition measurements. The survey data are released every two years cycle.  In this study, we accumulated 6 cycles of NHANES data (2007–2018). We used two data files: One contains demographic variables, such as age, sex, race, income, etc., and the other contains data that are related to body measurements, such as BMI, head circumference, etc. These files are merged by using the respondent sequence number (SEQN)
  There are around 12,000 records. We selected a population age between 20 and 80.
  BMI are classified into different categories according to underweight, 18.5 kg/m2; normal weight, 18.5 to 25 kg/m2; overweight, 25 to 30 kg/m2; obese, 30 to 35 kg/m2; and very obese more than 35 kg/m2.  
 
@@ -232,27 +232,27 @@ knitr::include_graphics(here::here("images", "Total_chol_poly.png"))
 if (!file.exists(here::here("images", "TC_splin")))  
 knitr::include_graphics(here::here("images", "TC_splin.png"))
 ```
-
  
-```{r resu1000, out.width = "100%", fig.align = "center", fig.cap = " Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled  as B splines. ", echo = FALSE}
+ 
+```{r resu1000, out.width = "100%", fig.align = "center", fig.cap = "  An illustration of  marginal effects of age on different BMI quantiles. The predictors modeled using quadratic terms and splines.", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "comp_age")))  
-knitr::include_graphics(here::here("images", "comp_age.png"))
+if (!file.exists(here::here("images", "comp_age_mixed")))  
+knitr::include_graphics(here::here("images", "comp_age_mixed.png"))
 ```
  
-```{r resu1010, out.width = "100%", fig.align = "center", fig.cap = " ", echo = FALSE}
+```{r resu1010, out.width = "100%", fig.align = "center", fig.cap = " An illustration of  marginal effects of total cholesterol  on different BMI quantiles. The predictors modeled using quadratic terms and splines.", echo = FALSE}
 # Created by file exploratory-data-analysis.R
-if (!file.exists(here::here("images", "comp_tc")))  
-knitr::include_graphics(here::here("images", "comp_tc.png"))
+if (!file.exists(here::here("images", "comp_tot_mixed")))  
+knitr::include_graphics(here::here("images", "comp_tot_mixed.png"))
 ```
 
 The quadratic effect of total cholesterol on the conditional distribution of BMI is convex.  At the lower tail, the correlation is positive that is as cholesterol increases the BMI increases. decreasing glucose level by somewhat around 1.4 up to around 180 Cholesterol level. However, at higher quantile the association become negative that is as cholesterol level increases the BMI decreases, see  Figure \@ref(fig:resu4). The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average.    
 
-On the other hand, when we use splines to modeled the total cholesterol, there is a huge difference in the shape of the association expect at the higher quantile there is some similarity. At the lower quantile, there is negative correlation between total cholesterol and BMI for total cholesterol in the range less than 160, then the correlation becomes positive for total cholesterol in the range of (170, 250). at the 55th quantile, the correlation is positive for low cholesterol level and then becomes almost flat for the rest cholesterol values. At a higher qunatile, the correlation becomes negative at cholesterol level in the range (160,300), see Figure \@ref(resu330).
+On the other hand, when we use splines to modeled the total cholesterol, there is a huge difference in the shape of the association expect at the higher quantile there is some similarity. At the lower quantile, there is negative correlation between total cholesterol and BMI for total cholesterol in the range less than 160, then the correlation becomes positive for total cholesterol in the range of (170, 250). at the 55th quantile, the correlation is positive for low cholesterol level and then becomes almost flat for the rest cholesterol values. At a higher quntile, the correlation becomes negative at cholesterol level in the range (160,300), see Figure \@ref(resu330).
  
 
 \section{Conclusion}
- Multivariate quantile regression is used to study the effects of different risk factors on the BMI levels. Cholesterol drug effects on BMI is negligible at low quantile but at higher quantile cholesterol medication  effects on BMI is larger. This study showed that the association between BMI and total cholesterol is varying with repect to different quantile. 
+ Multivariate quantile regression is used to study the effects of different risk factors on the BMI levels. Cholesterol drug effects on BMI is negligible at low quantile but at higher quantile cholesterol medication  effects on BMI is larger. This study showed that the association between BMI and total cholesterol is varying with respect to different quantile. 
  
  total people who have TC levels around 190 mg/dL have the lowest fasting glucose levels for the lowest quantile, for the second quantile optimal cholesterol level is around 220mg/dL, and for the upper quantile, the optimal cholesterol level is around 200 mg/dL. Moreover, 
  

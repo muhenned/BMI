@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.12)  22 APR 2021 18:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.12)  30 APR 2021 12:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -362,8 +362,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count289
 \l__pdf_internal_box=\box56
-)
-No file manuscript.aux.
+) (./manuscript.aux)
 \openout1 = `manuscript.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
@@ -407,6 +406,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 69.
 LaTeX Info: Redefining \pageref on input line 69.
 LaTeX Info: Redefining \nameref on input line 69.
+(./manuscript.out) (./manuscript.out)
 \@outlinefile=\write3
 \openout3 = `manuscript.out'.
 
@@ -479,38 +479,183 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
 
 (/home/mabdulsa/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (./manuscript.toc
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 3.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 3.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 3.
 )
-
-Package hyperref Warning: old toc file detected, not used; run LaTeX again.
-
 \tf@toc=\write4
 \openout4 = `manuscript.toc'.
-
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 84.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 84.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 84.
-
-Underfull \hbox (badness 2393) in paragraph at lines 83--85
-[]\T1/lmr/m/n/12 Body Mass In-dex (BMI) plays an im-por-tant role in pre-dict-i
-ng heart dis-ease
- []
 
 [1
 
 {/home/mabdulsa/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-! Undefined control sequence.
-l.89 ...}x_i+\beta_{21}x_i^2+ \beta_{31}x_i^3+\eps
-                                                  _i & \mbox{if } x_i< c \\ 
-Here is how much of TeX's memory you used:
- 10451 strings out of 480954
- 149439 string characters out of 5907137
- 449759 words of memory out of 5000000
- 27495 multiletter control sequences out of 15000+600000
- 449048 words of font info for 66 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 71i,7n,74p,793b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
+Underfull \hbox (badness 2393) in paragraph at lines 84--86
+[]\T1/lmr/m/n/12 Body Mass In-dex (BMI) plays an im-por-tant role in pre-dict-i
+ng heart dis-ease
+ []
 
-!  ==> Fatal error occurred, no output PDF file produced!
+[2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13]
+</home/mabdulsa/BMI/images/base_box_plot.png, id=126, 1445.4pt x 1011.78pt>
+File: /home/mabdulsa/BMI/images/base_box_plot.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/base_box_plot.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/base_box_plot.png  used on i
+nput line 165.
+(pdftex.def)             Requested size: 469.74944pt x 328.8246pt.
+[14] [15pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.173 
+       </home/mabdulsa/BMI/images/base_box_plot.png (PNG copy)>]
+</home/mabdulsa/BMI/images/exploratory.png, id=138, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/exploratory.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/exploratory.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/exploratory.png  used on inp
+ut line 176.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+</home/mabdulsa/BMI/images/exploratory2.png, id=139, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/exploratory2.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/exploratory2.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/exploratory2.png  used on in
+put line 185.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+</home/mabdulsa/BMI/images/quant90.png, id=140, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/quant90.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/quant90.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/quant90.png  used on input l
+ine 196.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+[16] [17pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.206 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.206 
+       </home/mabdulsa/BMI/images/exploratory.png (PNG copy)> </home/mabdulsa/B
+MI/images/exploratory2.png>] [18pdfTeX warning (ext4): destination with the sam
+e identifier (name{figure.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.208 
+       </home/mabdulsa/BMI/images/quant90.png (PNG copy)>]
+</home/mabdulsa/BMI/images/newfig.png, id=160, 1156.32pt x 1156.32pt>
+File: /home/mabdulsa/BMI/images/newfig.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/newfig.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/newfig.png  used on input li
+ne 211.
+(pdftex.def)             Requested size: 469.75385pt x 469.75385pt.
+</home/mabdulsa/BMI/images/newfig11.png, id=161, 1156.32pt x 1156.32pt>
+File: /home/mabdulsa/BMI/images/newfig11.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/newfig11.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/newfig11.png  used on input 
+line 222.
+(pdftex.def)             Requested size: 469.75385pt x 469.75385pt.
+[19] [20pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.230 
+       </home/mabdulsa/BMI/images/newfig.png (PNG copy)>] [21pdfTeX warning (ex
+t4): destination with the same identifier (name{figure.6}) has been already use
+d, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.230 
+       </home/mabdulsa/BMI/images/newfig11.png (PNG copy)>]
+</home/mabdulsa/BMI/images/p_age_effect.png, id=179, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/p_age_effect.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/p_age_effect.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/p_age_effect.png  used on in
+put line 233.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+</home/mabdulsa/BMI/images/s_age_effect.png, id=180, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/s_age_effect.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/s_age_effect.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/s_age_effect.png  used on in
+put line 244.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+</home/mabdulsa/BMI/images/p_TC_effect.png, id=181, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/p_TC_effect.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/p_TC_effect.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/p_TC_effect.png  used on inp
+ut line 255.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+</home/mabdulsa/BMI/images/s_TC_effect.png, id=182, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/s_TC_effect.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/s_TC_effect.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/s_TC_effect.png  used on inp
+ut line 266.
+(pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+[22pdfTeX warning (ext4): destination with the same identifier (name{figure.7})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.274 
+       </home/mabdulsa/BMI/images/p_age_effect.png>] [23pdfTeX warning (ext4): 
+destination with the same identifier (name{figure.8}) has been already used, du
+plicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.274 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.274 
+       </home/mabdulsa/BMI/images/s_age_effect.png> </home/mabdulsa/BMI/images/
+p_TC_effect.png>]
+
+LaTeX Warning: Reference `resu330' on page 24 undefined on input line 275.
+
+[24pdfTeX warning (ext4): destination with the same identifier (name{figure.10}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.276 
+       </home/mabdulsa/BMI/images/s_TC_effect.png>] [25] [26] [27] [28] [29] [3
+0] [31] [32] [33] (./manuscript.aux)
+
+LaTeX Warning: There were undefined references.
+
+Package rerunfilecheck Info: File `manuscript.out' has not changed.
+(rerunfilecheck)             Checksum: 7B5F624F052B895468C29D2EF101E282;1103.
+ ) 
+Here is how much of TeX's memory you used:
+ 10654 strings out of 480954
+ 153892 string characters out of 5907137
+ 452201 words of memory out of 5000000
+ 27596 multiletter control sequences out of 15000+600000
+ 465286 words of font info for 71 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 71i,7n,74p,819b,342s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/home/mabdulsa/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/mabdu
+lsa/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/home/mabdulsa/.TinyT
+eX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/home/mabdulsa/.TinyTeX/texmf-d
+ist/fonts/enc/dvips/lm/lm-rm.enc}{/home/mabdulsa/.TinyTeX/texmf-dist/fonts/enc/
+dvips/lm/lm-mathsy.enc}</home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/l
+m/lmbx10.pfb></home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.p
+fb></home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></home/
+mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></home/mabdulsa/.
+TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></home/mabdulsa/.TinyTeX/tex
+mf-dist/fonts/type1/public/lm/lmmi8.pfb></home/mabdulsa/.TinyTeX/texmf-dist/fon
+ts/type1/public/lm/lmr10.pfb></home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/pu
+blic/lm/lmr12.pfb></home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr
+17.pfb></home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></hom
+e/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></home/mabdulsa
+/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/mabdulsa/.TinyTeX/
+texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
+Output written on manuscript.pdf (33 pages, 5001771 bytes).
+PDF statistics:
+ 334 PDF objects out of 1000 (max. 8388607)
+ 268 compressed objects within 3 object streams
+ 81 named destinations out of 1000 (max. 500000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+

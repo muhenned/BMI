@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.12)  22 APR 2021 19:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.12)  10 MAY 2021 11:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -565,58 +565,83 @@ File: /home/mabdulsa/BMI/images/TC_splin.png Graphic file (type png)
 Package pdftex.def Info: /home/mabdulsa/BMI/images/TC_splin.png  used on input 
 line 261.
 (pdftex.def)             Requested size: 375.79955pt x 211.38724pt.
+</home/mabdulsa/BMI/images/comp_age_mixed.png, id=130, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/comp_age_mixed.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/comp_age_mixed.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/comp_age_mixed.png  used on 
+input line 270.
+(pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
+</home/mabdulsa/BMI/images/comp_tot_mixed.png, id=131, 1156.32pt x 650.43pt>
+File: /home/mabdulsa/BMI/images/comp_tot_mixed.png Graphic file (type png)
+<use /home/mabdulsa/BMI/images/comp_tot_mixed.png>
+Package pdftex.def Info: /home/mabdulsa/BMI/images/comp_tot_mixed.png  used on 
+input line 279.
+(pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
 [10pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
  </home/mabdulsa/BMI/images/quant90.png (PNG copy)>] [11pdfTeX warning (ext4): 
 destination with the same identifier (name{figure.4}) has been already used, du
 plicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
  </home/mabdulsa/BMI/images/newfig.png (PNG copy)>] [12pdfTeX warning (ext4): d
 estination with the same identifier (name{figure.5}) has been already used, dup
 licate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
  </home/mabdulsa/BMI/images/newfig11.png (PNG copy)>] [13pdfTeX warning (ext4):
  destination with the same identifier (name{figure.6}) has been already used, d
 uplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
 pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
  </home/mabdulsa/BMI/images/Age_poly.png (PNG copy)> </home/mabdulsa/BMI/images
 /Age_splin.png (PNG copy)>] [14pdfTeX warning (ext4): destination with the same
  identifier (name{figure.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
 pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.270 O
+l.288 O
        n the other hand, when we use splines to modeled the total cholestero...
  </home/mabdulsa/BMI/images/Total_chol_poly.png (PNG copy)> </home/mabdulsa/BMI
-/images/TC_splin.png (PNG copy)>]
+/images/TC_splin.png (PNG copy)>] [15pdfTeX warning (ext4): destination with th
+e same identifier (name{figure.10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.288 O
+       n the other hand, when we use splines to modeled the total cholestero...
+pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.288 O
+       n the other hand, when we use splines to modeled the total cholestero...
+ </home/mabdulsa/BMI/images/comp_age_mixed.png (PNG copy)> </home/mabdulsa/BMI/
+images/comp_tot_mixed.png (PNG copy)>]
 
-LaTeX Warning: Reference `resu330' on page 15 undefined on input line 270.
+LaTeX Warning: Reference `resu330' on page 16 undefined on input line 288.
 
-[15] [16] [17] [18] (./manuscript2.aux)
+[16] [17] [18] [19] (./manuscript2.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -624,10 +649,10 @@ Package rerunfilecheck Info: File `manuscript2.out' has not changed.
 (rerunfilecheck)             Checksum: 7B5F624F052B895468C29D2EF101E282;1103.
  ) 
 Here is how much of TeX's memory you used:
- 10633 strings out of 480954
- 153450 string characters out of 5907137
- 454148 words of memory out of 5000000
- 27588 multiletter control sequences out of 15000+600000
+ 10654 strings out of 480954
+ 154185 string characters out of 5907137
+ 454460 words of memory out of 5000000
+ 27604 multiletter control sequences out of 15000+600000
  465286 words of font info for 71 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  71i,7n,74p,820b,334s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -647,10 +672,10 @@ blic/lm/lmr12.pfb></home/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr
 e/mabdulsa/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></home/mabdulsa
 /.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/mabdulsa/.TinyTeX/
 texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on manuscript2.pdf (18 pages, 7948722 bytes).
+Output written on manuscript2.pdf (19 pages, 9426078 bytes).
 PDF statistics:
- 265 PDF objects out of 1000 (max. 8388607)
- 220 compressed objects within 3 object streams
- 69 named destinations out of 1000 (max. 500000)
- 126 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 274 PDF objects out of 1000 (max. 8388607)
+ 226 compressed objects within 3 object streams
+ 72 named destinations out of 1000 (max. 500000)
+ 136 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -83,22 +83,15 @@ ggplot(df,aes(x,predicted))+
 
 
 #####
-png(file = here::here("images", "comp_tc.png"),
-    res = 400, height = 9, width = 16, units = "in")
 
-blab <- c("Intercept","Male ","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", " Cholesterol_Drug_Use","Age","Age^2","Total cholesterol","Total cholestrol^2")
-
-par(mfrow=c(2,2))
-#Comparison plot
-taus=c(0.2,0.5,0.75,0.90)
-for(i in 1:4) {
-fit=fit_rq(dat,index=1,tau=taus[i])
+ 
+fit=fit_rq(dat,index=1,tau=0.9)
 fit1=ggpredict(fit,"Age [all]") 
-fit=fit_rq(dat,index=2,tau=taus[i])
+fit=fit_rq(dat,index=2,tau=0.9)
 fit2=ggpredict(fit,"Total_chol [all]")
-fit=fit_rq(dat,index=3,tau=taus[i])
+fit=fit_rq(dat,index=3,tau=0.9)
 fit3=ggpredict(fit,"Age")
-fit=fit_rq(dat,index=4,tau=taus[i])
+fit=fit_rq(dat,index=4,tau=0.9)
 fit4=ggpredict(fit,"Total_chol")
 
 dat1 <- rbind(
@@ -108,35 +101,237 @@ dat1 <- rbind(
         mutate(model = "Quadratic"))
 
 
-  ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+ tot1= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
     geom_line() +
     geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
     xlab("Age")+
     ylab("BMI")
-
-  #print(tot1) 
- 
+ png(file = here::here("images", "comp_age.png"),
+     res = 400, height = 9, width = 16, units = "in")
+  print(tot1) 
+ dev.off()
 
 ##############
+#10%
+ 
+ fit=fit_rq(dat,index=1,tau=0.1)
+ fit1=ggpredict(fit,"Age [all]") 
+ fit=fit_rq(dat,index=3,tau=0.1)
+ fit3=ggpredict(fit,"Age")
+ 
+ 
+ dat1 <- rbind(
+   fit1 %>%
+     mutate(model = "Spline"),
+   fit3 %>%
+     mutate(model = "Quadratic"))
+ 
+ 
+ tot01= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+   geom_line() +
+   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   xlab("Age")+
+   ylab("BMI")+
+   ggtitle("Age effect on BMI 0.01 Quantile ")
+ 
+#####################
+# 0.5% 
+ fit=fit_rq(dat,index=1,tau=0.5)
+ fit1=ggpredict(fit,"Age [all]") 
+ fit=fit_rq(dat,index=3,tau=0.5)
+ fit3=ggpredict(fit,"Age")
+ 
+ 
+ dat1 <- rbind(
+   fit1 %>%
+     mutate(model = "Spline"),
+   fit3 %>%
+     mutate(model = "Quadratic"))
+ 
+ 
+ tot05= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+   geom_line() +
+   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   xlab("Age")+
+   ylab("BMI")+
+   ggtitle("Age effect on BMI 0.05 Quantile ")
+ 
+ 
+ ##########################
+ #0.75
+ 
+ fit=fit_rq(dat,index=1,tau=0.75)
+ fit1=ggpredict(fit,"Age [all]") 
+ fit=fit_rq(dat,index=3,tau=0.75)
+ fit3=ggpredict(fit,"Age")
+ 
+ 
+ dat1 <- rbind(
+   fit1 %>%
+     mutate(model = "Spline"),
+   fit3 %>%
+     mutate(model = "Quadratic"))
+ 
+ 
+ tot075= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+   geom_line() +
+   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   xlab("Age")+
+   ylab("BMI")+
+   ggtitle("Age effect on BMI 0.75 Quantile ")
+ 
+ 
+ #############
+ # 0.9
+ 
+ fit=fit_rq(dat,index=1,tau=0.9)
+ fit1=ggpredict(fit,"Age [all]") 
+ fit=fit_rq(dat,index=3,tau=0.9)
+ fit3=ggpredict(fit,"Age")
+ 
+ 
+ dat1 <- rbind(
+   fit1 %>%
+     mutate(model = "Spline"),
+   fit3 %>%
+     mutate(model = "Quadratic"))
+ 
+ 
+ tot09= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+   geom_line() +
+   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   xlab("Age")+
+   ylab("BMI")+
+   ggtitle("Age effect on BMI 0.09 Quantile ")
+ 
+ 
+ ############
+ #Plot 
+ 
+ png(file = here::here("images", "comp_age_mixed.png"),
+     res = 400, height = 9, width = 16, units = "in")
+ # print(rr)
+ grid.arrange(tot01, tot05,tot075,tot09, nrow=2, ncol=2)
+ dev.off()
+ 
+ 
+ ###############################
 
-dat2 <- rbind(
-    fit2 %>%
-        mutate(model = "Spline"),
-    fit4 %>%
-        mutate(model = "Quadratic"))
 
 
- ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
-    geom_line() +
-    ylim(c(20,50))+
-    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
-    xlab("Total Cholesterol")+
+rr=grid.arrange(tot1, tot01, nrow=1, ncol=2)
 
-        ylab("BMI")
-#print(tot2) 
-}
-
-
+png(file = here::here("images", "comp_5.png"),
+    res = 400, height = 9, width = 16, units = "in")
+# print(rr)
+grid.arrange(tot1, tot01, nrow=1, ncol=2)
 dev.off()
 
+
+
+
+################
+#
+##### Grid for Total cholesterol
+#
+
+
+fit=fit_rq(dat,index=2,tau=0.1)
+fit2=ggpredict(fit,"Total_chol [all]")
+fit=fit_rq(dat,index=4,tau=0.1)
+fit4=ggpredict(fit,"Total_chol")
+
+
+dat2 <- rbind(
+  fit2 %>%
+    mutate(model = "Spline"),
+  fit4 %>%
+    mutate(model = "Quadratic"))
+
+
+tot_chol01= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+  geom_line() +
+  ylim(c(15,50))+
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+  xlab("Total Cholesterol")+
+  ylab("BMI")+
+  ggtitle("Total cholesterol effect on BMI 0.1 Quantile ")
+
+################
+####
+
+fit=fit_rq(dat,index=2,tau=0.5)
+fit2=ggpredict(fit,"Total_chol [all]")
+fit=fit_rq(dat,index=4,tau=0.5)
+fit4=ggpredict(fit,"Total_chol")
+
+
+dat2 <- rbind(
+  fit2 %>%
+    mutate(model = "Spline"),
+  fit4 %>%
+    mutate(model = "Quadratic"))
+
+
+tot_chol05= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+  geom_line() +
+  ylim(c(20,50))+
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+  xlab("Total Cholesterol")+
+  ylab("BMI")+
+  ggtitle("Total cholesterol effect on BMI 0.5 Quantile ")
+
+############
+#0.75
+
+fit=fit_rq(dat,index=2,tau=0.75)
+fit2=ggpredict(fit,"Total_chol [all]")
+fit=fit_rq(dat,index=4,tau=0.75)
+fit4=ggpredict(fit,"Total_chol")
+
+
+dat2 <- rbind(
+  fit2 %>%
+    mutate(model = "Spline"),
+  fit4 %>%
+    mutate(model = "Quadratic"))
+
+
+tot_chol075= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+  geom_line() +
+  ylim(c(20,50))+
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+  xlab("Total Cholesterol")+
+  ylab("BMI")+
+  ggtitle("0.75 Quantile ")
+
+ ####################
+##0.9
+
+fit=fit_rq(dat,index=2,tau=0.9)
+fit2=ggpredict(fit,"Total_chol [all]")
+fit=fit_rq(dat,index=4,tau=0.9)
+fit4=ggpredict(fit,"Total_chol")
+
+
+dat2 <- rbind(
+  fit2 %>%
+    mutate(model = "Spline"),
+  fit4 %>%
+    mutate(model = "Quadratic"))
+
+
+tot_chol09= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
+  geom_line() +
+  ylim(c(20,50))+
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+  xlab("Total Cholesterol")+
+  
+  ylab("BMI")
+
+png(file = here::here("images", "comp_tot_mixed.png"),
+    res = 400, height = 9, width = 16, units = "in")
+# print(rr)
+grid.arrange( tot_chol01,tot_chol05,tot_chol075,tot_chol09, nrow=2, ncol=2)
+dev.off()
 
