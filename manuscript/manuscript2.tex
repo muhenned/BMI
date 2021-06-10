@@ -61,10 +61,11 @@
 \setcounter{secnumdepth}{5}
 \usepackage{setspace}\doublespacing
 \usepackage{float}
+\floatplacement{figure}{H}
 
 \title{Quantile Regression Analysis for Statin Effects on Body mass Index}
 \author{}
-\date{\vspace{-2.5em}May 10, 2021}
+\date{\vspace{-2.5em}June 09, 2021}
 
 \begin{document}
 \maketitle
@@ -76,22 +77,22 @@ My abstract
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
-\section{introduction}
+\section{Introduction}
 
-High BMI has negative impact on public health. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factor for obesity. This can help decision makers to create a new regulation that help to prevent and to stop the dramatic increase in the BMI index.
+High body mass index (BMI) has a negative impact on public health. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factors for obesity. This can help decision makers to create new recommendations that help to prevent and stop the dramatic increase in BMI.
 
-Body Mass Index (BMI) plays an important role in predicting heart disease risk(Katzmarzyk et al. 2012). Approximately, 18 million deaths annually per year are caused by cardiovascular diseases(CVD), and similar to this number of nonfatal cardiovascular events (Hay et al. 2017).
-In 2011, annual costs for CVD and stroke were \(\$320.1\) billion, which is more than cancer cost. This cost includes \$195.6 billion in direct costs (health-care costs), and the cost of future productivity loss is \$124.5 (Mozaffarian et al. 2015). Important factors associated with CVD are high body mass index (BMI) and abnormal lipid ratio (Yusuf et al. 2004), (Anderson et al. 1991). Lowering low-density lipoprotein (LDL) by using statin or other drugs reduces the risk of cardiovascular diseases even with a population with no CVD (Yusuf et al. 2016). Ferrieres et al.~(Ferrières et al. 2018) studied the effect of BMI on the choice of lipid-lowering treatment. It is been found that statin intensity increases with the high level of BMI(\(\rho=0.13\)).
+BMI plays an important role in predicting heart disease risk(Katzmarzyk et al. 2012). Approximately 18 million deaths annually per year world wide are caused by cardiovascular diseases(CVD) , and this number is similar to this number of nonfatal cardiovascular events (Hay et al. 2017).
+In 2011, annual costs for CVD and stroke were estimated at \(\$320.1\) billion, which is more than spending on cancer. The total CVD cost includes \$195.6 billion in direct costs (health-care costs) and \$124.5 billion of future productivity loss (Mozaffarian et al. 2015). Important risk factors associated with CVD are high BMI and abnormal lipid ratio (Yusuf et al. 2004), (Anderson et al. 1991). There are some drugs the are used reducce CVD risks by lowering low-density lipoprotein (LDL) like statin. Statin use reduces the risk of cardiovascular diseases, even with a population with no CVD risks (Yusuf et al. 2016). On the other hand, statin uses have negative side effects on health conditions, such as elevating glucose levels (Castro et al. 2016). The effect of BMI on the choice of lipid-lowering treatment has been studied by (Ferrières et al. 2018). They found that there is a positive correlation (\(\rho=0.13\)) between statin does levels and BMI levels.
+Additionaly, taking cholesterol drug medication associates with a high risk of elevating BMI level. It is been shown that statin users consume 192 additional calories per day which causes gaining a 6 lb to 11 lb. in a year. Statin users gain 1.3 units in the BMI measure while non-staining users gain 0.4 unit. Moreover, consumption of fat in statin users raised by 14.4\%(Sugiyama et al. 2014). This study gives as insight about the association between cholesterol druge uses and condition means. An important question to ask is, are there an associations between cholesterol drug uses and different BMI quantiles? This question helps us to understand cholesterol drug uses effect on the obese, overweight population, so that a decision maker take an optimal action about treatment policy.
 
-Taking cholesterol drug medication associates with a high risk of elevating BMI level. It is been shown that statin users consume 192 additional calories per day which causes gaining a 6 lb to 11 lb. in a year. Statin users gain 1.3 units in the BMI measure while non-staining users gain 0.4 unit. Moreover, consumption of fat in statin users raised by 14.4\%(Sugiyama et al. 2014).
+Ordinary least squares (OLS) regression helps us to study the effects of predictors on the mean of the response. For example, estimating the association of different factors like a lipid-lowering drug with the conditional mean of BMI (Ferrières et al. 2018). OLS approaches does not give us insight into the predictor's effects on different quantiles of the responses.\\
+Hosever, quantile regression (QR) is used to investigate the heterogeneity in the association of the \(\tau\)th. quantile \(0<\tau<1\) of BMI with a set of independent predictors to investigate the effects of a specific predictors on the various quantiles of the BMI. Estimation of underweight and overweight regressed on age could be hard because of the trend change and nonlinearity behavior of the BMI with respect to age, as it is shown in (Flegal 1999) BMI departs normality because of the skewness on the right and left tails. Therefore, QR is an appropriate method used to estimate the differences in the association of the BMI with predictors.
 
-Logistic regression helps us to find out the group that has a higher odd of obesity, and ordinary least squares (OLS) regression helps us to study the effects of predictors on the average mean of the response. For example, estimating the association of different factors like a lipid-lowering drug with the conditional mean of BMI using OLS or logistic regression model(Ferrières et al. 2018). Both of these approaches do not give us insight into the predictor's effects on different quantiles of the responses.
+QR has a wide range of applications. For example, it is used to study the association between BMI and the set of predictors; low childhood socioeconomic position, high maternal weight, low childhood general cognition is stronger in the upper end of BMI quantile in the UK population(Bann, Fitzsimons, and Johnson 2020). One cause of this heterogeneity is that risk factors may have stronger effect on patients with worse health, and these effects may diminishes when conditional distribution of the BMI is studied.
+Moreover, another application of using QR is in ecology where different factors interact in a complicated way that produces different variations of one factor for different levels of another variable (Cade and Noon 2003).
 
-Quantile regression is used to investigate the heterogeneity in the association of the \(\tau\)th quantile of BMI with a set of independent predictors, that is investigate the effects of a specific predictors on the various quantiles of the BMI. BMI departs normality because of the skewness on the right and left tails (Flegal 1999). Estimation of underweight and overweight can be affected by the violation of normality. Quantile regression is a crucial tool used to estimate BMI with the dispersion of the association with predictors.
-
-Quantile regression has many successful applications in ecology where different factors interact in a complicated way that produces different variations of one factor for different levels of another variable (Cade and Noon 2003). The association between BMI and the set of predictors; low childhood socioeconomic position, high maternal weight, low childhood general cognition is stronger in the upper end of BMI quantile. This trend is found in the UK population(Bann, Fitzsimons, and Johnson 2020). One cause of this heterogeneity is that risk factors may have stronger effect on patients with worse health, and these effects may diminishes when conditional mean of the BMI is studied.
-
-We found that spline regressions produce a different estimate than polynomial regressions. Polynomial regression using the quadratic term of predictors forces the response to take convex or concave shape, see Figure 1.12 (Koenker 2005). This is because the limit of quadratic functions approach \(\pm\infty\) as \(x\rightarrow\pm\infty.\) However, when we model the predictor as splines the response is not forced to take a specific shape. In the latter case, different polynomials are constructed for the different regions in the range of predictors.
+Polynomial regression using the quadratic term of predictors forces the response to take convex or concave shape, see Figure 1.12 (Koenker 2005). This is because the limit of the response variable \(y\), when modeled as a quadratic function of the predictor variable \(x\), approach \(\pm\infty\) ( i.e.,as \(x \rightarrow\pm\infty,\) \(y\rightarrow\pm\infty.\) However, when we model the the reponse variable using a spline basis expansion of the predictor variable the response is not forced to take a specific shape. In the latter case, different polynomials are constructed for the different regions in the range of predictors the satisfies continuity and smoothness conditions at the knots.
+We found that spline regressions produce a different estimate than polynomial regressions.
 
 \section{Quantile Regression}
 
@@ -118,9 +119,17 @@ A continuous predictor can be modeled as linear, say \(X\), or nonlinear term, s
  \end{equation}
 
 One of the limitations of using polynomial regression is the curvature that can be captured is limited with low order terms. However, including higher-order terms has a negative impact on the model by introducing undesirable ``wiggliness'' in the regression equation. Another robust approach to model nonlinear relationships is splines. It is similar to a technique used by draftsmen in plotting curves. The spline is a process of constructing a set of piece-wise continuous
+polynomials that are smoothly connected at a set of points in the range of the predictor variable. The connection points are called knots i.e.~splines are used to smoothly interpolate between certain points. Let \(a,b\) ,and \(c\) are the endpoints of the \(x-\)axis intervals.
+A transformation for some or all of predictors is needed to capture the nonlinearity in the model. The family of transformation of the predictors that can be fit together to built the model's shape is known as a basis function.
+the basis functions are \(b_1(x),b_2(x), \cdots,b_k(x),\) and the estimation of \(y_i\) is computed as follows:
 
 \begin{equation}
-y_{i}=  
+y_i=\beta_0+\beta_1 b_1(x_i)+\beta_2 b_2(x_i)+\cdots+ \beta_k b_k(x_i)
+\end{equation}
+This concept of a family of transformations that can fit together to capture general shapes is called a basis function. In this case, our objects are functions: \(b_1 (X ), b_2 (X ),\cdots , b_K (X ).\) In a more general way to represent a value of \(y=f(X)\) using a peacewise cubic polybomials with a singl knote \(c.\)
+
+\begin{equation}
+y_{i}=
  \left\{
 \begin{array}{ll}
  \beta_{01}+\beta_{11}x_i+\beta_{21}x_i^2+ \beta_{31}x_i^3+ \epsilon_i & \mbox{if } x_i< c \\
@@ -253,7 +262,7 @@ Using splines
 
 }
 
-\caption{Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled as  quadratic .}\label{fig:resu4}
+\caption{Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled as  quadratic.}\label{fig:resu4}
 \end{figure}
 
 \begin{figure}
@@ -262,7 +271,7 @@ Using splines
 
 }
 
-\caption{ Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled  as B splines. }\label{fig:resu330}
+\caption{ Illustration of a 90th quantile regression of the BMI. The cholesterol term modeled  using splines. }\label{fig:resu330}
 \end{figure}
 
 \begin{figure}

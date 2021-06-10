@@ -29,7 +29,7 @@ dat$Age=as.numeric(dat$Age)
 
 
 fit_rq=function(dat,index,tau){
-    if (index==1) {formula=BMI ~ bs(Age, df = 3) + Race + Gender + Cholesterol_Drug_Use}
+    if (index==1) {formula=BMI ~ bs(Age, df = 5) + Race + Gender + Cholesterol_Drug_Use}
     else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use}
     else if (index==3) {formula=BMI ~ Age+Age^2+ Race + Gender + Cholesterol_Drug_Use}
     else{formula=BMI ~ Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
@@ -76,7 +76,7 @@ dat_pred_ready=function(dat,index,tau){
     dat_pred$Race=recode(dat_pred$Race, "1" = "Mexican", "2" = "Other_Hispanic","3"="White","4"="Black","5"="Other" )
     
     if(index==1){
-        X_pred <- model.matrix( ~ bs(Age, df = 3) + Race + Gender+ Cholesterol_Drug_Use , data = dat_pred)
+        X_pred <- model.matrix( ~ bs(Age, df = 5) + Race + Gender+ Cholesterol_Drug_Use , data = dat_pred)
         
     }else if(index==2){
         X_pred <- model.matrix(~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
@@ -320,5 +320,7 @@ dev.off()
 
 ggpredict(fit,"Age [all]")
 df=ggpredict(fit,"Age [all]")
-ggplot(df,aes(x,predicted))+geom_line()+geom_ribbon(aes(ymin=conf.low,ymax=conf.high),alpha=0.1)
+ggplot(df,aes(x,predicted))+
+    geom_line()+
+    geom_ribbon(aes(ymin=conf.low,ymax=conf.high),alpha=0.1)
 

@@ -132,7 +132,7 @@ dat1 <- rbind(
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
    xlab("Age")+
    ylab("BMI")+
-   ggtitle("Age effect on BMI 0.01 Quantile ")
+   ggtitle("Age effect on BMI 0.1 Quantile ")
  
 #####################
 # 0.5% 
@@ -154,7 +154,7 @@ dat1 <- rbind(
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
    xlab("Age")+
    ylab("BMI")+
-   ggtitle("Age effect on BMI 0.05 Quantile ")
+   ggtitle("Age effect on BMI 0.5 Quantile ")
  
  
  ##########################
@@ -202,7 +202,7 @@ dat1 <- rbind(
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
    xlab("Age")+
    ylab("BMI")+
-   ggtitle("Age effect on BMI 0.09 Quantile ")
+   ggtitle("Age effect on BMI 0.9 Quantile ")
  
  
  ############
