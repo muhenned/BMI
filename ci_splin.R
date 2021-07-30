@@ -31,8 +31,8 @@ dat$Age=as.numeric(dat$Age)
 fit_rq=function(dat,index,tau){
     if (index==1) {formula=BMI ~ bs(Age, df = 5) + Race + Gender + Cholesterol_Drug_Use}
     else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use}
-    else if (index==3) {formula=BMI ~ Age+Age^2+ Race + Gender + Cholesterol_Drug_Use}
-    else{formula=BMI ~ Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
+    else if (index==3) {formula=BMI ~poly(Age,2)+ Race + Gender + Cholesterol_Drug_Use}
+    else{formula=BMI ~ poly(Total_chol,2)+ Race + Gender + Cholesterol_Drug_Use}
     message("model.matrix")
     X <- model.matrix(formula,data=dat)
     qr_fit_dat <- rq( BMI ~ X - 1, data=dat, tau = tau)
@@ -81,14 +81,14 @@ dat_pred_ready=function(dat,index,tau){
     }else if(index==2){
         X_pred <- model.matrix(~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
     }else if (index==3) { message("pred.model.matrix")
-        X_pred <- model.matrix(~Age+Age^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
-    } else{X_pred <- model.matrix(~Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
+        X_pred <- model.matrix(~poly(Age,2)+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
+    } else{X_pred <- model.matrix(~poly(Total_chol,2)+ Race + Gender + Cholesterol_Drug_Use,data=dat_pred)
     
     }
     
     
     fit=fit_rq(dat,index,tau)
-    message("fit.model.matrix")
+     
     dat_prediction <- list(X = X_pred)
     message("A")
     pred <- predict(fit, newdata =dat_prediction, interval = "confidence")
@@ -181,7 +181,7 @@ dat_pred=dat_pred_ready(dat,index =4 ,tau =0.9 )
 
 dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", "1" = "Yes" )
 
-# plot for splines on total cholestrol
+# plot for splines on total cholesterol
 fig4=dat_pred %>%filter(Total_chol<375)%>%
     ggplot(aes(x = Total_chol, y = pred, color = Cholesterol_Drug_Use)) +
     geom_line() +

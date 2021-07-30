@@ -133,7 +133,7 @@ for(i in c(6,9,15,22)){
 }
 dev.off()
 
-#Total cholestrol effects on glucose.
+#Total cholesterol effects on glucose.
 
 png(file = here::here("images", "p_TC_effect.png"),
     res = 400, height = 9, width = 16, units = "in")

@@ -79,7 +79,7 @@ for(i in c(1:17)){
 }
 dev.off()
 
-
+attr(bs(bmi.data$Age,intercept=FALSE,df=5), "knots")
 
 ###########################
 #Or we can get this plot using quant regression summary plot.

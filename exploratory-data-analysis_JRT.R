@@ -10,7 +10,7 @@ library(quantreg)
 library(splines)
 
 
-bmi.data<- read.csv(here::here("BMI/data", "ldl2.csv"),header=TRUE, sep=",")
+bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 
 #remove duplicated rows and remove na data.
 bmi.data=bmi.data[!duplicated(bmi.data[ , c("SEQN")]),]
@@ -92,7 +92,7 @@ print(bmi.data %>%
 ########################################################
 
 dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Cholesterol_Drug_Use),bmi.data$BMI,bmi.data$Type_glu)
-colnames(dat) <- c("Age","Race","Gender","Cholesterol_Drug_Use","BMI","Type_glu")
+colnames(dat) <- c("Age","Race","Gender","Drug_Use","BMI","Type_glu")
 dat$Cholesterol_Drug_Use=recode(dat$Cholesterol_Drug_Use, "1" = "Yes", "0" = "No" )
 ggplot(dat, aes(y=BMI  ,x=Age)) +
     geom_point()
@@ -115,10 +115,10 @@ Age_10 <- as.factor(temp)
 dat <- cbind(dat,Age_10)
 dat=na.omit(dat)
 
-png(file = here::here("BMI/images", "base_box_plot.png"),
+png(file = here::here("images", "base_box_plot.png"),
     res = 400, height = 14, width = 20, units = "in")
 
-p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Cholesterol_Drug_Use)) +
+p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Drug_Use)) +
     geom_boxplot(notch = FALSE, fill = "lightgray" )+
     stat_summary(fun = mean, geom = "point",
                  shape = 18, size = 2.5, color = "#FC4E07")+
@@ -141,15 +141,15 @@ dev.off()
 ##
 #### quantile regression 
 ## 
-fig3=ggplot(dat, aes(Age ,BMI, group = Cholesterol_Drug_Use)) + 
+fig3=ggplot(dat, aes(Age ,BMI, group = Drug_Use)) + 
     #geom_point() + 
     #geom_quantile(aes(color = Cholesterol_Drug_Use), quantiles = 0.8) +
-    geom_quantile(aes(color =Cholesterol_Drug_Use), quantiles = 0.9) +
+    geom_quantile(aes(color =Drug_Use), quantiles = 0.9) +
     #geom_quantile(aes(color = Cholesterol_Drug_Use),quantiles = 0.99) +
     facet_grid(Gender ~ Type_glu)+
     theme_bw()+
     ggtitle("90% Quatile")
-png(file = here::here("BMI/images", "quant90.png"),
+png(file = here::here("images", "quant90.png"),
     res = 400, height = 9, width = 16, units = "in")
 print(fig3)
 dev.off()

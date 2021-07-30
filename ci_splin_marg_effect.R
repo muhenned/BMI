@@ -31,8 +31,8 @@ dat$Age=as.numeric(dat$Age)
 fit_rq=function(dat,index,tau){
     if (index==1) {formula=BMI ~ bs(Age, df = 5) + Race + Gender + Cholesterol_Drug_Use}
     else if(index ==2) {formula=BMI ~ bs(Total_chol, df=5)+ Race + Gender + Cholesterol_Drug_Use}
-    else if (index==3) {formula=BMI ~ Age+Age^2+ Race + Gender + Cholesterol_Drug_Use}
-    else{formula=BMI ~ Total_chol+ Total_chol^2+ Race + Gender + Cholesterol_Drug_Use}
+    else if (index==3) {formula=BMI ~ poly(Age,2)+ Race + Gender + Cholesterol_Drug_Use}
+    else{formula=BMI ~ poly(Total_chol,2)+ Race + Gender + Cholesterol_Drug_Use}
     message("model.matrix")
     X <- model.matrix(formula,data=dat)
     # qr_fit_dat <- rq( BMI ~ X - 1, data=dat, tau = tau)
@@ -91,6 +91,7 @@ fit=fit_rq(dat,index=2,tau=0.9)
 fit2=ggpredict(fit,"Total_chol [all]")
 fit=fit_rq(dat,index=3,tau=0.9)
 fit3=ggpredict(fit,"Age")
+#fit33=ggpredict(fit,~Age+Age^2)
 fit=fit_rq(dat,index=4,tau=0.9)
 fit4=ggpredict(fit,"Total_chol")
 
