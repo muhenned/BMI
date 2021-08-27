@@ -10,7 +10,7 @@ header-includes:
     - \usepackage{setspace}\doublespacing 
     - \usepackage{float}
     - \floatplacement{figure}{H}
-abstract: "My abstract"
+abstract: "Body Mass index plays an important role in predicting cardioviscalr diseases, strokes, diabetes and many others. In this article we use quantile regression to study the effects of age, total cholesterol, cholesterol drug use on the conditional distribution of BMI and it is been compared to the result obtained by ordinary least squares approach. The national health and nutrition examination survey (NHANES) data is used in this study.  The differences between using quadratic terms and spline basis expansion for the predictors is also presented. "
 keywords: "My keywords"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 geometry: margin=1in
@@ -19,12 +19,13 @@ fig_caption: yes
 indent: true
 ---
 <!-- \setstretch{4} -->
+\newpage
 \section{Introduction}
 
-  High body mass index (BMI) has a negative impact on public health. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factors for obesity. This can help decision makers to create  new recommendations that help to prevent and stop the dramatic increase in BMI. 
+  High body mass index (BMI) has a negative impact on public health[@nuttall2015body]. There is a positive relation between the risk of death from all causes, cardiovascular disease, cancer, or other diseases and BMI for both genders[@calle1999body]. Due to high cost of obesity, it is crucial to get better understanding of the underlying risk factors for obesity. This can help decision makers to create  new recommendations that help to prevent and stop the dramatic increase in BMI. 
   
   BMI plays an important role in predicting heart disease risk [@katbody]. Approximately 18 million deaths annually per year world wide are caused by cardiovascular diseases(CVD), and this number is similar to the number of nonfatal cardiovascular events [@hay2017gbd].
-In 2011, annual costs for CVD and stroke were estimated at $\$320.1$ billion, which is more than spending on cancer. The total CVD cost includes \$195.6  billion in direct costs (health-care costs) and \$124.5 billion of future productivity loss [@mozaffarian2015executive]. Important risk factors associated with CVD are high BMI and abnormal lipid ratio  [@yusuf2004effect;@anderson1991]. There are some drugs that are used reducce CVD risks by lowering low-density lipoprotein (LDL) like statin.  Statin use  reduces the risk of cardiovascular diseases, even with a population with no CVD risks  [@yusuf2016]. On the other hand, statin uses have negative side effects on health conditions, such as elevating glucose levels [@castro2016]. The effect of BMI on the choice of lipid-lowering treatment has been studied by [@ferrieres2018]. They found that there is a positive  correlation ($\rho=0.13$) between statin does levels and  BMI levels.
+In 2011, annual costs for CVD and stroke were estimated at $\$320.1$ billion, which is more than spending on cancer. The total CVD cost includes \$195.6  billion in direct costs (health-care costs) and \$124.5 billion of future productivity loss [@mozaffarian2015executive]. Important risk factors associated with CVD are high BMI and abnormal lipid ratio  [@yusuf2004effect;@anderson1991]. There are some drugs that are used reducce CVD risks by lowering low-density lipoprotein (LDL) like statin.  Statin use  reduces the risk of cardiovascular diseases, even with a population with no CVD risks  [@yusuf2016]. On the other hand, statin uses associate with negative side effects on health conditions, for example, BMI. The effect of BMI on the choice of lipid-lowering treatment has been studied by [@ferrieres2018]. They found that there is a positive  correlation ($\rho=0.13$) between statin does levels and  BMI levels.
 Additionaly, taking cholesterol drug medication  associates with a high risk of elevating BMI level. It is been shown that statin users consume 192 additional calories per day which causes gaining a 6 lb to 11 lb. in a year. Statin users gain 1.3 units in the BMI measure while non-staining users gain 0.4 BMI unit. Moreover, consumption of fat in statin users raised by 14.4%[@sugiyama2014]. This study gives us insight about the association between cholesterol drug uses and condition means of the BMI.
 
 
@@ -42,7 +43,7 @@ Moreover, another application of using QR is in ecology where different factors 
     
   
  We compare two approaches to study the QR of BMI regressed on age and total cholesterol (TC) levels.  One approach is called quantile polynomial regression. It is defined as a way to model the non-relationship between predictors and distribution of the  response as an $n$th degree polynomial in the predictors. And the other approach is using a spline basis expansion of the predictors.   
-  Polynomial regression using the quadratic term of predictors forces the response to take convex or concave shape, see Figure 1.12 [@koenker2005]. This is because the limit of the response variable $y$, when modeled as a quadratic function of the predictor variable $x$,  approach $\pm\infty$ ( i.e.,as $x \rightarrow\pm\infty,$ $y\rightarrow\pm\infty.$ However, when we model the the reponse variable using a spline basis expansion of the predictor variable the response is not forced to take a specific shape. In the latter case, different polynomials are constructed for the different regions in the range of predictors that satisfy continuity and smoothness conditions at the knots. 
+  Polynomial regression using the quadratic term of predictors forces the response to take convex or concave shape, see Figure 1.12 [@koenker2005]. This is because the limit of the response variable $y$, when modeled as a quadratic function of the predictor variable $x$,  approach $\pm\infty$ ( i.e., as $x \rightarrow\pm\infty,$ $y\rightarrow\pm\infty).$ However, when we model the the response variable using a spline basis expansion of the predictor variable the response is not forced to take a specific shape. In the latter case, different polynomials are constructed for the different regions in the range of predictors that satisfy continuity and smoothness conditions at the knots. 
   Because of the above issue in the polynomial regression, we found that spline regressions produce a different estimate than polynomial regressions.
   
  \section{Quantile Regression}
@@ -58,7 +59,10 @@ $$ 0  =(\tau-1)\int_{-\infty}^{\hat{x}} dF(x)+\tau\int_{\hat{x}}^{-\infty} dF(x)
 Due to the monotonicity of the cumulative distribution function, any solution that satisfies $\{x:F(x)=\tau \}$ is a minimizer for the expected loss function.
 
  
-OLS method expresses the conditional mean of $y$ given $x$ as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ On the other hand, QR expresses the conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$This minimization problem can be reformulated to a linear programming problem and solved using standard statistical software.
+OLS method expresses the conditional mean of $y$ given $x$ as $\mu(x)=x^T\beta$ and it solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n(y_i- x_i^T\beta)^2.$$ 
+The above equation represent the loss function for the OLS regression.By solving this equation for the minimum values for $\beta,$ we get regression equation, which is $\hat{y}=x_i^T\beta$.
+On the other hand, QR expresses the conditional quantile function $Q_y(\tau|x)=x^T \beta ({\tau)}$ and solves $$ \underset{\beta\in \mathcal{R}^p}{\text{min}}\sum_{i=1}^n\rho_{\tau}(y_i- x_i^T\beta)^2.$$
+The above This minimization problem can be reformulated to a linear programming problem and it can be solved using standard statistical software.
 
 <!-- $$ \underset{\beta\in \mathcal{R}^p}{\text{min}} $$ -->
  
@@ -107,7 +111,7 @@ Imposing a continuity condition  and first, and second derivative at $c$ are equ
 \section{Methods}
 A multivariate quantile regression model is used to assess the characteristics of the association variability in different quantiles of the conditional distribution of the body mass index.
  
- The independent variables in our model are gender, race, age, total cholesterol and cholesterol drug use (yes or no). All types of cholesterol drugs are used including statins. The included races are non-Hispanic white, non-Hispanic black, Hispanic, or other. The following formulas represents the different QR models that fit conditional distribution of BMI on :
+ The independent variables in our model are gender, race, age, total cholesterol and cholesterol drug use (yes or no). All types of cholesterol drugs are used including statins. The included races are non-Hispanic white, non-Hispanic black, Hispanic, and others. The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average. Therefore, fasting glucose level is not included to avoid collinearity. The following formulas represents the different QR models that fit conditional distribution of BMI on :
  
  \begin{itemize}
  \item Model I: Age enters the model as spline basis expansion, Race, Gender, and cholesterol drug use (Yes or No).
@@ -138,8 +142,8 @@ A multivariate quantile regression model is used to assess the characteristics o
 
 \section{Numerical Example}
 \subsection{Data}
- The data used in this study is the National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The survey examines a nationally representative sample of the U.S. population focusing on a variety of health and nutrition measurements releasing two year cycle.  In this study, we accumulated 6 cycles of NHANES data (2007–2018). We used two data files: One contains demographic variables, such as age, sex, race, income, etc. and the other contains data that are related to body measurements, such as BMI, head circumference, etc. These files are merged by using the respondent sequence number (SEQN) resulting in a around 12,000 records. We selected a population age between 20 and 80.
- BMI are classified into different categories according to underweight, 18.5 kg/m2; normal weight, 18.5 to 25 kg/m2; overweight, 25 to 30 kg/m2; obese, 30 to 35 kg/m2; and very obese more than 35 kg/m2.  
+ The data used in this study is the National Health and Nutrition Examination Survey data (NHANES)[@NHANES]. The survey examines a nationally representative sample of the U.S. population focusing on a variety of health and nutrition measurements released in two year cycle.  In this study, we accumulated 6 cycles of NHANES data (2007–2018). We used two data files: One contains demographic variables, such as age, sex, race, income, etc. and the other contains data that are related to body measurements, such as BMI, head circumference, etc. These files are merged by using the respondent sequence number (SEQN) resulting in a around 12,000 records. The missing values are deleted. We selected a population age between 20 and 80.
+ BMI are classified into different categories according to underweight, 18.5 $kg/m^2$; normal weight, 18.5 to 25 $kg/m^2$; overweight, 25 to 30 $kg/m^2$; obese, 30 to 35 $kg/m^2$; and very obese more than 35 $kg/m^2$.  
 
 | Syntax      | Male  | Female     |
 | :---        |    :----:   |          ---: |
@@ -176,10 +180,10 @@ knitr::include_graphics(here::here("images", "quant90.png"))
 \section{Results}
 Figures \@ref(fig:resu1) and \@ref(fig:resu12) illustrate marginal effects of predictors on different quantiles, where in the first plot age and total cholesterol entered the model as quadratic terms while in the second plot, spline basis expansion is used to model age and total cholesterol. First, we look at the differences in the plot that is due to using OLS vs QR, then we look at the differences due to the using quadratic term to model predictors vs spline basis expansion. 
 
-From Figures \@ref(fig:resu1), we can see the effects on conditional mean of BMI level may not reflect the size and nature of these effects on lower or upper quantiles. For example, the conditional mean effect of gender on BMI level is about -1 BMI unite, that is, on average a male BMI is less than  female BMI by one BMI unit. However, at the lower quantiles males have higher BMI by 1 BMI unite. Then, the differences start to diminish up to 0 at 40th quantile. At higher quantiles, a male BMI is less than a female BMI. For example, at 60th quantile a male BMI is less than a female BMI by 1 unite, and it continue to increase up to 3 BMI unites at 90th quantile.     
+From Figures \@ref(fig:resu1), we can see the effects on conditional mean of BMI level may not reflect the size and nature of these effects on lower or upper quantiles. For example, the conditional mean effect of gender on BMI level is about -1 $kg/m^2$, that is, on average a male BMI is less than  female BMI by 1 $kg/m^2$. However, at the lower quantiles males have higher BMI by 1 $kg/m^2$. Then, the differences start to diminish up to 0 at 40th quantile. At higher quantiles, a male BMI is less than a female BMI. For example, at 60th quantile a male BMI is less than a female BMI by 1 $kg/m^2$, and it continue to increase up to 3$kg/m^2$ at 90th quantile.     
 
 
-From the OLS it is obvious cholesterol drug users have on average higher BMI levels if compared to non-cholesterol drug users which are around 1.75. The disparity is almost regular through different BMI quantiles. For example, in the lower quantiles of the distribution the cholesterol drug users have higher BMI value by about 1.5 units, but around at 50 th percentile of the conditional distribution the difference is 1.8 BMI units. Overall,  cholesterol drug use seems to be associated with rather large effects on BMI levels somewhat between  1 to 2 BMI units.  
+From the OLS it is obvious cholesterol drug users have on average higher BMI levels if compared to non-cholesterol drug users which are around 1.75. The disparity is almost regular through different BMI quantiles. For example, in the lower quantiles of the distribution the cholesterol drug users have higher BMI value by about 1.5 $kg/m^2$, but around at 50 th percentile of the conditional distribution the difference is 1.8 BMI units. Overall,  cholesterol drug use seems to be associated with rather large effects on BMI levels somewhat between  1 to 2 $kg/m^2$.  
 
 
 
@@ -207,7 +211,12 @@ knitr::include_graphics(here::here("images", "newfig11.png"))
 
   
 Figure \@ref(fig:resu1000) illustrate the differences in modeling Age in two different ways (Model I; spline basis expansion) and (Model III; quadratic factor ).  
- Model I shows, at the lower quantile, the marginal age effects on BMI increase from age 20 to around age 75, and it starts to decrease after that. While model III shows there is a positive relationship in general. In the 50th quantile, model I shows age effect on BMI almost consistent result with the 0.1th quntile, but model III shows age effects approximately has flat effects. At a $(\tau=0.75)$ quantile of the conditional BMI distribution, model I shows a strong positive relationship between age and BMI for the age period from 20 to 33, and after that a negative  relationship, while model III shows a mild negative relationship in general. At a higher quantile $(\tau=0.9)$ of the conditional BMI distribution, we have a similar behavior as in 0.75th quantile except the relationship is stronger.The BMI trend in this modeling is close to the trend shown in [@chen2005] by using a complicated polynomial and log transformation for the response. Our conclusion from Figure \@ref(fig:resu1000) is that the marginal age effects on BMI is different on different quantiles. Moreover, modeling age as quadratic term or as spline basis expansion produce different effect with respect to differnt  quantile of the conditional BMI distribution. 
+ Model I shows, at the lower quantile, the marginal age effects on BMI increases from age 20 to around age 42, and then it stays flat up to age 70 but it starts to decrease after that. While model III shows that there is positive relationship between Age and BMI in the age range between 20 and 50. Then age effects stay flat in the age range between 50 and 60 years old and decreases after that. 
+ 
+ At the 50th quantile, model I shows the highest age effect on BMI occurs earlier by 10 years when compares to the lower quantile, but model III shows maximum effect occurs at around age 50, which is similar to the age effect at lower quantiles. The age effects start to decrease using Model I at around 70 years old while model III shows the decay starts at  around age 60.   
+ At higher quantiles $\tau=75$, using Model I, the maximum age effects occurs earlier by three years, but Model III shows the highest age effects occurs at around age 50. The decay starts at around  . Convex behavior of the quadratic term has a clear pattern in formulating age effects on the BMI.  The box plot (Fig. \@ref(fig:box))   supports Model I results because the highest mean and inter quantile range occurs at age 30.  
+ 
+Using Model I, at the 90th quantile of the conditional BMI distribution, we have a similar behavior as in 0.75th quantile except the relationship is stronger, i.e, for example, the age effects at age 20 is 37 $kg/m^2$ while at the later the effect is 30 BMI unit. The BMI trend in this modeling is close to the trend shown in [@chen2005], which computed using a complicated polynomial and log transformation for the response. Our conclusion from Figure \@ref(fig:resu1000) is that the marginal age effects on BMI is different on different quantiles. Moreover, modeling age as quadratic term or as spline basis expansion produce different effect with respect to different  quantiles of the conditional BMI distribution. 
  
 
  
@@ -217,13 +226,17 @@ if (!file.exists(here::here("images", "comp_age_mixed")))
 knitr::include_graphics(here::here("images", "comp_age_mixed.png"))
 ```
 
-Next, we will investigate marginal effect of TC on four different quntiles of the conditional distribution of the BMI. 
-The quadratic effect of total cholesterol on the conditional distribution of BMI is convex.  At the lower tail, the correlation is positive that is as cholesterol increases the BMI increases. decreasing glucose level by somewhat around 1.4 up to around 180 Cholesterol level. However, at higher quantile the association become negative that is as cholesterol level increases the BMI decreases, see  Figure \@ref(fig:resu4). The relation between total cholesterol and fasting glucose has been studied in [@tsaousis2014],[@chang2011]. They found that there is a positive correlation between the two groups on average.    
+Next, we will investigate marginal effect of TC on four different quantiles of the conditional distribution of the BMI. 
+The quadratic effect of total cholesterol on the conditional distribution of BMI is convex in general. At the lower tail ($\tau=0.1$), for TC less than 300 mg$\setminus$dl, we have positive association, that is, as TC increases the BMI increase. When TC passes this level, spline basis expansion modeling of TC presents negative correlation between TC and BMI while quadratic modeling of TC shows positive correlation.   
 
-On the other hand, when we use splines to modeled the total cholesterol, there is a huge difference in the shape of the association expect at the higher quantile there is some similarity. At the lower quantile, there is negative correlation between total cholesterol and BMI for total cholesterol in the range less than 160, then the correlation becomes positive for total cholesterol in the range of (170, 250). at the 55th quantile, the correlation is positive for low cholesterol level and then becomes almost flat for the rest cholesterol values. At a higher quntile, the correlation becomes negative at cholesterol level in the range (160,300), see Figure \@ref(fig:resu1010).
+   
+At the 50th quantile of BMI, the two ways of modeling TC shows almost a same trend through whole TC range.   
+ At higher quantiles $(\tau=75)$, for TC values less than 350, the association is negative that is as TC cholesterol level increases the BMI decreases, for both ways of modeling TC. However, the two models differ after TC passes this value. The quadratic term force the the TC effect to take convex shape.
+ At a higher quantile $(\tau=90),$  both ways of modeling TC shows BMI take a convex shape, but quadratic way of modeling BMI is more convex than the other. When TC passes 380 mg$\setminus$dL, where TC modeled using spline basis expansion, the BMI starts to decreas slow if compared to the quadratic way for modeling BMI,, see  Figure \@ref(fig:resu4).  
  
+ On the other hand, when we use splines to modeled the total cholesterol, there is a huge difference in the shape of the association expect at the higher quantile there is some similarity. At the lower quantile, there is negative correlation between total cholesterol and BMI for total cholesterol in the range less than 160. Then the correlation becomes positive for total cholesterol in the range of (170, 250). At the 55th quantile, the correlation is positive for low cholesterol level and then becomes almost flat for the rest cholesterol values.
  
-```{r resu1010, out.width = "100%", fig.align = "center", fig.cap = " An illustration of  marginal effects of total cholesterol  on different BMI quantiles. The predictors modeled using quadratic terms and splines.", echo = FALSE}
+```{r resu1010, out.width = "100%", fig.align = "center", fig.cap = " An illustration of  marginal effects of total cholesterol  on different BMI quantiles. The predictors modeled using quadratic terms and splines. The BMI quantiles $\tau= 0.1, 0.5, 0.75, 0.90$ coressponds to  21.5,  27.9,  32.4, 37.7 BMI units, respectively. ", echo = FALSE}
 # Created by file exploratory-data-analysis.R
 if (!file.exists(here::here("images", "comp_tot_mixed")))  
 knitr::include_graphics(here::here("images", "comp_tot_mixed.png"))

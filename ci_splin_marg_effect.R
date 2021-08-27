@@ -17,6 +17,10 @@ dat=readRDS(file = "bmi.data.rds")
 #dat=dat[dat$BMI<28,]
 dat=filter(dat,Cholesterol_Drug_Use!='9')
 #levels(dat$Cholesterol_Drug_Use) <- c('1','2')
+
+# to find xth percentile
+quantile(dat$BMI, probs = c(0.10,0.50,0.75,0.90))
+
 dat$Cholesterol_Drug_Use <- factor(dat$Cholesterol_Drug_Use)
 dat$Age=as.numeric(dat$Age)
 
@@ -236,7 +240,7 @@ dev.off()
 ##### Grid for Total cholesterol
 #
 
-
+dat=dat %>%filter(100<Total_chol&Total_chol <400)
 fit=fit_rq(dat,index=2,tau=0.1)
 fit2=ggpredict(fit,"Total_chol [all]")
 fit=fit_rq(dat,index=4,tau=0.1)
@@ -252,7 +256,7 @@ dat2 <- rbind(
 
 tot_chol01= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
   geom_line() +
-  ylim(c(15,50))+
+  #ylim(c(15,50))+
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   ylab("BMI")+
@@ -276,7 +280,7 @@ dat2 <- rbind(
 
 tot_chol05= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
   geom_line() +
-  ylim(c(20,50))+
+  #ylim(c(20,50))+
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   ylab("BMI")+
@@ -300,7 +304,7 @@ dat2 <- rbind(
 
 tot_chol075= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
   geom_line() +
-  ylim(c(20,50))+
+  #ylim(c(20,50))+
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   ylab("BMI")+
@@ -324,7 +328,7 @@ dat2 <- rbind(
 
 tot_chol09= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
   geom_line() +
-  ylim(c(20,50))+
+  #ylim(c(20,50))+
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   

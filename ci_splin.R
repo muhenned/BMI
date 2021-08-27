@@ -129,7 +129,7 @@ dat_pred=dat_pred_ready(dat,index =2 ,tau =0.9 )
 dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", "1" = "Yes" )
 
 # plot for splines on total cholestrol
-fig3=dat_pred %>%filter(Total_chol<375)%>%
+fig3=dat_pred %>%filter(Total_chol<400)%>%
     ggplot(aes(x = Total_chol, y = pred, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
@@ -182,7 +182,7 @@ dat_pred=dat_pred_ready(dat,index =4 ,tau =0.9 )
 dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", "1" = "Yes" )
 
 # plot for splines on total cholesterol
-fig4=dat_pred %>%filter(Total_chol<375)%>%
+fig4=dat_pred %>%filter(Total_chol<400)%>%
     ggplot(aes(x = Total_chol, y = pred, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+

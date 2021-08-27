@@ -93,7 +93,7 @@ print(bmi.data %>%
 
 dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Cholesterol_Drug_Use),bmi.data$BMI,bmi.data$Type_glu)
 colnames(dat) <- c("Age","Race","Gender","Drug_Use","BMI","Type_glu")
-dat$Cholesterol_Drug_Use=recode(dat$Cholesterol_Drug_Use, "1" = "Yes", "0" = "No" )
+dat$Drug_Use=recode(dat$Drug_Use, "1" = "Yes", "0" = "No" )
 ggplot(dat, aes(y=BMI  ,x=Age)) +
     geom_point()
 ggplot(dat, aes(Age ,BMI )) +
