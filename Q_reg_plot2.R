@@ -42,7 +42,7 @@ p <- dim(fit3)[1]
 blab <- c("Intercept","Male ","RaceMexican", "RaceOther", "RaceOther_Hispanic ", "White ", " Cholesterol_Drug_Use" ,
           "Age1","Age2","Age3","Age4","Age5","TC1","TC2","TC3","TC4","TC5")
 
-par(mfrow=c(6,4))
+par(mfrow=c(6,3))
 for(i in c(1:17)){
   #if(i==1){#adjust intercept to be centercept
   #   Age.bar <- mean(bmi.data$Age)
