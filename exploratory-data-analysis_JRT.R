@@ -8,7 +8,7 @@ library(dplyr)
 library(tidyverse)
 library(quantreg)
 library(splines)
-
+library(MASS)
 
 bmi.data<- read.csv(here::here("data", "ldl2.csv"),header=TRUE, sep=",")
 
@@ -92,8 +92,8 @@ print(bmi.data %>%
 ########################################################
 
 dat=data.frame(bmi.data$Age,as.factor(bmi.data$Race),as.factor(bmi.data$Gender),as.factor(bmi.data$Cholesterol_Drug_Use),bmi.data$BMI,bmi.data$Type_glu)
-colnames(dat) <- c("Age","Race","Gender","Drug_Use","BMI","Type_glu")
-dat$Drug_Use=recode(dat$Drug_Use, "1" = "Yes", "0" = "No" )
+colnames(dat) <- c("Age","Race","Gender","Chol_Med","BMI","Type_glu")
+dat$Chol_Med=recode(dat$Chol_Med, "1" = "Yes", "0" = "No" )
 ggplot(dat, aes(y=BMI  ,x=Age)) +
     geom_point()
 ggplot(dat, aes(Age ,BMI )) +
@@ -118,7 +118,7 @@ dat=na.omit(dat)
 png(file = here::here("images", "base_box_plot.png"),
     res = 400, height = 14, width = 20, units = "in")
 
-p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Drug_Use)) +
+p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Chol_Med)) +
     geom_boxplot(notch = FALSE, fill = "lightgray" )+
     stat_summary(fun = mean, geom = "point",
                  shape = 18, size = 2.5, color = "#FC4E07")+
@@ -126,8 +126,8 @@ p<-ggplot(dat, aes(x=Age_10, y=BMI, color=Drug_Use)) +
     xlab("Age Group")+
     ylab("BMI")+
     theme_bw(base_size = 35)+
-    facet_grid(Gender~Race)+
-    labs(title ="  BMI for Colesterol drug users and who are not",subtitle =" ", caption = " NHANES data set")
+    facet_grid(Gender~Race)
+   #+labs(title ="  BMI for Colesterol drug users and who are not",subtitle =" ", caption = " NHANES data set")
 
 print(p)
 dev.off()
@@ -317,3 +317,19 @@ X_pred <- model.matrix( ~ bs(Age, df = 4) + Race + Gender+ Cholesterol_Drug_Use,
 # 
 # l=bmi.data %>% subset(TCRx == 1) %>% count(RXDDRUG) %>% arrange(desc(n))
 # 
+
+
+bmi.data=na.omit(bmi.data)
+TC_m=bmi.data %>%filter(Gender=="Male")
+mean(TC_m$Total_chol)
+
+###############################
+TC_f=bmi.data %>%filter(Gender=="Female")
+mean(TC_f$Total_chol)
+
+### chi square test
+tbl = table(TC_m$BMI[1:6000], TC_f$BMI[1:6000])
+chisq.test(TC_m$BMI[1:6000], TC_f$BMI[1:6000]) 
+ 
+
+tbl = table(survey$Smoke, survey$Exer) 

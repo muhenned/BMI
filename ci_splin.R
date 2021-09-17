@@ -93,7 +93,7 @@ dat_pred_ready=function(dat,index,tau){
     message("A")
     pred <- predict(fit, newdata =dat_prediction, interval = "confidence")
     message("B")
-    dat_pred$pred  <- pred[, 1]
+    dat_pred$BMI  <- pred[, 1]
     dat_pred$lower  <- pred[, 2]
     dat_pred$higher <- pred[, 3]
     return(dat_pred)
@@ -107,7 +107,7 @@ dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", 
 ###############################################################################4
 
 fig2=dat_pred %>%
-    ggplot(aes(x = Age, y = pred, color = Cholesterol_Drug_Use)) +
+    ggplot(aes(x = Age, y = BMI, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
     geom_ribbon(aes(x = Age, ymin = lower, ymax = higher, fill = Cholesterol_Drug_Use), alpha = 0.1) +
@@ -130,7 +130,7 @@ dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", 
 
 # plot for splines on total cholestrol
 fig3=dat_pred %>%filter(Total_chol<400)%>%
-    ggplot(aes(x = Total_chol, y = pred, color = Cholesterol_Drug_Use)) +
+    ggplot(aes(x = Total_chol, y = BMI, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
     geom_ribbon(aes(x =Total_chol  , ymin = lower, ymax = higher, fill = Cholesterol_Drug_Use), alpha = 0.1) +
@@ -157,7 +157,7 @@ dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", 
 
 # plot for splines on total cholestrol
 fig3=dat_pred %>% 
-    ggplot(aes(x = Age, y = pred, color = Cholesterol_Drug_Use)) +
+    ggplot(aes(x = Age, y = BMI, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
     geom_ribbon(aes(x =Age  , ymin = lower, ymax = higher, fill = Cholesterol_Drug_Use), alpha = 0.1) +
@@ -183,7 +183,7 @@ dat_pred$Cholesterol_Drug_Use=recode(dat_pred$Cholesterol_Drug_Use, "0" = "No", 
 
 # plot for splines on total cholesterol
 fig4=dat_pred %>%filter(Total_chol<400)%>%
-    ggplot(aes(x = Total_chol, y = pred, color = Cholesterol_Drug_Use)) +
+    ggplot(aes(x = Total_chol, y = BMI, color = Cholesterol_Drug_Use)) +
     geom_line() +
     #geom_quantile(formula = y ~ bs(x,intercept=FALSE,df=5), quantiles = 0.25)+
     geom_ribbon(aes(x =Total_chol  , ymin = lower, ymax = higher, fill = Cholesterol_Drug_Use), alpha = 0.1) +
@@ -318,9 +318,9 @@ dev.off()
 ################
 #ggeffect plot
 
-ggpredict(fit,"Age [all]")
-df=ggpredict(fit,"Age [all]")
-ggplot(df,aes(x,predicted))+
-    geom_line()+
-    geom_ribbon(aes(ymin=conf.low,ymax=conf.high),alpha=0.1)
-
+# ggpredict(fit,"Age [all]")
+# df=ggpredict(fit,"Age [all]")
+# ggplot(df,aes(x,predicted))+
+#     geom_line()+
+#     geom_ribbon(aes(ymin=conf.low,ymax=conf.high),alpha=0.1)
+# 

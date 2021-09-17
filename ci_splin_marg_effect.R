@@ -109,8 +109,9 @@ dat1 <- rbind(
  tot1= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
     geom_line() +
     geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   facet_grid(Race~Gender)+
     xlab("Age")+
-    ylab("BMI")
+    ylab("BMI") 
  png(file = here::here("images", "comp_age.png"),
      res = 400, height = 9, width = 16, units = "in")
   print(tot1) 
@@ -135,6 +136,7 @@ dat1 <- rbind(
  tot01= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
    geom_line() +
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   theme_bw(base_size = 22)+
    xlab("Age")+
    ylab("BMI")+
    ggtitle("Age effect on BMI 0.1 Quantile ")
@@ -157,6 +159,7 @@ dat1 <- rbind(
  tot05= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
    geom_line() +
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   theme_bw(base_size = 22)+
    xlab("Age")+
    ylab("BMI")+
    ggtitle("Age effect on BMI 0.5 Quantile ")
@@ -181,6 +184,7 @@ dat1 <- rbind(
  tot075= ggplot(dat1, aes(x = x, y = predicted, group = model, color = model, fill = model)) +
    geom_line() +
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+   theme_bw(base_size = 22)+
    xlab("Age")+
    ylab("BMI")+
    ggtitle("Age effect on BMI 0.75 Quantile ")
@@ -206,6 +210,7 @@ dat1 <- rbind(
    geom_line() +
    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
    xlab("Age")+
+   theme_bw(base_size = 22)+
    ylab("BMI")+
    ggtitle("Age effect on BMI 0.9 Quantile ")
  
@@ -260,7 +265,8 @@ tot_chol01= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model,
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   ylab("BMI")+
-  ggtitle("Total cholesterol effect on BMI 0.1 Quantile ")
+  theme_bw(base_size = 22)+
+  ggtitle("TC effect on BMI 0.1 Quantile ")
 
 ################
 ####
@@ -284,7 +290,8 @@ tot_chol05= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model,
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   ylab("BMI")+
-  ggtitle("Total cholesterol effect on BMI 0.5 Quantile ")
+  theme_bw(base_size = 22)+
+  ggtitle("TC effect on BMI 0.5 Quantile ")
 
 ############
 #0.75
@@ -308,7 +315,9 @@ tot_chol075= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
   xlab("Total Cholesterol")+
   ylab("BMI")+
-  ggtitle("0.75 Quantile ")
+  theme_bw(base_size = 22)+
+  ggtitle("TC effect on BMI 0.75 Quantile ")
+  
 
  ####################
 ##0.9
@@ -330,9 +339,10 @@ tot_chol09= ggplot(dat2, aes(x = x, y = predicted, group = model, color = model,
   geom_line() +
   #ylim(c(20,50))+
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+  theme_bw(base_size = 22)+
   xlab("Total Cholesterol")+
-  
-  ylab("BMI")
+  ylab("BMI")+
+  ggtitle("TC effect on BMI 0.9 Quantile ")
 
 png(file = here::here("images", "comp_tot_mixed.png"),
     res = 400, height = 9, width = 16, units = "in")
